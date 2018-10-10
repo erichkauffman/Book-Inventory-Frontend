@@ -20,7 +20,6 @@ export default class ListView extends Component{
 	componentDidMount(){
 		let itemsPromise = getListOfItems();
 		itemsPromise.then((res) => {
-			console.log(res);
 			this.setState({
 				items: res,
 			});
