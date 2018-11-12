@@ -1,0 +1,25 @@
+.listItem{
+	border-style: solid;
+	border-radius: 8px;
+	background-color: #CCCCCC;
+	width: 45%;
+	height: 50px;
+}
+
+.listItem:hover{
+	background-color: #AAAAAA;
+}
+
+.listItem:active{
+	background-color: #888888;
+}
+
+.itemId{
+	margin-left: 1%;
+	float: left;
+}
+
+.titleText{
+	margin-right: 1%;
+	float: right;
+}

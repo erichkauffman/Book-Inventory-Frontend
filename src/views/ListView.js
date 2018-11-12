@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ListItem from '../components/ListItem';
 import { getListOfItems } from '../store/ItemStore'
+import './ListView.css';
 
 export default class ListView extends Component{
 
