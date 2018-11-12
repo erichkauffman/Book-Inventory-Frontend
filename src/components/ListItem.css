@@ -1,0 +1,17 @@
+.listItem{
+	border-style: solid;
+	border-radius: 8px;
+	background-color: #dbdbdb;
+	width: 45%;
+	height: 50px;
+}
+
+.itemId{
+	margin-left: 1%;
+	float: left;
+}
+
+.titleText{
+	margin-right: 1%;
+	float: right;
+}
