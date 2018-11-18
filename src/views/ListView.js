@@ -30,7 +30,10 @@ export default class ListView extends Component{
 	render(){
 		return(
 			<div>
-				{this.createList()}
+				<input class='searchBar' type='text'/>
+				<div>
+					{this.createList()}
+				</div>
 			</div>
 		);
 	}
