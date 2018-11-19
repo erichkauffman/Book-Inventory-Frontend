@@ -31,7 +31,7 @@ export default class ListView extends Component{
 		return(
 			<div>
 				<input class='searchBar' type='text'/>
-				<div>
+				<div class='list'>
 					{this.createList()}
 				</div>
 			</div>
