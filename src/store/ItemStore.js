@@ -1,7 +1,7 @@
 import { apiPath } from '../config'
 
-export const getListOfItems = () => {
-	return fetch(`${apiPath}/items/`)
+export const getListOfInventory = (type) => {
+	return fetch(`${apiPath}/${type}/`)
 	.then((response) => {
 		return response.json();
 	})
