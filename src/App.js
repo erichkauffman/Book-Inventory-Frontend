@@ -10,7 +10,10 @@ export default class App extends Component {
 		return (
 			<div className="App">
 				<Switch>
-					<Route path="/list" component={ListView} />
+					<Route path="/list/:type"
+					       render={({match}) => {
+							   return <ListView type={match.params.type}/>
+						   }} />
 				</Switch>
       </div>
     );

@@ -4,5 +4,17 @@
 	margin-top: 20px;
 	margin-bottom: 20px;
 	margin-left: 2%;
-	width: 40%;
+	width: 94%;
+}
+
+.contain{
+	width: 45%;
+	float: left;
+}
+
+.detail{
+	width: 50%;
+	float: right;
+	text-align: left;
+	margin-top: 8%;
 }
