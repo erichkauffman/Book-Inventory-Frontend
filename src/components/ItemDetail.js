@@ -19,7 +19,6 @@ const ItemDetail = (props) => {
 	if(item.item){
 		item = item.item;
 	}
-	console.log(item);
 	return(
 		<div>
 			<p>Id: {item.itemId}</p>
