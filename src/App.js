@@ -14,6 +14,10 @@ export default class App extends Component {
 					       render={({match}) => {
 							   return <ListView type={match.params.type}/>
 						   }} />
+					<Route path="/form"
+						   render={() => {
+							   return <p>There will be a form here</p>
+						   }}/>
 				</Switch>
       </div>
     );
