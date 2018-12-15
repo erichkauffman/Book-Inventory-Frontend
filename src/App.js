@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import ListView from './views/ListView';
+import FormView from './views/FormView';
 
 import './App.css';
 
@@ -16,10 +17,10 @@ export default class App extends Component {
 						   }} />
 					<Route path="/form"
 						   render={() => {
-							   return <p>There will be a form here</p>
+							   return <FormView/>
 						   }}/>
 				</Switch>
-      </div>
+      		</div>
     );
   }
 }
