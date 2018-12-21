@@ -3,8 +3,25 @@ import './FormView.css';
 
 export default class FormView extends Component{
 
+	constructor(props){
+		super(props);
+		this.state = {
+			siteListed: [false, false],
+		}
+	}
+
 	onChange = (e) => {
-		console.log(e.target.value);
+		this.setState({
+			[e.target.name]: e.target.value,
+		});
+	}
+
+	onChangeCheckbox = (e) => {
+		let sites = this.state.siteListed;
+		sites[e.target.value] = e.target.checked;
+		this.setState({
+			siteListed: sites,
+		});
 	}
 
 	renderBookFields = () => {
@@ -46,7 +63,7 @@ export default class FormView extends Component{
 		return sites.map((site, index) => {
 			return(
 				<label>{site}
-					<input type='checkbox' key={index} name='site' value={index} onChange={this.onChange}/>
+					<input type='checkbox' key={index} name='siteListed' value={index} onChange={this.onChangeCheckbox}/>
 				</label>
 			);
 		});
