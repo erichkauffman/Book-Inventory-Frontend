@@ -1,0 +1,16 @@
+.menuButtonContainer{
+	width: 100px;
+	border-style: solid;
+	display: inline-block;
+	text-align: center;
+	margin: .5%;
+	background-color: white;
+}
+
+.menuButtonContainer:hover{
+	background-color: #DDDDDD;
+}
+
+.menuButtonContainer:active{
+	background-color: #BBBBBB;
+}
