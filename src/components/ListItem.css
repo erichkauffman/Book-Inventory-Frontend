@@ -19,6 +19,20 @@
 }
 
 .titleText{
-	margin-right: 1%;
+	margin-left: 3em;
+	float: left;
+}
+
+.itemButton{
+	margin-top: 12.5px;
+	margin-right: 3%;
 	float: right;
+}
+
+.itemButton:hover{
+	filter: brightness(75%);
+}
+
+.itemButton:active{
+	filter: brightness(50%);
 }
