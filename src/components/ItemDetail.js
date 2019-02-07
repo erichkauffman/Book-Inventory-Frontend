@@ -27,6 +27,7 @@ const ItemDetail = (props) => {
 			<p>Condition: {item.condition}</p>
 			<p>Sell Price: {item.sellPrice}</p>
 			<p>Site Listed: {item.siteListed}</p>
+			<p>Shelf Location: {item.shelfLocation}</p>
 			<p>Description: {item.description}</p>
 			<p>Date Purchased: {item.datePurchased}</p>
 			<p>Location Purchased: {item.locationPurchased}</p>
