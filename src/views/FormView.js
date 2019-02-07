@@ -104,6 +104,9 @@ export default class FormView extends Component{
 					<br/>
 					<p>Site Listed:</p>
 					{this.createSitesButtons()}
+					<br/>
+					<label>Shelf Location:</label>
+					<input type='text' name='shelfLocation' onChange={this.onChange}/>
 				</form>
 			</div>
 		);
