@@ -38,21 +38,17 @@ export default class FormView extends Component{
 					<input type='number' name='printing' onChange={this.onChange}/>
 					<br/>
 					<p>Cover:</p>
-					<label>Hard</label>
-					<input type='radio' name='cover' value={0} onChange={this.onChange}/>
-					<label>Soft</label>
-					<input type='radio' name='cover' value={1} onChange={this.onChange}/>
+					{this.createRadioButtons(['Hard', 'Soft'], 'cover')}
 				</div>
 			);
 		}
 	}
 
-	createConditionButtons = () => {
-		let conditions = ['New', 'Like New', 'Very Good', 'Good', 'Acceptable'];
-		return conditions.map((condition, index) => {
+	createRadioButtons = (labels, name) => {
+		return labels.map((label, index) => {
 			return(
-				<label>{condition}
-					<input type='radio' key={index} name='condition' value={index} onChange={this.onChange}/>
+				<label>{label}
+					<input type='radio' key={index} name={name} value={index} onChange={this.onChange}/>
 				</label>
 			);
 		});
@@ -68,6 +64,8 @@ export default class FormView extends Component{
 			);
 		});
 	}
+
+	create
 
 	render(){
 		return(
@@ -88,13 +86,16 @@ export default class FormView extends Component{
 					<textarea name='description' onChange={this.onChange}/>
 					<br/>
 					<p>Condition:</p>
-					{this.createConditionButtons()}
+					{this.createRadioButtons(['New', 'Like New', 'Very Good', 'Good', 'Acceptable'], 'condition')}
 					<br/>
 					<label>Date Purchased:</label>
 					<input type='number' name='datePurchased' onChange={this.onChange}/>
 					<br/>
 					<label>Location Purchased:</label>
 					<input type='text' name='locationPurchased' onChange={this.onChange}/>
+					<br/>
+					<p>Consignment:</p>
+					{this.createRadioButtons(['yes', 'no'], 'consignment')}
 					<br/>
 					<label>Amount Paid:</label>
 					<input type='number' name='amountPaid' onChange={this.onChange}/>
