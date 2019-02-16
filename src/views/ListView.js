@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ListItem from '../components/ListItem';
 import ItemDetail from '../components/ItemDetail';
-import { getListOfInventory } from '../store/ItemStore';
+import { getSellableInventory } from '../lib/ItemRoutes';
 import './ListView.css';
 
 export default class ListView extends Component{
@@ -41,7 +41,7 @@ export default class ListView extends Component{
 	}
 
 	componentDidMount(){
-		let itemsPromise = getListOfInventory(this.props.type);
+		let itemsPromise = getSellableInventory(this.props.type);
 		itemsPromise.then((res) => {
 			this.setState({
 				items: res,
