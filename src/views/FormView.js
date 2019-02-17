@@ -65,27 +65,6 @@ export default class FormView extends Component{
 		}
 	}
 
-	createRadioButtons = (labels, name) => {
-		return labels.map((label, index) => {
-			return(
-				<label>{label}
-					<input type='radio' key={index} name={name} value={index} onChange={this.onChange}/>
-				</label>
-			);
-		});
-	}
-
-	createSitesButtons = () => {
-		let sites = ['Amazon', 'EBay'];
-		return sites.map((site, index) => {
-			return(
-				<label>{site}
-					<input type='checkbox' key={index} name='siteListed' value={index} onChange={this.onChangeCheckbox}/>
-				</label>
-			);
-		});
-	}
-
 	render(){
 		return(
 			<div>
