@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import './FormView.css';
 
 export default class FormView extends Component{
@@ -6,29 +7,36 @@ export default class FormView extends Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			siteListed: [false, false],
+			item: {
+				siteListed: [false, false],
+			}
 		}
 	}
 
 	onChange = (e) => {
+		let item = this.state.item;
+		item[e.target.name] = e.target.value;
+		console.log(item);
 		this.setState({
-			[e.target.name]: e.target.value,
+			item: item
 		});
 	}
 
 	onChangeCheckbox = (e) => {
-		let sites = this.state.siteListed;
+		let sites = this.state.item.siteListed;
 		sites[e.target.value] = e.target.checked;
+		let item = this.state.item;
+		item.siteListed = sites;
 		this.setState({
-			siteListed: sites,
+			item: item
 		});
 	}
 
 	createRadioButtons = (labels, name) => {
 		return labels.map((label, index) => {
 			return(
-				<label>{label}
-					<input type='radio' key={index} name={name} value={index} onChange={this.onChange}/>
+				<label key={index}>{label}
+					<input type='radio' name={name} value={index} onChange={this.onChange}/>
 				</label>
 			);
 		});
@@ -38,11 +46,31 @@ export default class FormView extends Component{
 		let sites = ['Amazon', 'EBay'];
 		return sites.map((site, index) => {
 			return(
-				<label>{site}
-					<input type='checkbox' key={index} name='siteListed' value={index} onChange={this.onChangeCheckbox}/>
+				<label key={index}>{site}
+					<input type='checkbox' name='siteListed' value={index} onChange={this.onChangeCheckbox}/>
 				</label>
 			);
 		});
+	}
+
+	checkFields = () => {
+		let fields = ['title', 'upc', 'year', 'description', 'condition', 'datePurchased',
+					  'locationPurchased', 'consignment', 'amountPaid', 'sellPrice',
+					  'shelfLocation'];
+		if(this.props.type === 'book'){
+			fields = fields.concat(['author', 'edition', 'printing', 'cover']);
+		}
+		let fieldsStatus = fields.reduce((status, field) => {
+			return status && this.state.item[field];
+		}, true);
+		let sitesStatus = this.state.item.siteListed.reduce((status, site) => {
+			return status || site;
+		}, false);
+		return fieldsStatus && sitesStatus;
+	}
+
+	handleSubmit = (e) => {
+		console.log('Successful submit');
 	}
 
 	renderBookFields = () => {
@@ -107,6 +135,11 @@ export default class FormView extends Component{
 					<label>Shelf Location:</label>
 					<input type='text' name='shelfLocation' onChange={this.onChange}/>
 				</form>
+				<Link className={this.checkFields()?'submit':'submitDisabled'} to={`/list/${this.props.type}s`} onClick={this.handleSubmit}>
+					<div className='submitDiv'>
+						<p>Submit</p>
+					</div>
+				</Link>
 			</div>
 		);
 	}
