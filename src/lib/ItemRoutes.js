@@ -20,7 +20,7 @@ export const getSellableInventory = (type) => {
 
 export const commitNewInventory = (type, data) => {
 	let url = `${apiPath}/${type}/`;
-	fetch(url, {
+	return fetch(url, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -30,6 +30,9 @@ export const commitNewInventory = (type, data) => {
 	})
 	.then((res) => {
 		console.log(res.json());
+	})
+	.catch((err) => {
+		console.log(err);
 	});
 }
 
