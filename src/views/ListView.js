@@ -68,13 +68,21 @@ export default class ListView extends Component{
 		}
 	}
 
-	componentDidMount(){
-		let itemsPromise = getSellableInventory(this.props.type);
+	getInventory = (type) => {
+		let itemsPromise = getSellableInventory(type);
 		itemsPromise.then((res) => {
 			this.setState({
 				items: res,
 			});
-		});
+		});	
+	}
+
+	componentDidMount(){
+		this.getInventory(this.props.type);
+	}
+
+	componentWillReceiveProps(nextProps){
+		this.getInventory(nextProps.type);
 	}
 
 	render(){

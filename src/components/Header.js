@@ -8,6 +8,8 @@ const Header = () => {
 		<div className='header'>
 			<MenuLink link='/form/item'>New Item</MenuLink>
 			<MenuLink link='/form/book'>New Book</MenuLink>
+			<MenuLink link='/list/items'>All Items</MenuLink>
+			<MenuLink link='/list/books'>Books</MenuLink>
 		</div>
 	);
 }
