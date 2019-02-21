@@ -15,7 +15,7 @@ export default class ListView extends Component{
 	}
 
 	setItem = (itemId) => {
-		let item = this.state.items.filter((x) => {return x.itemId === itemId || (x.item && x.item.itemId === itemId)})[0];
+		let item = this.state.items.find((x) => {return x.itemId === itemId || (x.item && x.item.itemId === itemId)});
 		this.setState({
 			itemDetailRender: item,
 		});
