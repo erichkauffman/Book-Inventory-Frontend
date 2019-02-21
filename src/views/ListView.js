@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ListItem from '../components/ListItem';
 import ItemDetail from '../components/ItemDetail';
-import { getSellableInventory } from '../lib/ItemRoutes';
+import { getSellableInventory, commitRemoveAction } from '../lib/ItemRoutes';
 import './ListView.css';
 
 export default class ListView extends Component{
@@ -23,6 +23,30 @@ export default class ListView extends Component{
 		});
 	}
 
+	removeItem = (itemId) => {
+		let items = [];
+		if(this.props.type === 'items'){
+			items = this.state.items.filter((x) => {return x.itemId !== itemId});
+		}else if(this.props.type === 'books'){
+			items = this.state.items.filter((x) => {return x.item.itemId !== itemId});
+		}
+		this.setState({
+			items: items
+		});
+	}
+
+	handleRemove = (e, itemId) => {
+		if(e.target.alt === 'sell'){
+			commitRemoveAction(itemId, 1);
+			this.removeItem(itemId);
+		}else if(e.target.alt === 'delete'){
+			commitRemoveAction(itemId, 0);
+			this.removeItem(itemId);
+		}else{
+			console.log("ListItem buttonClick called without proper handling");
+		}
+	}
+
 	createList = () => {
 		return this.state.items.map((item) => {
 			if(item.item){
@@ -32,7 +56,8 @@ export default class ListView extends Component{
 							 itemId={item.itemId}
 							 selectedItem={this.state.id}
 							 title={item.title}
-							 onClick={this.setItem}/>
+							 onClick={this.setItem}
+							 buttonClick={this.handleRemove}/>
 			);
 		});
 	}
