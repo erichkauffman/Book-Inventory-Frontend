@@ -1,3 +1,24 @@
+.submit, .submitDisabled{
+	border-style: solid;
+	border-radius: 15px;
+	text-align: center;
+	width: 150px;
+	margin-top: 20px;
+}
+
 .submitDisabled{
 	pointer-events: none;
+	background-color: #E02323;
+}
+
+.submit{
+	background-color: #40E023;
+}
+
+.submit:hover{
+	background-color: #43b92e;
+}
+
+.submit:active{
+	background-color: #369426;
 }
