@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { commitRemoveAction } from '../lib/ItemRoutes';
 import './ListItem.css';
 import editImg from '../images/EditButton.png';
 import sellImg from '../images/MoneyButton.png';
@@ -19,21 +18,15 @@ export default class ListItem extends Component{
 	}
 
 	buttonClick = (e) => {
-		let id = this.props.itemId;
 		e.stopPropagation();
 		if(e.target.alt === 'edit'){
-			console.log(`The ${e.target.alt} button was pressed!`);
-		}else if(e.target.alt === 'sell'){
-			commitRemoveAction(id, 1);
-		}else if(e.target.alt === 'delete'){
-			commitRemoveAction(id, 0);
+			console.log('Edit button');
 		}else{
-			console.log("ListItem buttonClick called without proper handling");
+			this.props.buttonClick(e, this.props.itemId);
 		}
 	}
 
 	componentWillReceiveProps(nextProps){
-		console.log(nextProps);
 		if(nextProps.selectedItem && nextProps.selectedItem === this.props.itemId){
 			this.setState({
 				className: 'listItemSelected'
