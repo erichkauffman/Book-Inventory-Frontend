@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { commitNewInventory } from '../lib/ItemRoutes';
 import './FormView.css';
 
@@ -17,7 +17,6 @@ export default class FormView extends Component{
 	onChange = (e) => {
 		let item = this.state.item;
 		item[e.target.name] = e.target.value;
-		console.log(item);
 		this.setState({
 			item: item
 		});
@@ -82,8 +81,12 @@ export default class FormView extends Component{
 		item.itemId = null;
 		item.removalAction = null;
 		item.dateRemoved = null;
-		console.log(item);
-		commitNewInventory(`${this.props.type}s`, item);
+		let postPromise = commitNewInventory(`${this.props.type}s`, item);
+		postPromise.then(() => {
+			this.setState({
+				finish: true
+			});
+		});
 	}
 
 	renderBookFields = () => {
@@ -107,6 +110,9 @@ export default class FormView extends Component{
 	}
 
 	render(){
+		if(this.state.finish){
+			return(<Redirect to={`/list/${this.props.type}s`}/>);
+		}
 		return(
 			<div>
 				<input type='text'/>
@@ -148,11 +154,9 @@ export default class FormView extends Component{
 					<label>Shelf Location:</label>
 					<input type='text' name='shelfLocation' onChange={this.onChange}/>
 				</form>
-				<Link className={this.checkFields()?'submit':'submitDisabled'} to={`/list/${this.props.type}s`} onClick={this.handleSubmit}>
-					<div className='submitDiv'>
-						<p>Submit</p>
-					</div>
-				</Link>
+				<div className={this.checkFields()?'submit':'submitDisabled'} onClick={this.handleSubmit}>
+					<p>Submit</p>
+				</div>
 			</div>
 		);
 	}
