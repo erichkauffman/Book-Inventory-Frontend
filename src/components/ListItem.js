@@ -7,6 +7,13 @@ import deleteImg from '../images/DeleteButton.png';
 
 export default class ListItem extends Component{
 
+	constructor(props){
+		super(props);
+		this.state = {
+			className: 'listItem'
+		};
+	}
+
 	handleClick = () => {
 		this.props.onClick(this.props.itemId);
 	}
@@ -25,9 +32,22 @@ export default class ListItem extends Component{
 		}
 	}
 
+	componentWillReceiveProps(nextProps){
+		console.log(nextProps);
+		if(nextProps.selectedItem && nextProps.selectedItem === this.props.itemId){
+			this.setState({
+				className: 'listItemSelected'
+			});
+		}else{
+			this.setState({
+				className: 'listItem'
+			});
+		}
+	}
+
 	render(){
 		return(
-			<div className='listItem' onClick={this.handleClick}>
+			<div className={this.state.className} onClick={this.handleClick}>
 				<p className='itemId'>{this.props.itemId}</p>
 				<p className='titleText'>{this.props.title}</p>
 				<img className='itemButton' src={editImg} alt='edit' onClick={this.buttonClick}/>

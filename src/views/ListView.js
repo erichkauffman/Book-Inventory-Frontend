@@ -11,6 +11,7 @@ export default class ListView extends Component{
 		this.state = {
 			items: [],
 			itemDetailRender: null,
+			id: null
 		};
 	}
 
@@ -18,6 +19,7 @@ export default class ListView extends Component{
 		let item = this.state.items.find((x) => {return x.itemId === itemId || (x.item && x.item.itemId === itemId)});
 		this.setState({
 			itemDetailRender: item,
+			id: itemId
 		});
 	}
 
@@ -28,9 +30,10 @@ export default class ListView extends Component{
 			}
 			return(<ListItem key={item.itemId}
 							 itemId={item.itemId}
+							 selectedItem={this.state.id}
 							 title={item.title}
 							 onClick={this.setItem}/>
-				  );
+			);
 		});
 	}
 

@@ -1,8 +1,19 @@
-.listItem{
+.listItem, .listItemSelected{
 	border-style: solid;
 	border-radius: 8px;
-	background-color: #CCCCCC;
 	height: 50px;
+}
+
+.listItem{
+	background-color: #CCCCCC;
+}
+
+.listItemSelected{
+	background-color: #0E3B84;
+}
+
+.listItemSelected > p{
+	color: white;
 }
 
 .listItem:hover{
