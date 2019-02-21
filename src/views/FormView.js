@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { commitNewInventory } from '../lib/ItemRoutes';
 import './FormView.css';
 
 export default class FormView extends Component{
@@ -70,7 +71,19 @@ export default class FormView extends Component{
 	}
 
 	handleSubmit = (e) => {
-		console.log('Successful submit');
+		let item = this.state.item;
+		let sites = [];
+		item.siteListed.forEach((element, index) => {
+			if(element){
+				sites.push(index);
+			}
+		});
+		item.siteListed = sites;
+		item.itemId = null;
+		item.removalAction = null;
+		item.dateRemoved = null;
+		console.log(item);
+		commitNewInventory(`${this.props.type}s`, item);
 	}
 
 	renderBookFields = () => {
@@ -115,7 +128,7 @@ export default class FormView extends Component{
 					{this.createRadioButtons(['New', 'Like New', 'Very Good', 'Good', 'Acceptable'], 'condition')}
 					<br/>
 					<label>Date Purchased:</label>
-					<input type='number' name='datePurchased' onChange={this.onChange}/>
+					<input type='text' name='datePurchased' onChange={this.onChange}/>
 					<br/>
 					<label>Location Purchased:</label>
 					<input type='text' name='locationPurchased' onChange={this.onChange}/>
