@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { commitNewInventory } from '../lib/ItemRoutes';
 import './FormView.css';
 
@@ -154,6 +154,11 @@ export default class FormView extends Component{
 					<label>Shelf Location:</label>
 					<input type='text' name='shelfLocation' onChange={this.onChange}/>
 				</form>
+				<Link className='cancelLink' to={`/list/${this.props.type}s`}>
+					<div className='cancel'>
+						<p>Cancel</p>
+					</div>
+				</Link>
 				<div className={this.checkFields()?'submit':'submitDisabled'} onClick={this.handleSubmit}>
 					<p>Submit</p>
 				</div>
