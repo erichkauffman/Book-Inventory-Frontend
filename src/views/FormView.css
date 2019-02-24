@@ -1,9 +1,15 @@
-.submit, .submitDisabled{
+.cancel, .submit, .submitDisabled{
 	border-style: solid;
 	border-radius: 15px;
 	text-align: center;
 	width: 150px;
 	margin-top: 20px;
+	display: inline-block;
+}
+
+.cancelLink{
+	text-decoration: none;
+	color: black;
 }
 
 .submitDisabled{
