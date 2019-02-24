@@ -1,5 +1,16 @@
 import React from 'react';
 
+const covers = ['Hard', 'Soft'];
+const conditions = ['New', 'Like New', 'Very Good', 'Good', 'Acceptable'];
+const sites = ['Amazon', 'EBay'];
+const consign = ['no', 'yes'];
+
+const displaySites = (siteNums) => {
+	return siteNums.map((siteNum) => {
+		return sites[siteNum];
+	});
+}
+
 const getBookAndUPCDetail = (item) => {
 	let detailArray = [];
 	if(item['py/object'] === 'data.Book.Book'){
@@ -7,7 +18,7 @@ const getBookAndUPCDetail = (item) => {
 		detailArray.push(<p key='i'>ISBN: {item.item.upc}</p>)
 		detailArray.push(<p key='e'>Edition: {item.edition}</p>)
 		detailArray.push(<p key='p'>Printing: {item.printing}</p>)
-		detailArray.push(<p key='c'>Cover: {item.cover}</p>)
+		detailArray.push(<p key='c'>Cover: {covers[item.cover]}</p>)
 		return detailArray;
 	}else{
 		return(<p>UPC: {item.upc}</p>);
@@ -24,15 +35,15 @@ const ItemDetail = (props) => {
 			<p>Id: {item.itemId}</p>
 			<p>Title: {item.title}</p>
 			{getBookAndUPCDetail(props.item)}
-			<p>Condition: {item.condition}</p>
+			<p>Condition: {conditions[item.condition]}</p>
 			<p>Sell Price: {item.sellPrice}</p>
-			<p>Site Listed: {item.siteListed}</p>
+			<p>Site Listed: {displaySites(item.siteListed)}</p>
 			<p>Shelf Location: {item.shelfLocation}</p>
 			<p>Description: {item.description}</p>
 			<p>Amount Paid: {item.amountPaid}</p>
 			<p>Date Purchased: {item.datePurchased}</p>
 			<p>Location Purchased: {item.locationPurchased}</p>
-			<p>Consignment: {item.consignment}</p>
+			<p>Consignment: {consign[item.consignment]}</p>
 		</div>
 	);
 }

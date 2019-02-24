@@ -140,7 +140,7 @@ export default class FormView extends Component{
 					<input type='text' name='locationPurchased' onChange={this.onChange}/>
 					<br/>
 					<p>Consignment:</p>
-					{this.createRadioButtons(['yes', 'no'], 'consignment')}
+					{this.createRadioButtons(['no', 'yes'], 'consignment')}
 					<br/>
 					<label>Amount Paid:</label>
 					<input type='number' name='amountPaid' onChange={this.onChange}/>
