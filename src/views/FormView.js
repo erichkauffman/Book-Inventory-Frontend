@@ -81,6 +81,8 @@ export default class FormView extends Component{
 		item.itemId = null;
 		item.removalAction = null;
 		item.dateRemoved = null;
+		item.amountPaid = item.amountPaid * 100;
+		item.sellPrice = item.sellPrice * 100;
 		let postPromise = commitNewInventory(`${this.props.type}s`, item);
 		postPromise.then(() => {
 			this.setState({
@@ -143,10 +145,10 @@ export default class FormView extends Component{
 					{this.createRadioButtons(['no', 'yes'], 'consignment')}
 					<br/>
 					<label>Amount Paid:</label>
-					<input type='number' name='amountPaid' onChange={this.onChange}/>
+					<input type='number' step='0.01' name='amountPaid' onChange={this.onChange}/>
 					<br/>
 					<label>Sell Price:</label>
-					<input type='number' name='sellPrice' onChange={this.onChange}/>
+					<input type='number' step='0.01' name='sellPrice' onChange={this.onChange}/>
 					<br/>
 					<p>Site Listed:</p>
 					{this.createSitesButtons()}
