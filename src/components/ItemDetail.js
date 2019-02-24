@@ -36,11 +36,11 @@ const ItemDetail = (props) => {
 			<p>Title: {item.title}</p>
 			{getBookAndUPCDetail(props.item)}
 			<p>Condition: {conditions[item.condition]}</p>
-			<p>Sell Price: {item.sellPrice}</p>
+			<p>Sell Price: {(item.sellPrice/100).toFixed(2)}</p>
 			<p>Site Listed: {displaySites(item.siteListed)}</p>
 			<p>Shelf Location: {item.shelfLocation}</p>
 			<p>Description: {item.description}</p>
-			<p>Amount Paid: {item.amountPaid}</p>
+			<p>Amount Paid: {(item.amountPaid/100).toFixed(2)}</p>
 			<p>Date Purchased: {item.datePurchased}</p>
 			<p>Location Purchased: {item.locationPurchased}</p>
 			<p>Consignment: {consign[item.consignment]}</p>
