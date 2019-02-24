@@ -29,6 +29,7 @@ const ItemDetail = (props) => {
 			<p>Site Listed: {item.siteListed}</p>
 			<p>Shelf Location: {item.shelfLocation}</p>
 			<p>Description: {item.description}</p>
+			<p>Amount Paid: {item.amountPaid}</p>
 			<p>Date Purchased: {item.datePurchased}</p>
 			<p>Location Purchased: {item.locationPurchased}</p>
 			<p>Consignment: {item.consignment}</p>
