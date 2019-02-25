@@ -54,6 +54,7 @@ export default class ListView extends Component{
 			}
 			return(<ListItem key={item.itemId}
 							 itemId={item.itemId}
+							 type={this.props.type}
 							 selectedItem={this.state.id}
 							 title={item.title}
 							 onClick={this.setItem}
