@@ -113,7 +113,7 @@ export default class FormView extends Component{
 
 	render(){
 		if(this.state.finish){
-			return(<Redirect to={`/list/${this.props.type}s`}/>);
+			return(<Redirect to={`/list/${this.props.type}`}/>);
 		}
 		return(
 			<div>
@@ -156,7 +156,7 @@ export default class FormView extends Component{
 					<label>Shelf Location:</label>
 					<input type='text' name='shelfLocation' onChange={this.onChange}/>
 				</form>
-				<Link className='cancelLink' to={`/list/${this.props.type}s`}>
+				<Link className='cancelLink' to={`/list/${this.props.type}`}>
 					<div className='cancel'>
 						<p>Cancel</p>
 					</div>
