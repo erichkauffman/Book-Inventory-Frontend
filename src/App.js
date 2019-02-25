@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 import ListView from './views/ListView';
 import FormView from './views/FormView';
@@ -13,11 +13,15 @@ export default class App extends Component {
 			<div className="App">
 				<Header/>
 				<Switch>
-					<Route path="/list/:type"
+					<Redirect from='/list/item' to='/list/items'/>
+					<Redirect from='/list/book' to='/list/books'/>
+					<Route path='/list/:type'
 					       render={({match}) => {
 							   return <ListView type={match.params.type}/>
 						   }} />
-					<Route path="/form/:type"
+					<Redirect from='/form/items' to='/form/item'/>
+					<Redirect from='/form/books' to='/form/book'/>
+					<Route path='/form/:type'
 						   render={({match}) => {
 							   return <FormView type={match.params.type}/>
 						   }}/>
