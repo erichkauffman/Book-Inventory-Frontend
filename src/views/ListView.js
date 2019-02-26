@@ -50,7 +50,7 @@ export default class ListView extends Component{
 	createList = () => {
 		return this.state.items.map((item) => {
 			if(item.item){
-				item = item.item
+				item = item.item;
 			}
 			return(<ListItem key={item.itemId}
 							 itemId={item.itemId}
@@ -73,7 +73,7 @@ export default class ListView extends Component{
 		let itemsPromise = getSellableInventory(type);
 		itemsPromise.then((res) => {
 			this.setState({
-				items: res,
+				items: res
 			});
 		});	
 	}
@@ -90,7 +90,9 @@ export default class ListView extends Component{
 		return(
 			<div>
 				<div className='contain'>
-					<input className='searchBar' type='text'/>
+					<div className='search'>
+						<input className='searchBar' type='text'/>
+					</div>
 					<div className='list'>
 						{this.createList()}
 					</div>
