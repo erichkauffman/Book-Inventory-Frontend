@@ -19,14 +19,22 @@ export default class App extends Component {
 					       render={({match}) => {
 							   return <ListView type={match.params.type}/>
 						   }} />
+
+					<Redirect from='/form/items/:id' to='/form/item/:id'/>
+					<Redirect from='/form/books/:id' to='/form/book/:id'/>
+					<Route path='/form/:type/:id'
+						   render={({match}) => {
+							   return <FormView type={match.params.type} id={match.params.id}/>
+						   }}/>
+
 					<Redirect from='/form/items' to='/form/item'/>
 					<Redirect from='/form/books' to='/form/book'/>
-					<Route path='/form/:type'
+					<Route path='/form/:type/'
 						   render={({match}) => {
 							   return <FormView type={match.params.type}/>
 						   }}/>
 				</Switch>
-      		</div>
+	   		</div>
     );
   }
 }

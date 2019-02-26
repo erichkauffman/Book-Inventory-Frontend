@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './ListItem.css';
 import editImg from '../images/EditButton.png';
 import sellImg from '../images/MoneyButton.png';
@@ -10,11 +11,7 @@ const handleClick = (props) => {
 
 const buttonClick = (e, props) => {
 	e.stopPropagation();
-	if(e.target.alt === 'edit'){
-		console.log('Edit button');
-	}else{
-		props.buttonClick(e, props.itemId);
-	}
+	props.buttonClick(e, props.itemId);
 }
 
 const ListItem = (props) => {
@@ -22,7 +19,9 @@ const ListItem = (props) => {
 		<div className={props.selectedItem===props.itemId?'listItemSelected':'listItem'} onClick={() => {handleClick(props)}}>
 			<p className='itemId'>{props.itemId}</p>
 			<p className='titleText'>{props.title}</p>
-			<img className='itemButton' src={editImg} alt='edit' onClick={(e) => {buttonClick(e, props)}}/>
+			<Link to={`/form/${props.type}/${props.itemId}`}>
+				<img className='itemButton' src={editImg} alt='edit'/>
+			</Link>
 			<img className='itemButton' src={sellImg} alt='sell' onClick={(e) => {buttonClick(e, props)}}/>
 			<img className='itemButton' src={deleteImg} alt='delete' onClick={(e) => {buttonClick(e, props)}}/>
 		</div>

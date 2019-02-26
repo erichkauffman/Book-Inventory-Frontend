@@ -10,18 +10,9 @@ const getJson = (url) => {
 	});
 }
 
-export const getListOfInventory = (type) => {
-	return getJson(`${apiPath}/${type}/`);
-}
-
-export const getSellableInventory = (type) => {
-	return getJson(`${apiPath}/${type}/sellable/`);
-}
-
-export const commitNewInventory = (type, data) => {
-	let url = `${apiPath}/${type}/`;
+const sendJson = (url, method, data) => {
 	return fetch(url, {
-		method: 'POST',
+		method: method,
 		headers: {
 			'Content-Type': 'application/json',
 			'mode': 'cors'
@@ -34,6 +25,26 @@ export const commitNewInventory = (type, data) => {
 	.catch((err) => {
 		console.log(err);
 	});
+}
+
+export const getListOfInventory = (type) => {
+	return getJson(`${apiPath}/${type}/`);
+}
+
+export const getSellableInventory = (type) => {
+	return getJson(`${apiPath}/${type}/sellable/`);
+}
+
+export const getItemById = (id, type) => {
+	return getJson(`${apiPath}/${type}/${id}/`);
+}
+
+export const commitNewInventory = (type, data) => {
+	return sendJson(`${apiPath}/${type}/`, 'POST', data);
+}
+
+export const updateInventory = (type, data) => {
+	return sendJson(`${apiPath}/${type}/`, 'PUT', data);
 }
 
 export const commitRemoveAction = (id, status) => {
