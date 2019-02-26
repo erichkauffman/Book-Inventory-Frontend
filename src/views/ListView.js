@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ListItem from '../components/ListItem';
 import ItemDetail from '../components/ItemDetail';
+import Selector from '../components/Selector';
 import { getSellableInventory, commitRemoveAction } from '../lib/ItemRoutes';
 import './ListView.css';
 
@@ -11,7 +12,8 @@ export default class ListView extends Component{
 		this.state = {
 			items: [],
 			itemDetailRender: null,
-			id: null
+			id: null,
+			filter: 'itemId'
 		};
 	}
 
@@ -45,6 +47,16 @@ export default class ListView extends Component{
 		}else{
 			console.log("ListItem buttonClick called without proper handling");
 		}
+	}
+
+	createSelectors = () => {
+		let fields = ['itemId', 'UPC', 'title'];
+		if(this.props.type === 'books'){
+			fields = fields.concat(['author']);
+		}
+		return fields.map((field) => {
+			return(<Selector onClick={(value)=>{this.setState({filter:value})}}>{field}</Selector>);
+		});
 	}
 
 	createList = () => {
@@ -92,6 +104,7 @@ export default class ListView extends Component{
 				<div className='contain'>
 					<div className='search'>
 						<input className='searchBar' type='text'/>
+						{this.createSelectors()}
 					</div>
 					<div className='list'>
 						{this.createList()}
