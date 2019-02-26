@@ -11,11 +11,7 @@ const handleClick = (props) => {
 
 const buttonClick = (e, props) => {
 	e.stopPropagation();
-	if(e.target.alt === 'edit'){
-		console.log('Edit button');
-	}else{
-		props.buttonClick(e, props.itemId);
-	}
+	props.buttonClick(e, props.itemId);
 }
 
 const ListItem = (props) => {
