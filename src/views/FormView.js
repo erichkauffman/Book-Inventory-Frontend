@@ -59,7 +59,6 @@ export default class FormView extends Component{
 	}
 
 	checkFields = () => {
-		console.log(this.state);
 		let fields = itemFields;
 		if(this.props.type === 'book'){
 			fields = fields.concat(bookFields);
@@ -129,10 +128,8 @@ export default class FormView extends Component{
 				if(res.item){
 					let item = {...res, ...res.item};
 					delete item.item;
-					console.log(item);
 					return item;
 				}
-				console.log(res);
 				return res;
 			})
 			.then((recItem) => {
