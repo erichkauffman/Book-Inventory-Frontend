@@ -2,6 +2,7 @@
 	border-style: solid;
 	border-radius: 8px;
 	height: 50px;
+	cursor: default;
 }
 
 .listItem{
