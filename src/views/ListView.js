@@ -107,7 +107,11 @@ export default class ListView extends Component{
 	}
 
 	componentWillReceiveProps(nextProps){
-		this.setState({filter:'itemId'});
+		this.setState({
+			filter:'itemId',
+			itemDetailRender: null,
+			id: null
+		});
 		this.getInventory(nextProps.type);
 	}
 
