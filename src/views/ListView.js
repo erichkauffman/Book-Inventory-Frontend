@@ -19,7 +19,7 @@ export default class ListView extends Component{
 	}
 
 	setItem = (itemId) => {
-		let item = this.state.items.find((x) => {return x.itemId === itemId || (x.item && x.item.itemId === itemId)});
+		let item = this.state.items.find((x) => {return x.itemId === itemId});
 		this.setState({
 			itemDetailRender: item,
 			id: itemId
@@ -27,12 +27,7 @@ export default class ListView extends Component{
 	}
 
 	removeItem = (itemId) => {
-		let items = [];
-		if(this.props.type === 'items'){
-			items = this.state.items.filter((x) => {return x.itemId !== itemId});
-		}else if(this.props.type === 'books'){
-			items = this.state.items.filter((x) => {return x.item.itemId !== itemId});
-		}
+		let items = this.state.items.filter((x) => {return x.itemId !== itemId});
 		this.setState({
 			items: items
 		});
@@ -67,17 +62,10 @@ export default class ListView extends Component{
 		let items = this.state.items;
 		if(this.state.search){
 			items = items.filter((item) => {
-				if(item.item){
-					item = {...item, ...item.item};
-					delete item.item;
-				}
 				return item[this.state.filter].toString().toLowerCase().includes(this.state.search.toLowerCase());
 			});
 		}
 		return items.map((item) => {
-			if(item.item){
-				item = item.item;
-			}
 			return(<ListItem key={item.itemId}
 							 itemId={item.itemId}
 							 type={this.props.type}
@@ -91,15 +79,25 @@ export default class ListView extends Component{
 
 	renderDetail = () => {
 		if(this.state.itemDetailRender){
-			return(<ItemDetail item={this.state.itemDetailRender}/>);
+			return(<ItemDetail item={this.state.itemDetailRender} type={this.props.type}/>);
 		}
 	}
 
 	getInventory = (type) => {
 		let itemsPromise = getSellableInventory(type);
-		itemsPromise.then((res) => {
+		itemsPromise.then((res) =>{
+			if(res.length !== 0 && res[0].item){
+				return res.map((raw) => {
+					let item = {...raw, ...raw.item};
+					delete item.item;
+					return item;
+				});
+			}
+			return res;
+		})
+		.then((items) => {
 			this.setState({
-				items: res
+				items: items
 			});
 		});	
 	}
@@ -109,7 +107,11 @@ export default class ListView extends Component{
 	}
 
 	componentWillReceiveProps(nextProps){
-		this.setState({filter:'itemId'});
+		this.setState({
+			filter:'itemId',
+			itemDetailRender: null,
+			id: null
+		});
 		this.getInventory(nextProps.type);
 	}
 

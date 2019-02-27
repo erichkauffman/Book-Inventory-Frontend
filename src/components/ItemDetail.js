@@ -11,11 +11,11 @@ const displaySites = (siteNums) => {
 	});
 }
 
-const getBookAndUPCDetail = (item) => {
+const getBookAndUPCDetail = (item, type) => {
 	let detailArray = [];
-	if(item['py/object'] === 'data.Book.Book'){
+	if(type === 'books'){
 		detailArray.push(<p key='a'>Author: {item.author}</p>)
-		detailArray.push(<p key='i'>ISBN: {item.item.upc}</p>)
+		detailArray.push(<p key='i'>ISBN: {item.upc}</p>)
 		detailArray.push(<p key='e'>Edition: {item.edition}</p>)
 		detailArray.push(<p key='p'>Printing: {item.printing}</p>)
 		detailArray.push(<p key='c'>Cover: {covers[item.cover]}</p>)
@@ -27,14 +27,11 @@ const getBookAndUPCDetail = (item) => {
 
 const ItemDetail = (props) => {
 	let item = props.item;
-	if(item.item){
-		item = item.item;
-	}
 	return(
 		<div>
 			<p>Id: {item.itemId}</p>
 			<p>Title: {item.title}</p>
-			{getBookAndUPCDetail(props.item)}
+			{getBookAndUPCDetail(props.item, props.type)}
 			<p>Condition: {conditions[item.condition]}</p>
 			<p>Sell Price: {(item.sellPrice/100).toFixed(2)}</p>
 			<p>Site Listed: {displaySites(item.siteListed)}</p>
