@@ -108,9 +108,10 @@ export default class ListView extends Component{
 
 	componentWillReceiveProps(nextProps){
 		this.setState({
-			filter:'itemId',
+			filter: 'itemId',
 			itemDetailRender: null,
-			id: null
+			id: null,
+			search: ''
 		});
 		this.getInventory(nextProps.type);
 	}
@@ -120,7 +121,7 @@ export default class ListView extends Component{
 			<div>
 				<div className='contain'>
 					<div className='search'>
-						<input className='searchBar' type='text' onChange={(e)=>{this.setState({search:e.target.value})}}/>
+						<input className='searchBar' type='text' value={this.state.search} onChange={(e)=>{this.setState({search:e.target.value})}}/>
 						{this.createSelectors()}
 					</div>
 					<div className='list'>
