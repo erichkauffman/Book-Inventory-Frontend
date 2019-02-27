@@ -50,12 +50,15 @@ export default class ListView extends Component{
 	}
 
 	createSelectors = () => {
-		let fields = ['itemId', 'UPC', 'title'];
+		let fields = ['itemId', 'upc', 'title'];
 		if(this.props.type === 'books'){
 			fields = fields.concat(['author']);
 		}
 		return fields.map((field) => {
-			return(<Selector onClick={(value)=>{this.setState({filter:value})}}>{field}</Selector>);
+			return(<Selector active={this.state.filter===field} 
+							 onClick={(value)=>{this.setState({filter:value})}}>
+						{field}
+				   </Selector>);
 		});
 	}
 
