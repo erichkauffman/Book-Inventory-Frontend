@@ -3,7 +3,7 @@ import './Selector.css';
 
 const Selector = (props) => {
 	return(
-		<div className={`selector ${props.active?'selectorActive':''}`} onClick={()=>{props.onClick(props.children)}}>
+		<div className={`${props.active?'selectorActive':'selector'}`} onClick={()=>{props.onClick(props.children)}}>
 			{props.children}
 		</div>
 	);

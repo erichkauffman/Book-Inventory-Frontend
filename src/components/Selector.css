@@ -1,10 +1,19 @@
-.selector{
+.selector, .selectorActive{
 	border-style: solid;
 	text-align: center;
 	display: inline;
 	margin-left: 10px;
+	cursor: default;
 }
 
 .selectorActive{
 	background-color: #669DF4;
+}
+
+.selector:hover{
+	background-color: #DDDDDD;
+}
+
+.selector:active{
+	background-color: #BBBBBB;
 }
