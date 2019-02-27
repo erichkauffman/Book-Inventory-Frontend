@@ -1,0 +1,10 @@
+.selector{
+	border-style: solid;
+	text-align: center;
+	display: inline;
+	margin-left: 10px;
+}
+
+.selectorActive{
+	background-color: #669DF4;
+}

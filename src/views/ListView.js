@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ListItem from '../components/ListItem';
 import ItemDetail from '../components/ItemDetail';
+import Selector from '../components/Selector';
 import { getSellableInventory, commitRemoveAction } from '../lib/ItemRoutes';
 import './ListView.css';
 
@@ -11,7 +12,9 @@ export default class ListView extends Component{
 		this.state = {
 			items: [],
 			itemDetailRender: null,
-			id: null
+			id: null,
+			filter: 'itemId',
+			search: ''
 		};
 	}
 
@@ -47,10 +50,33 @@ export default class ListView extends Component{
 		}
 	}
 
+	createSelectors = () => {
+		let fields = ['itemId', 'upc', 'title'];
+		if(this.props.type === 'books'){
+			fields = fields.concat(['author']);
+		}
+		return fields.map((field) => {
+			return(<Selector active={this.state.filter===field} 
+							 onClick={(value)=>{this.setState({filter:value})}}>
+						{field}
+				   </Selector>);
+		});
+	}
+
 	createList = () => {
-		return this.state.items.map((item) => {
+		let items = this.state.items;
+		if(this.state.search){
+			items = items.filter((item) => {
+				if(item.item){
+					item = {...item, ...item.item};
+					delete item.item;
+				}
+				return item[this.state.filter].toString().toLowerCase().includes(this.state.search.toLowerCase());
+			});
+		}
+		return items.map((item) => {
 			if(item.item){
-				item = item.item
+				item = item.item;
 			}
 			return(<ListItem key={item.itemId}
 							 itemId={item.itemId}
@@ -73,7 +99,7 @@ export default class ListView extends Component{
 		let itemsPromise = getSellableInventory(type);
 		itemsPromise.then((res) => {
 			this.setState({
-				items: res,
+				items: res
 			});
 		});	
 	}
@@ -83,6 +109,7 @@ export default class ListView extends Component{
 	}
 
 	componentWillReceiveProps(nextProps){
+		this.setState({filter:'itemId'});
 		this.getInventory(nextProps.type);
 	}
 
@@ -90,7 +117,10 @@ export default class ListView extends Component{
 		return(
 			<div>
 				<div className='contain'>
-					<input className='searchBar' type='text'/>
+					<div className='search'>
+						<input className='searchBar' type='text' onChange={(e)=>{this.setState({search:e.target.value})}}/>
+						{this.createSelectors()}
+					</div>
 					<div className='list'>
 						{this.createList()}
 					</div>
