@@ -121,6 +121,12 @@ export default class FormView extends Component{
 		}
 	}
 
+	renderSearchOption = () => {
+		if(this.props.type === 'book' && !this.props.id){
+			return(<input type='text'/>);
+		}
+	}
+
 	componentDidMount(){
 		if(this.props.id){
 			let itemPromise = getItemById(this.props.id, `${this.props.type}s`);
@@ -152,7 +158,7 @@ export default class FormView extends Component{
 		}
 		return(
 			<div>
-				<input type='text'/>
+				{this.renderSearchOption()}
 				<form>
 					<label>Title:</label>
 					<input type='text' name='title' value={this.state.item.title} onChange={this.onChange}/>
