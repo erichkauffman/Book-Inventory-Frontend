@@ -101,6 +101,17 @@ export default class FormView extends Component{
 		});
 	}
 
+	bookSearch = (e) => {
+		console.log(this.state.search);
+	}
+
+	enterPress = (e) => {
+		let keyCode = e.keyCode || e.which;
+		if(keyCode === 13){
+			this.bookSearch(e);
+		}
+	}
+
 	renderBookFields = () => {
 		if(this.props.type === 'book'){
 			return(
@@ -123,7 +134,14 @@ export default class FormView extends Component{
 
 	renderSearchOption = () => {
 		if(this.props.type === 'book' && !this.props.id){
-			return(<input type='text'/>);
+			return(
+				<div>
+					<input type='text'
+						   placeholder='Enter ISBN'
+						   onChange={(e)=>{this.setState({search:e.target.value})}}
+						   onKeyPress={this.enterPress}/>
+					<button type='button' onClick={this.bookSearch}>Search</button>
+				</div>);
 		}
 	}
 
