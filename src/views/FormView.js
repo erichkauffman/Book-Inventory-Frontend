@@ -109,6 +109,7 @@ export default class FormView extends Component{
 		item.dateRemoved = null;
 		item.amountPaid = item.amountPaid * 100;
 		item.sellPrice = item.sellPrice * 100;
+		item.datePurchased = item.datePurchased.format('YYYY-MM-DD');
 		let promise;
 		if(this.props.id){
 			promise = updateInventory(`${this.props.type}s`, item);
@@ -251,7 +252,7 @@ export default class FormView extends Component{
 									  id='datePurchased'
 									  transitionDuration={0}
 									  numberOfMonths={1}
-									  isOutsideRange={(day) => {return this.state.item.datePurchased.diff(day) < 0}}
+									  isOutsideRange={(day) => {return moment().diff(day) < 0}}
 									  />
 					<br/>
 					<label>Location Purchased:</label>
