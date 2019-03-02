@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
+import 'react-dates/initialize';
+import { SingleDatePicker } from 'react-dates';
+import moment from 'moment';
+import 'react-dates/lib/css/_datepicker.css';
+
 import { commitNewInventory, getItemById, updateInventory, searchBookByIsbn, getLocations, commitLocation } from '../lib/ItemRoutes';
 import './FormView.css';
 
@@ -16,7 +21,8 @@ export default class FormView extends Component{
 		this.state = {
 			locations: [],
 			item: {
-				siteListed: [false, false],
+				datePurchased: moment(),
+				siteListed: [false, false]
 			}
 		}
 	}
@@ -34,6 +40,14 @@ export default class FormView extends Component{
 		sites[e.target.value] = e.target.checked;
 		let item = this.state.item;
 		item.siteListed = sites;
+		this.setState({
+			item: item
+		});
+	}
+
+	dateChange = (value) => {
+		let item = this.state.item;
+		item.datePurchased = value;
 		this.setState({
 			item: item
 		});
@@ -229,7 +243,15 @@ export default class FormView extends Component{
 					{this.createRadioButtons(['New', 'Like New', 'Very Good', 'Good', 'Acceptable'], 'condition')}
 					<br/>
 					<label>Date Purchased:</label>
-					<input type='text' name='datePurchased' value={this.state.item.datePurchased} onChange={this.onChange}/>
+					<SingleDatePicker date={this.state.item.datePurchased}
+									  onDateChange={(date) => {this.dateChange(date)}}
+									  focused={this.state.focused}
+									  onFocusChange={(focus) => {this.setState({focused:focus.focused})}}
+									  id='datePurchased'
+									  transitionDuration={0}
+									  numberOfMonths={1}
+									  isOutsideRange={(day) => {return this.state.item.datePurchased.diff(day) < 0}}
+									  />
 					<br/>
 					<label>Location Purchased:</label>
 					<input type='text' list='locations' name='locationPurchased' value={this.state.item.locationPurchased} onChange={this.onChange}/>
