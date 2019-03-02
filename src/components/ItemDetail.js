@@ -8,7 +8,7 @@ const consign = ['no', 'yes'];
 const displaySites = (siteNums) => {
 	return siteNums.map((siteNum) => {
 		return sites[siteNum];
-	});
+	}).join(', ');
 }
 
 const getBookAndUPCDetail = (item, type) => {
