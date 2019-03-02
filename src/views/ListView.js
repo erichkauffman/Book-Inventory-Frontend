@@ -34,14 +34,16 @@ export default class ListView extends Component{
 	}
 
 	handleRemove = (e, itemId) => {
-		if(e.target.alt === 'sell'){
-			commitRemoveAction(itemId, 1);
-			this.removeItem(itemId);
-		}else if(e.target.alt === 'delete'){
-			commitRemoveAction(itemId, 0);
-			this.removeItem(itemId);
-		}else{
-			console.log("ListItem buttonClick called without proper handling");
+		if(window.confirm(`${e.target.alt}\nThis action is permanent and cannot be undone`)){
+			if(e.target.alt === 'sell'){
+				commitRemoveAction(itemId, 1);
+				this.removeItem(itemId);
+			}else if(e.target.alt === 'delete'){
+				commitRemoveAction(itemId, 0);
+				this.removeItem(itemId);
+			}else{
+				console.log("ListItem buttonClick called without proper handling");
+			}
 		}
 	}
 
