@@ -56,3 +56,8 @@ export const commitRemoveAction = (id, status) => {
 		console.log(res);
 	});
 }
+
+export const searchBookByIsbn = (isbn) => {
+	let url = `https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`;
+	return getJson(url);
+}
