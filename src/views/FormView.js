@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
-import { commitNewInventory, getItemById, updateInventory, searchBookByIsbn, getLocations } from '../lib/ItemRoutes';
+import { commitNewInventory, getItemById, updateInventory, searchBookByIsbn, getLocations, commitLocation } from '../lib/ItemRoutes';
 import './FormView.css';
 
 const itemFields = ['title', 'upc', 'year', 'description', 'condition', 'datePurchased',
@@ -132,6 +132,16 @@ export default class FormView extends Component{
 		}
 	}
 
+	newLocation = () => {
+		let location = prompt('Add location');
+		if(location){
+			commitLocation(location);
+			let locations = this.state.locations;
+			locations.push(location);
+			this.setState({locations:locations});
+		}
+	}
+
 	renderBookFields = () => {
 		if(this.props.type === 'book'){
 			return(
@@ -224,6 +234,7 @@ export default class FormView extends Component{
 					<label>Location Purchased:</label>
 					<input type='text' list='locations' name='locationPurchased' value={this.state.item.locationPurchased} onChange={this.onChange}/>
 					<datalist id='locations'>{this.createOptions()}</datalist>
+					<button type='button' onClick={this.newLocation}>Add location</button>
 					<br/>
 					<p>Consignment:</p>
 					{this.createRadioButtons(['no', 'yes'], 'consignment')}
