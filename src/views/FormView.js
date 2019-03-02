@@ -210,6 +210,7 @@ export default class FormView extends Component{
 					sitesListed[siteVal] = true;
 				});
 				item.siteListed = sitesListed;
+				item.datePurchased = moment(item.datePurchased, 'YYYY-MM-DD');
 				this.setState({item: item});
 			});
 		}
