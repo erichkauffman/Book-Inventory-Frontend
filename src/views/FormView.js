@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
-import { commitNewInventory, getItemById, updateInventory } from '../lib/ItemRoutes';
+import { commitNewInventory, getItemById, updateInventory, searchBookByIsbn } from '../lib/ItemRoutes';
 import './FormView.css';
 
 const itemFields = ['title', 'upc', 'year', 'description', 'condition', 'datePurchased',
@@ -102,7 +102,20 @@ export default class FormView extends Component{
 	}
 
 	bookSearch = (e) => {
-		console.log(this.state.search);
+		let searchPromise = searchBookByIsbn(this.state.search);
+		let item = this.state.item;
+		item.upc = this.state.search;
+		this.setState({item:item});
+		searchPromise.then((res) => {
+			if(res.totalItems){
+				let book = res.items[0].volumeInfo;
+				let item = this.state.item;
+				item.title = book.title;
+				item.author = book.authors.join(', ');
+				item.year = book.publishedDate.substring(0, 4);
+				this.setState({item:item});
+			}
+		});
 	}
 
 	enterPress = (e) => {
