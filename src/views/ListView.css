@@ -16,9 +16,9 @@
 	width: 50%;
 	float: right;
 	text-align: left;
-	margin-top: 8%;
 }
 
 .list{
+	height: calc(100vh - 150px);
 	overflow-y: scroll;
 }
