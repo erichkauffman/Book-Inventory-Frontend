@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
-import { commitNewInventory, getItemById, updateInventory, searchBookByIsbn } from '../lib/ItemRoutes';
+import { commitNewInventory, getItemById, updateInventory, searchBookByIsbn, getLocations } from '../lib/ItemRoutes';
 import './FormView.css';
 
 const itemFields = ['title', 'upc', 'year', 'description', 'condition', 'datePurchased',
@@ -14,6 +14,7 @@ export default class FormView extends Component{
 	constructor(props){
 		super(props);
 		this.state = {
+			locations: [],
 			item: {
 				siteListed: [false, false],
 			}
@@ -55,6 +56,12 @@ export default class FormView extends Component{
 					<input type='checkbox' name='siteListed' value={index} onChange={this.onChangeCheckbox} checked={this.state.item.siteListed[index]}/>
 				</label>
 			);
+		});
+	}
+
+	createOptions = () => {
+		return this.state.locations.map((location) => {
+			return <option key={location}>{location}</option>
 		});
 	}
 
@@ -159,6 +166,7 @@ export default class FormView extends Component{
 	}
 
 	componentDidMount(){
+		let locationPromise = getLocations();
 		if(this.props.id){
 			let itemPromise = getItemById(this.props.id, `${this.props.type}s`);
 			itemPromise.then((res) => {
@@ -181,6 +189,9 @@ export default class FormView extends Component{
 				this.setState({item: item});
 			});
 		}
+		locationPromise.then((res) => {
+			this.setState({locations:res});
+		});
 	}
 
 	render(){
@@ -211,7 +222,8 @@ export default class FormView extends Component{
 					<input type='text' name='datePurchased' value={this.state.item.datePurchased} onChange={this.onChange}/>
 					<br/>
 					<label>Location Purchased:</label>
-					<input type='text' name='locationPurchased' value={this.state.item.locationPurchased} onChange={this.onChange}/>
+					<input type='text' list='locations' name='locationPurchased' value={this.state.item.locationPurchased} onChange={this.onChange}/>
+					<datalist id='locations'>{this.createOptions()}</datalist>
 					<br/>
 					<p>Consignment:</p>
 					{this.createRadioButtons(['no', 'yes'], 'consignment')}
