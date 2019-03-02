@@ -57,6 +57,20 @@ export const commitRemoveAction = (id, status) => {
 	});
 }
 
+export const getLocations = () => {
+	return getJson(`${apiPath}/locations/`);
+}
+
+export const commitLocation = (location) => {
+	let url = `${apiPath}/locations/${location}/`;
+	fetch(url, {
+		method: 'POST'
+	})
+	.then((res) => {
+		console.log(res);
+	});
+}
+
 export const searchBookByIsbn = (isbn) => {
 	let url = `https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`;
 	return getJson(url);
