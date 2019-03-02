@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
-import { commitNewInventory, getItemById, updateInventory } from '../lib/ItemRoutes';
+import { commitNewInventory, getItemById, updateInventory, searchBookByIsbn } from '../lib/ItemRoutes';
 import './FormView.css';
 
 const itemFields = ['title', 'upc', 'year', 'description', 'condition', 'datePurchased',
@@ -101,6 +101,30 @@ export default class FormView extends Component{
 		});
 	}
 
+	bookSearch = (e) => {
+		let searchPromise = searchBookByIsbn(this.state.search);
+		let item = this.state.item;
+		item.upc = this.state.search;
+		this.setState({item:item});
+		searchPromise.then((res) => {
+			if(res.totalItems){
+				let book = res.items[0].volumeInfo;
+				let item = this.state.item;
+				item.title = book.title;
+				item.author = book.authors.join(', ');
+				item.year = book.publishedDate.substring(0, 4);
+				this.setState({item:item});
+			}
+		});
+	}
+
+	enterPress = (e) => {
+		let keyCode = e.keyCode || e.which;
+		if(keyCode === 13){
+			this.bookSearch(e);
+		}
+	}
+
 	renderBookFields = () => {
 		if(this.props.type === 'book'){
 			return(
@@ -123,7 +147,14 @@ export default class FormView extends Component{
 
 	renderSearchOption = () => {
 		if(this.props.type === 'book' && !this.props.id){
-			return(<input type='text'/>);
+			return(
+				<div>
+					<input type='text'
+						   placeholder='Enter ISBN'
+						   onChange={(e)=>{this.setState({search:e.target.value})}}
+						   onKeyPress={this.enterPress}/>
+					<button type='button' onClick={this.bookSearch}>Search</button>
+				</div>);
 		}
 	}
 
