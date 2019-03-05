@@ -3,6 +3,7 @@
 	border-radius: 8px;
 	height: 50px;
 	cursor: default;
+	min-width: 160px;
 }
 
 .listItem{
@@ -26,18 +27,23 @@
 }
 
 .itemId{
-	margin-left: 1%;
+	margin-left: 10px;
 	float: left;
 }
 
 .titleText{
-	margin-left: 3em;
+	margin-left: 5%;
+	width: calc(100% - 200px);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 	float: left;
 }
 
 .itemButton{
-	margin-top: 12.5px;
-	margin-right: 3%;
+	margin-right: 15px;
+	margin-top: 10px;
+	cursor: pointer;
 	float: right;
 }
 

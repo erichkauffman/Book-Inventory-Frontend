@@ -14,11 +14,13 @@
 
 .detail{
 	width: 50%;
+	height: calc(100vh - 90px);
 	float: right;
 	text-align: left;
+	overflow-y: auto;
 }
 
 .list{
 	height: calc(100vh - 150px);
-	overflow-y: scroll;
+	overflow-y: auto;
 }
