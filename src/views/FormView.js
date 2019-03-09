@@ -88,7 +88,7 @@ export default class FormView extends Component{
 
 	createOptions = (options) => {
 		return options.map((option) => {
-			return <option key={option}>{option}</option>
+			return <option key={option} value={option}>{option}</option>
 		});
 	}
 
@@ -305,6 +305,7 @@ export default class FormView extends Component{
 					<label>Description:</label>
 					<textarea name='description' value={this.state.item.description} onChange={this.onChange}/>
 					<br/>
+					<select>{this.createOptions(this.state.phrases)}</select>
 					<p>Condition:</p>
 					{this.createRadioButtons(['New', 'Like New', 'Very Good', 'Good', 'Acceptable'], 'condition')}
 					<br/>
