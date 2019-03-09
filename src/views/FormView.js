@@ -18,12 +18,22 @@ export default class FormView extends Component{
 
 	constructor(props){
 		super(props);
+		let today = moment();
+		let item = {};
+		itemFields.forEach((field) => {
+			item[field] = '';
+		});
+		if(props.type === 'book'){
+			bookFields.forEach((field) => {
+				item[field] = '';
+			})
+		}
+		item.datePurchased = today;
+		item.siteListed = [false, false];
 		this.state = {
+			today: today,
 			locations: [],
-			item: {
-				datePurchased: moment(),
-				siteListed: [false, false]
-			}
+			item: item
 		}
 	}
 
