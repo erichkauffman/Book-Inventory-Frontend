@@ -103,7 +103,7 @@ export default class FormView extends Component{
 		return fieldsStatus && sitesStatus;
 	}
 
-	handleSubmit = (e) => {
+	handleSubmit = () => {
 		let item = this.state.item;
 		let sites = [];
 		item.siteListed.forEach((element, index) => {
@@ -133,7 +133,31 @@ export default class FormView extends Component{
 		});
 	}
 
-	bookSearch = (e) => {
+	getInventoryItem = () => {
+		let itemPromise = getItemById(this.props.id, `${this.props.type}s`);
+		itemPromise.then((res) => {
+			if(res.item){
+				let item = {...res, ...res.item};
+				delete item.item;
+				return item;
+			}
+			return res;
+		})
+		.then((recItem) => {
+			let item = recItem;
+			item.sellPrice = item.sellPrice / 100;
+			item.amountPaid = item.amountPaid / 100;
+			let sitesListed = Array(sites.length).fill(false);
+			item.siteListed.forEach((siteVal) => {
+				sitesListed[siteVal] = true;
+			});
+			item.siteListed = sitesListed;
+			item.datePurchased = moment(item.datePurchased, 'YYYY-MM-DD');
+			this.setState({item: item});
+		});
+	}
+
+	bookSearch = () => {
 		let searchPromise = searchBookByIsbn(this.state.search);
 		let item = this.state.item;
 		item.upc = this.state.search;
@@ -203,27 +227,7 @@ export default class FormView extends Component{
 	componentDidMount(){
 		let locationPromise = getLocations();
 		if(this.props.id){
-			let itemPromise = getItemById(this.props.id, `${this.props.type}s`);
-			itemPromise.then((res) => {
-				if(res.item){
-					let item = {...res, ...res.item};
-					delete item.item;
-					return item;
-				}
-				return res;
-			})
-			.then((recItem) => {
-				let item = recItem;
-				item.sellPrice = item.sellPrice / 100;
-				item.amountPaid = item.amountPaid / 100;
-				let sitesListed = Array(sites.length).fill(false);
-				item.siteListed.forEach((siteVal) => {
-					sitesListed[siteVal] = true;
-				});
-				item.siteListed = sitesListed;
-				item.datePurchased = moment(item.datePurchased, 'YYYY-MM-DD');
-				this.setState({item: item});
-			});
+			this.getInventoryItem();
 		}
 		locationPromise.then((res) => {
 			this.setState({locations:res});
