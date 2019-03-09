@@ -86,9 +86,9 @@ export default class FormView extends Component{
 		});
 	}
 
-	createOptions = () => {
-		return this.state.locations.map((location) => {
-			return <option key={location}>{location}</option>
+	createOptions = (options) => {
+		return options.map((option) => {
+			return <option key={option}>{option}</option>
 		});
 	}
 
@@ -321,7 +321,7 @@ export default class FormView extends Component{
 					<br/>
 					<label>Location Purchased:</label>
 					<input type='text' list='locations' name='locationPurchased' value={this.state.item.locationPurchased} onChange={this.onChange}/>
-					<datalist id='locations'>{this.createOptions()}</datalist>
+					<datalist id='locations'>{this.createOptions(this.state.locations)}</datalist>
 					<button type='button' onClick={this.newLocation}>Add location</button>
 					<br/>
 					<p>Consignment:</p>
