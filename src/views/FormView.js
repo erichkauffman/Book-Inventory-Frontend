@@ -5,7 +5,9 @@ import { SingleDatePicker } from 'react-dates';
 import moment from 'moment';
 import 'react-dates/lib/css/_datepicker.css';
 
-import { commitNewInventory, getItemById, updateInventory, searchBookByIsbn, getLocations, commitLocation } from '../lib/ItemRoutes';
+import { commitNewInventory, getItemById, updateInventory,
+		 searchBookByIsbn, getLocations, commitLocation,
+		 getPhrases } from '../lib/ItemRoutes';
 import './FormView.css';
 
 const itemFields = ['title', 'upc', 'year', 'description', 'condition', 'datePurchased',
@@ -33,6 +35,7 @@ export default class FormView extends Component{
 		this.state = {
 			today: today,
 			locations: [],
+			phrases: [],
 			item: item
 		}
 	}

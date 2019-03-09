@@ -71,6 +71,10 @@ export const commitLocation = (location) => {
 	});
 }
 
+export const getPhrases = () => {
+	return getJson(`${apiPath}/phrases/`);
+}
+
 export const searchBookByIsbn = (isbn) => {
 	let url = `https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`;
 	return getJson(url);
