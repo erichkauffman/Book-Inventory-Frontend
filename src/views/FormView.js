@@ -126,11 +126,25 @@ export default class FormView extends Component{
 		}else{
 			promise = commitNewInventory(`${this.props.type}s`, item);
 		}
-		promise.then(() => {
+		return promise;
+	}
+
+	submitAndContinue = () => {
+		let submitPromise = this.handleSubmit();
+		submitPromise.then(() => {
+			this.resetFields();
+		});
+
+	}
+
+	submitAndFinish = () => {
+		let submitPromise = this.handleSubmit();
+		submitPromise.then(() => {
 			this.setState({
 				finish: true
 			});
 		});
+
 	}
 
 	getInventoryItem = () => {
