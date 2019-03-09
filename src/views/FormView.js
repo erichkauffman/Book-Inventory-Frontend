@@ -67,7 +67,7 @@ export default class FormView extends Component{
 		return labels.map((label, index) => {
 			return(
 				<label key={index}>{label}
-					<input type='radio' name={name} value={index} onChange={this.onChange} checked={this.state.item[name]==index}/>
+					<input type='radio' name={name} value={index} onChange={this.onChange} checked={parseInt(this.state.item[name])===index}/>
 				</label>
 			);
 		});
