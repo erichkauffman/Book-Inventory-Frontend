@@ -122,7 +122,7 @@ export default class ListView extends Component{
 		return(
 			<div>
 				<div className='contain'>
-					<div className='search'>
+					<div>
 						<input className='searchBar' type='text' value={this.state.search} onChange={(e)=>{this.setState({search:e.target.value})}}/>
 						{this.createSelectors()}
 					</div>
