@@ -4,7 +4,9 @@
 	text-align: center;
 	width: 150px;
 	margin-top: 20px;
+	margin-bottom: 20px;
 	display: inline-block;
+	margin-left: 20px;
 }
 
 .cancelLink{
@@ -28,4 +30,41 @@
 
 .submit:active{
 	background-color: #369426;
+}
+
+.buttonHolder{
+	width: 500px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.search{
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 570px;
+	margin-top: 1%;
+	margin-bottom: 1%;
+}
+
+.search > input{
+	width: 75%;
+}
+
+form{
+	max-width: 1000px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+input[type=text], input[type=number], textarea{
+	font-size: 1em;
+}
+
+input[type=radio], input[type=checkbox]{
+	margin-right: 20px;
+}
+
+textarea{
+	height: 150px;
+	width: 400px;
 }
