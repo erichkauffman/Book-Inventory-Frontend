@@ -86,10 +86,14 @@ export default class FormView extends Component{
 		});
 	}
 
-	createOptions = (options) => {
-		return options.map((option) => {
+	createOptions = (options, placeholder=false) => {
+		let ops = options.map((option) => {
 			return <option key={option} value={option}>{option}</option>
 		});
+		if(placeholder){
+			ops.push(<option key='empty' value='' disabled>Select</option>);
+		}
+		return ops;
 	}
 
 	checkFields = () => {
@@ -208,6 +212,17 @@ export default class FormView extends Component{
 		}
 	}
 
+	selectPhrase = (e) => {
+		let selectString = this.state.item.description;
+		if(this.state.item.description){
+			selectString = `${selectString}, `;
+		}
+		selectString = `${selectString}${e.target.value}`;
+		let item = this.state.item;
+		item.description = selectString;
+		this.setState({item:item});
+	}
+
 	resetFields = () => {
 		if(this.props.id){
 			this.getInventoryItem();
@@ -305,7 +320,7 @@ export default class FormView extends Component{
 					<label>Description:</label>
 					<textarea name='description' value={this.state.item.description} onChange={this.onChange}/>
 					<br/>
-					<select>{this.createOptions(this.state.phrases)}</select>
+					<select value='' onChange={this.selectPhrase}>{this.createOptions(this.state.phrases, true)}</select>
 					<p>Condition:</p>
 					{this.createRadioButtons(['New', 'Like New', 'Very Good', 'Good', 'Acceptable'], 'condition')}
 					<br/>
