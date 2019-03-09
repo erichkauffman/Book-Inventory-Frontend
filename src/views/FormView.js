@@ -281,6 +281,9 @@ export default class FormView extends Component{
 							<p>Cancel</p>
 						</div>
 					</Link>
+					<div className='divButton'>
+						<p>Clear</p>
+					</div>
 					<div className={this.checkFields()?'submit':'submitDisabled'} onClick={this.handleSubmit}>
 						<p>Submit</p>
 					</div>

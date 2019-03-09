@@ -9,6 +9,18 @@
 	margin-left: 20px;
 }
 
+.divButton{
+	cursor: pointer;
+}
+
+.divButton:hover{
+	background-color: #DDDDDD;
+}
+
+.divButton:active{
+	background-color: #BBBBBB;
+}
+
 .cancelLink{
 	text-decoration: none;
 	color: black;
@@ -33,7 +45,7 @@
 }
 
 .buttonHolder{
-	width: 500px;
+	width: 1000px;
 	margin-right: auto;
 	margin-left: auto;
 }
