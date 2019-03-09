@@ -180,7 +180,7 @@ export default class FormView extends Component{
 	renderSearchOption = () => {
 		if(this.props.type === 'book' && !this.props.id){
 			return(
-				<div>
+				<div className='search'>
 					<input type='text'
 						   placeholder='Enter ISBN'
 						   onChange={(e)=>{this.setState({search:e.target.value})}}
@@ -252,7 +252,7 @@ export default class FormView extends Component{
 									  id='datePurchased'
 									  transitionDuration={0}
 									  numberOfMonths={1}
-									  isOutsideRange={(day) => {return moment().diff(day) < 0}}
+									  isOutsideRange={(day) => {return moment().diff(day) <= 0}}
 									  />
 					<br/>
 					<label>Location Purchased:</label>
@@ -275,13 +275,15 @@ export default class FormView extends Component{
 					<label>Shelf Location:</label>
 					<input type='text' name='shelfLocation' value={this.state.item.shelfLocation} onChange={this.onChange}/>
 				</form>
-				<Link className='cancelLink' to={`/list/${this.props.type}`}>
-					<div className='cancel'>
-						<p>Cancel</p>
+				<div className='buttonHolder'>
+					<Link className='cancelLink' to={`/list/${this.props.type}`}>
+						<div className='cancel'>
+							<p>Cancel</p>
+						</div>
+					</Link>
+					<div className={this.checkFields()?'submit':'submitDisabled'} onClick={this.handleSubmit}>
+						<p>Submit</p>
 					</div>
-				</Link>
-				<div className={this.checkFields()?'submit':'submitDisabled'} onClick={this.handleSubmit}>
-					<p>Submit</p>
 				</div>
 			</div>
 		);
