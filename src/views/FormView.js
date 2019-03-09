@@ -191,6 +191,25 @@ export default class FormView extends Component{
 		}
 	}
 
+	resetFields = () => {
+		if(this.props.id){
+			this.getInventoryItem();
+		}else{
+			let item = {};
+			itemFields.forEach((field) => {
+				item[field] = '';
+			});
+			if(this.props.type === 'book'){
+				bookFields.forEach((field) => {
+					item[field] = '';
+				})
+			}
+			item.datePurchased = this.state.today;
+			item.siteListed = [false, false];
+			this.setState({item: item});
+		}
+	}
+
 	renderBookFields = () => {
 		if(this.props.type === 'book'){
 			return(
@@ -266,7 +285,7 @@ export default class FormView extends Component{
 									  id='datePurchased'
 									  transitionDuration={0}
 									  numberOfMonths={1}
-									  isOutsideRange={(day) => {return moment().diff(day) <= 0}}
+									  isOutsideRange={(day) => {return this.state.today.diff(day) <= 0}}
 									  />
 					<br/>
 					<label>Location Purchased:</label>
@@ -295,8 +314,8 @@ export default class FormView extends Component{
 							<p>Cancel</p>
 						</div>
 					</Link>
-					<div className='divButton'>
-						<p>Clear</p>
+					<div className='divButton' onClick={this.resetFields}>
+						<p>{this.props.id?'Reset':'Clear'}</p>
 					</div>
 					<div className={this.checkFields()?'submit':'submitDisabled'} onClick={this.handleSubmit}>
 						<p>Submit</p>
