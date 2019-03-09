@@ -272,11 +272,15 @@ export default class FormView extends Component{
 
 	componentDidMount(){
 		let locationPromise = getLocations();
+		let phrasePromise = getPhrases();
 		if(this.props.id){
 			this.getInventoryItem();
 		}
 		locationPromise.then((res) => {
 			this.setState({locations:res});
+		});
+		phrasePromise.then((res) => {
+			this.setState({phrases:res});
 		});
 	}
 
