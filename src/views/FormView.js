@@ -18,12 +18,22 @@ export default class FormView extends Component{
 
 	constructor(props){
 		super(props);
+		let today = moment();
+		let item = {};
+		itemFields.forEach((field) => {
+			item[field] = '';
+		});
+		if(props.type === 'book'){
+			bookFields.forEach((field) => {
+				item[field] = '';
+			})
+		}
+		item.datePurchased = today;
+		item.siteListed = [false, false];
 		this.state = {
+			today: today,
 			locations: [],
-			item: {
-				datePurchased: moment(),
-				siteListed: [false, false]
-			}
+			item: item
 		}
 	}
 
@@ -57,7 +67,7 @@ export default class FormView extends Component{
 		return labels.map((label, index) => {
 			return(
 				<label key={index}>{label}
-					<input type='radio' name={name} value={index} onChange={this.onChange} checked={this.state.item[name]==index}/>
+					<input type='radio' name={name} value={index} onChange={this.onChange} checked={parseInt(this.state.item[name])===index}/>
 				</label>
 			);
 		});
@@ -93,7 +103,7 @@ export default class FormView extends Component{
 		return fieldsStatus && sitesStatus;
 	}
 
-	handleSubmit = (e) => {
+	handleSubmit = () => {
 		let item = this.state.item;
 		let sites = [];
 		item.siteListed.forEach((element, index) => {
@@ -123,7 +133,31 @@ export default class FormView extends Component{
 		});
 	}
 
-	bookSearch = (e) => {
+	getInventoryItem = () => {
+		let itemPromise = getItemById(this.props.id, `${this.props.type}s`);
+		itemPromise.then((res) => {
+			if(res.item){
+				let item = {...res, ...res.item};
+				delete item.item;
+				return item;
+			}
+			return res;
+		})
+		.then((recItem) => {
+			let item = recItem;
+			item.sellPrice = item.sellPrice / 100;
+			item.amountPaid = item.amountPaid / 100;
+			let sitesListed = Array(sites.length).fill(false);
+			item.siteListed.forEach((siteVal) => {
+				sitesListed[siteVal] = true;
+			});
+			item.siteListed = sitesListed;
+			item.datePurchased = moment(item.datePurchased, 'YYYY-MM-DD');
+			this.setState({item: item});
+		});
+	}
+
+	bookSearch = () => {
 		let searchPromise = searchBookByIsbn(this.state.search);
 		let item = this.state.item;
 		item.upc = this.state.search;
@@ -154,6 +188,25 @@ export default class FormView extends Component{
 			let locations = this.state.locations;
 			locations.push(location);
 			this.setState({locations:locations});
+		}
+	}
+
+	resetFields = () => {
+		if(this.props.id){
+			this.getInventoryItem();
+		}else{
+			let item = {};
+			itemFields.forEach((field) => {
+				item[field] = '';
+			});
+			if(this.props.type === 'book'){
+				bookFields.forEach((field) => {
+					item[field] = '';
+				})
+			}
+			item.datePurchased = this.state.today;
+			item.siteListed = [false, false];
+			this.setState({item: item});
 		}
 	}
 
@@ -193,27 +246,7 @@ export default class FormView extends Component{
 	componentDidMount(){
 		let locationPromise = getLocations();
 		if(this.props.id){
-			let itemPromise = getItemById(this.props.id, `${this.props.type}s`);
-			itemPromise.then((res) => {
-				if(res.item){
-					let item = {...res, ...res.item};
-					delete item.item;
-					return item;
-				}
-				return res;
-			})
-			.then((recItem) => {
-				let item = recItem;
-				item.sellPrice = item.sellPrice / 100;
-				item.amountPaid = item.amountPaid / 100;
-				let sitesListed = Array(sites.length).fill(false);
-				item.siteListed.forEach((siteVal) => {
-					sitesListed[siteVal] = true;
-				});
-				item.siteListed = sitesListed;
-				item.datePurchased = moment(item.datePurchased, 'YYYY-MM-DD');
-				this.setState({item: item});
-			});
+			this.getInventoryItem();
 		}
 		locationPromise.then((res) => {
 			this.setState({locations:res});
@@ -252,7 +285,7 @@ export default class FormView extends Component{
 									  id='datePurchased'
 									  transitionDuration={0}
 									  numberOfMonths={1}
-									  isOutsideRange={(day) => {return moment().diff(day) <= 0}}
+									  isOutsideRange={(day) => {return this.state.today.diff(day) <= 0}}
 									  />
 					<br/>
 					<label>Location Purchased:</label>
@@ -277,10 +310,13 @@ export default class FormView extends Component{
 				</form>
 				<div className='buttonHolder'>
 					<Link className='cancelLink' to={`/list/${this.props.type}`}>
-						<div className='cancel'>
+						<div className='divButton'>
 							<p>Cancel</p>
 						</div>
 					</Link>
+					<div className='divButton' onClick={this.resetFields}>
+						<p>{this.props.id?'Reset':'Clear'}</p>
+					</div>
 					<div className={this.checkFields()?'submit':'submitDisabled'} onClick={this.handleSubmit}>
 						<p>Submit</p>
 					</div>

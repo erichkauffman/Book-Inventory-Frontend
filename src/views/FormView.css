@@ -1,4 +1,4 @@
-.cancel, .submit, .submitDisabled{
+.divButton, .submit, .submitDisabled{
 	border-style: solid;
 	border-radius: 15px;
 	text-align: center;
@@ -7,6 +7,18 @@
 	margin-bottom: 20px;
 	display: inline-block;
 	margin-left: 20px;
+}
+
+.divButton{
+	cursor: pointer;
+}
+
+.divButton:hover{
+	background-color: #DDDDDD;
+}
+
+.divButton:active{
+	background-color: #BBBBBB;
 }
 
 .cancelLink{
@@ -33,7 +45,7 @@
 }
 
 .buttonHolder{
-	width: 500px;
+	width: 1000px;
 	margin-right: auto;
 	margin-left: auto;
 }
