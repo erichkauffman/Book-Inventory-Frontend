@@ -126,11 +126,25 @@ export default class FormView extends Component{
 		}else{
 			promise = commitNewInventory(`${this.props.type}s`, item);
 		}
-		promise.then(() => {
+		return promise;
+	}
+
+	submitAndContinue = () => {
+		let submitPromise = this.handleSubmit();
+		submitPromise.then(() => {
+			this.resetFields();
+		});
+
+	}
+
+	submitAndFinish = () => {
+		let submitPromise = this.handleSubmit();
+		submitPromise.then(() => {
 			this.setState({
 				finish: true
 			});
 		});
+
 	}
 
 	getInventoryItem = () => {
@@ -243,6 +257,16 @@ export default class FormView extends Component{
 		}
 	}
 
+	renderSaveAndNew = () => {
+		if(!this.props.id){
+			return(
+				<div className={this.checkFields()?'submit':'submitDisabled'} onClick={this.submitAndContinue}>
+					<p>Save and new {this.props.type}</p>
+				</div>
+			);
+		}
+	}
+
 	componentDidMount(){
 		let locationPromise = getLocations();
 		if(this.props.id){
@@ -317,9 +341,10 @@ export default class FormView extends Component{
 					<div className='divButton' onClick={this.resetFields}>
 						<p>{this.props.id?'Reset':'Clear'}</p>
 					</div>
-					<div className={this.checkFields()?'submit':'submitDisabled'} onClick={this.handleSubmit}>
-						<p>Submit</p>
+					<div className={this.checkFields()?'submit':'submitDisabled'} onClick={this.submitAndFinish}>
+						<p>Save</p>
 					</div>
+					{this.renderSaveAndNew()}
 				</div>
 			</div>
 		);
