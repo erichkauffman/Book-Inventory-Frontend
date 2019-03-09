@@ -277,7 +277,7 @@ export default class FormView extends Component{
 				</form>
 				<div className='buttonHolder'>
 					<Link className='cancelLink' to={`/list/${this.props.type}`}>
-						<div className='cancel'>
+						<div className='divButton'>
 							<p>Cancel</p>
 						</div>
 					</Link>

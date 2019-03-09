@@ -1,4 +1,4 @@
-.cancel, .submit, .submitDisabled{
+.divButton, .submit, .submitDisabled{
 	border-style: solid;
 	border-radius: 15px;
 	text-align: center;
