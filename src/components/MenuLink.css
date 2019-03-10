@@ -1,10 +1,12 @@
 .menuButtonContainer{
 	width: 100px;
 	border-style: solid;
+	border-radius: 10px;
 	display: inline-block;
 	text-align: center;
 	margin: .5%;
 	background-color: white;
+	color: black;
 }
 
 .menuButtonContainer:hover{
