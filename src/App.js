@@ -3,6 +3,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 
 import ListView from './views/ListView';
 import FormView from './views/FormView';
+import SavedDataView from './views/SavedDataView';
 import Header from './components/Header';
 
 import './App.css';
@@ -33,6 +34,8 @@ export default class App extends Component {
 						   render={({match}) => {
 							   return <FormView type={match.params.type}/>
 						   }}/>
+					<Route path='/data/'
+						   component={SavedDataView}/>
 				</Switch>
 	   		</div>
     );
