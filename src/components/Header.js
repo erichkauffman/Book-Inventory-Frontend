@@ -10,6 +10,7 @@ const Header = () => {
 			<MenuLink link='/form/book'>New Book</MenuLink>
 			<MenuLink link='/list/items'>All Items</MenuLink>
 			<MenuLink link='/list/books'>Books</MenuLink>
+			<MenuLink link='/data'>Saved Data</MenuLink>
 		</div>
 	);
 }
