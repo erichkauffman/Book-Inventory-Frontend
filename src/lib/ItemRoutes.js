@@ -62,23 +62,11 @@ export const getLocations = () => {
 }
 
 export const commitLocation = (location) => {
-	let url = `${apiPath}/locations/${location}/`;
-	fetch(url, {
-		method: 'POST'
-	})
-	.then((res) => {
-		console.log(res);
-	});
+	sendJson(`${apiPath}/locations/`, 'POST', {data:location});
 }
 
 export const deleteLocation = (location) => {
-	let url = `${apiPath}/locations/${location}/`;
-	fetch(url, {
-		method: 'DELETE'
-	})
-	.then((res) => {
-		console.log(res);
-	});
+	sendJson(`${apiPath}/locations/`, 'DELETE', {data:location});
 }
 
 export const getPhrases = () => {
@@ -86,23 +74,11 @@ export const getPhrases = () => {
 }
 
 export const commitPhrase = (phrase) => {
-	let url = `${apiPath}/phrases/${phrase}/`;
-	fetch(url, {
-		method: 'POST'
-	})
-	.then((res) => {
-		console.log(res);
-	});
+	sendJson(`${apiPath}/phrases/`, 'POST', {data:phrase});
 }
 
 export const deletePhrase = (phrase) => {
-	let url = `${apiPath}/phrases/${phrase}/`;
-	fetch(url, {
-		method: 'DELETE'
-	})
-	.then((res) => {
-		console.log(res);
-	});
+	sendJson(`${apiPath}/phrases/`, 'DELETE', {data:phrase});
 }
 
 export const searchBookByIsbn = (isbn) => {
