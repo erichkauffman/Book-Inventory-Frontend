@@ -35,6 +35,22 @@ export default class SavedDataView extends Component{
 		}
 	}
 
+	addData = () => {
+		let data = prompt(`Add ${this.state.current}`);
+		if(data){
+			if(this.state.current === 'phrases'){
+				commitPhrase(data);
+			}else if(this.state.current === 'locations'){
+				commitLocation(data);
+			}
+			let dataList = this.state[this.state.current];
+			dataList.push(data);
+			this.setState({
+				[this.state.current]: dataList
+			});
+		}
+	}
+
 	componentWillMount(){
 		let locationPromise = getLocations();
 		let phrasePromise = getPhrases();
@@ -54,6 +70,7 @@ export default class SavedDataView extends Component{
 		return(
 			<div>
 				<select value={this.state.current} onChange={this.setCategory}>{this.createOptions()}</select>
+				<button onClick={this.addData}>Add {this.state.current}</button>
 				{this.displayInfo()}
 			</div>
 		);
