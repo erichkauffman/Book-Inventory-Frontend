@@ -9,6 +9,16 @@ import Header from './components/Header';
 import './App.css';
 
 export default class App extends Component {
+	constructor(){
+		super();
+		this.state = {
+			items: [],
+			books: [],
+			locations: [],
+			phrases: []
+		}
+	}
+
 	render() {
 		return (
 			<div className="App">
