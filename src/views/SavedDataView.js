@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { commitPhrase, getPhrases, commitLocation, getLocations} from '../lib/ItemRoutes';
+import deleteImg from '../images/DeleteButton.png';
 
 export default class SavedDataView extends Component{
 	constructor(props){
@@ -29,6 +30,7 @@ export default class SavedDataView extends Component{
 				return(
 					<div key={info}>
 						<p>{info}</p>
+						<img src={deleteImg} alt='delete'/>
 					</div>
 				);
 			});
