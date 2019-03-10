@@ -46,7 +46,7 @@ export default class App extends Component {
 					<Redirect from='/list/book' to='/list/books'/>
 					<Route path='/list/:type'
 					       render={({match}) => {
-							   return <ListView type={match.params.type}/>
+							   return <ListView type={match.params.type} data={this.state[match.params.type]}/>
 						   }} />
 
 					<Redirect from='/form/items/:id' to='/form/item/:id'/>
