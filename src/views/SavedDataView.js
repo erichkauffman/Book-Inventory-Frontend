@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { commitPhrase, getPhrases, commitLocation, getLocations} from '../lib/ItemRoutes';
+import { commitPhrase, getPhrases, deletePhrase, commitLocation, getLocations, deleteLocation } from '../lib/ItemRoutes';
 import deleteImg from '../images/DeleteButton.png';
 
 export default class SavedDataView extends Component{
@@ -24,13 +24,25 @@ export default class SavedDataView extends Component{
 		});
 	}
 
+	deleteData = (data) => {
+		if(this.state.current === 'phrases'){
+			deletePhrase(data);
+		}else if(this.state.current === 'locations'){
+			deleteLocation(data);
+		}
+		let dataList = this.state[this.state.current].filter((stateData) => {
+			return !(data === stateData);
+		});
+		this.setState({[this.state.current]: dataList});
+	}
+
 	displayInfo = () => {
 		if(this.state[this.state.current]){
 			return this.state[this.state.current].map((info) => {
 				return(
 					<div key={info}>
 						<p>{info}</p>
-						<img src={deleteImg} alt='delete'/>
+						<img src={deleteImg} alt='delete' onClick={() => {this.deleteData(info)}}/>
 					</div>
 				);
 			});
