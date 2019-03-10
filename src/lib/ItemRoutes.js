@@ -71,14 +71,34 @@ export const commitLocation = (location) => {
 	});
 }
 
+export const deleteLocation = (location) => {
+	let url = `${apiPath}/locations/${location}/`;
+	fetch(url, {
+		method: 'DELETE'
+	})
+	.then((res) => {
+		console.log(res);
+	});
+}
+
 export const getPhrases = () => {
 	return getJson(`${apiPath}/phrases/`);
 }
 
 export const commitPhrase = (phrase) => {
-	let url = `${apiPath}/phrases/${phrase}/`
+	let url = `${apiPath}/phrases/${phrase}/`;
 	fetch(url, {
 		method: 'POST'
+	})
+	.then((res) => {
+		console.log(res);
+	});
+}
+
+export const deletePhrase = (phrase) => {
+	let url = `${apiPath}/phrases/${phrase}/`;
+	fetch(url, {
+		method: 'DELETE'
 	})
 	.then((res) => {
 		console.log(res);
