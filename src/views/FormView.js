@@ -7,7 +7,7 @@ import 'react-dates/lib/css/_datepicker.css';
 
 import { commitNewInventory, getItemById, updateInventory,
 		 searchBookByIsbn, getLocations, commitLocation,
-		 getPhrases } from '../lib/ItemRoutes';
+		 getPhrases, commitPhrase } from '../lib/ItemRoutes';
 import './FormView.css';
 
 const itemFields = ['title', 'upc', 'year', 'description', 'condition', 'datePurchased',
@@ -212,6 +212,16 @@ export default class FormView extends Component{
 		}
 	}
 
+	newPhrase = () => {
+		let phrase = prompt('Add phrase');
+		if(phrase){
+			commitPhrase(phrase);
+			let phrases = this.state.phrases;
+			phrases.push(phrase);
+			this.setState({phrases:phrases});
+		}
+	}
+
 	selectPhrase = (e) => {
 		let selectString = this.state.item.description;
 		if(this.state.item.description){
@@ -321,6 +331,7 @@ export default class FormView extends Component{
 					<textarea name='description' value={this.state.item.description} onChange={this.onChange}/>
 					<br/>
 					<select value='' onChange={this.selectPhrase}>{this.createOptions(this.state.phrases, true)}</select>
+					<button type='button' onClick={this.newPhrase}>Add Phrase</button>
 					<p>Condition:</p>
 					{this.createRadioButtons(['New', 'Like New', 'Very Good', 'Good', 'Acceptable'], 'condition')}
 					<br/>
