@@ -71,6 +71,20 @@ export const commitLocation = (location) => {
 	});
 }
 
+export const getPhrases = () => {
+	return getJson(`${apiPath}/phrases/`);
+}
+
+export const commitPhrase = (phrase) => {
+	let url = `${apiPath}/phrases/${phrase}/`
+	fetch(url, {
+		method: 'POST'
+	})
+	.then((res) => {
+		console.log(res);
+	});
+}
+
 export const searchBookByIsbn = (isbn) => {
 	let url = `https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`;
 	return getJson(url);

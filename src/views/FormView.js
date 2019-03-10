@@ -5,7 +5,9 @@ import { SingleDatePicker } from 'react-dates';
 import moment from 'moment';
 import 'react-dates/lib/css/_datepicker.css';
 
-import { commitNewInventory, getItemById, updateInventory, searchBookByIsbn, getLocations, commitLocation } from '../lib/ItemRoutes';
+import { commitNewInventory, getItemById, updateInventory,
+		 searchBookByIsbn, getLocations, commitLocation,
+		 getPhrases, commitPhrase } from '../lib/ItemRoutes';
 import './FormView.css';
 
 const itemFields = ['title', 'upc', 'year', 'description', 'condition', 'datePurchased',
@@ -33,6 +35,7 @@ export default class FormView extends Component{
 		this.state = {
 			today: today,
 			locations: [],
+			phrases: [],
 			item: item
 		}
 	}
@@ -83,10 +86,14 @@ export default class FormView extends Component{
 		});
 	}
 
-	createOptions = () => {
-		return this.state.locations.map((location) => {
-			return <option key={location}>{location}</option>
+	createOptions = (options, placeholder=false) => {
+		let ops = options.map((option) => {
+			return <option key={option} value={option}>{option}</option>
 		});
+		if(placeholder){
+			ops.push(<option key='empty' value='' disabled>Select</option>);
+		}
+		return ops;
 	}
 
 	checkFields = () => {
@@ -205,6 +212,27 @@ export default class FormView extends Component{
 		}
 	}
 
+	newPhrase = () => {
+		let phrase = prompt('Add phrase');
+		if(phrase){
+			commitPhrase(phrase);
+			let phrases = this.state.phrases;
+			phrases.push(phrase);
+			this.setState({phrases:phrases});
+		}
+	}
+
+	selectPhrase = (e) => {
+		let selectString = this.state.item.description;
+		if(this.state.item.description){
+			selectString = `${selectString}, `;
+		}
+		selectString = `${selectString}${e.target.value}`;
+		let item = this.state.item;
+		item.description = selectString;
+		this.setState({item:item});
+	}
+
 	resetFields = () => {
 		if(this.props.id){
 			this.getInventoryItem();
@@ -269,11 +297,15 @@ export default class FormView extends Component{
 
 	componentDidMount(){
 		let locationPromise = getLocations();
+		let phrasePromise = getPhrases();
 		if(this.props.id){
 			this.getInventoryItem();
 		}
 		locationPromise.then((res) => {
 			this.setState({locations:res});
+		});
+		phrasePromise.then((res) => {
+			this.setState({phrases:res});
 		});
 	}
 
@@ -298,6 +330,8 @@ export default class FormView extends Component{
 					<label>Description:</label>
 					<textarea name='description' value={this.state.item.description} onChange={this.onChange}/>
 					<br/>
+					<select value='' onChange={this.selectPhrase}>{this.createOptions(this.state.phrases, true)}</select>
+					<button type='button' onClick={this.newPhrase}>Add Phrase</button>
 					<p>Condition:</p>
 					{this.createRadioButtons(['New', 'Like New', 'Very Good', 'Good', 'Acceptable'], 'condition')}
 					<br/>
@@ -314,7 +348,7 @@ export default class FormView extends Component{
 					<br/>
 					<label>Location Purchased:</label>
 					<input type='text' list='locations' name='locationPurchased' value={this.state.item.locationPurchased} onChange={this.onChange}/>
-					<datalist id='locations'>{this.createOptions()}</datalist>
+					<datalist id='locations'>{this.createOptions(this.state.locations)}</datalist>
 					<button type='button' onClick={this.newLocation}>Add location</button>
 					<br/>
 					<p>Consignment:</p>
