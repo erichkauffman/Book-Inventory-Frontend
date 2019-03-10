@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { commitPhrase, getPhrases, deletePhrase, commitLocation, getLocations, deleteLocation } from '../lib/ItemRoutes';
 import deleteImg from '../images/DeleteButton.png';
 
+import './SavedDataView.css';
+
 export default class SavedDataView extends Component{
 	constructor(props){
 		super(props);
@@ -40,7 +42,7 @@ export default class SavedDataView extends Component{
 		if(this.state[this.state.current]){
 			return this.state[this.state.current].map((info) => {
 				return(
-					<div key={info}>
+					<div key={info} className='savedDataDiv'>
 						<p>{info}</p>
 						<img src={deleteImg} alt='delete' onClick={() => {this.deleteData(info)}}/>
 					</div>
@@ -83,8 +85,8 @@ export default class SavedDataView extends Component{
 	render(){
 		return(
 			<div>
-				<select value={this.state.current} onChange={this.setCategory}>{this.createOptions()}</select>
-				<button onClick={this.addData}>Add {this.state.current}</button>
+				<select className='savedDataSelect' value={this.state.current} onChange={this.setCategory}>{this.createOptions()}</select>
+				<button className='savedDataButton' onClick={this.addData}>Add {this.state.current}</button>
 				{this.displayInfo()}
 			</div>
 		);

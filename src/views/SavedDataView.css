@@ -1,0 +1,23 @@
+.savedDataDiv{
+	margin-top: 10px;
+	background-color: #DDDDDD;
+}
+
+.savedDataDiv > p{
+	display: inline;
+	margin-right: 50px;
+}
+
+.savedDataSelect, .savedDataButton{
+	font-size: 1em;
+	margin-top: 10px;
+	margin-left: 10px;
+}
+
+.savedDataDiv > img:hover{
+	filter: brightness(75%);
+}
+
+.savedDataDiv > img:active{
+	filter: brightness(50%);
+}
