@@ -54,6 +54,7 @@ export default class ListView extends Component{
 		}
 		return fields.map((field) => {
 			return(<Selector active={this.state.filter===field} 
+							 key={field}
 							 onClick={(value)=>{this.setState({filter:value})}}>
 						{field}
 				   </Selector>);
