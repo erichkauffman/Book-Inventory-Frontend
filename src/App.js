@@ -26,6 +26,15 @@ export default class App extends Component {
 		});
 	}
 
+	removeItem = (itemId, type) => {
+		let items = this.state[type].filter((item) => {
+			return item.itemId !== itemId;
+		});
+		this.setState({
+			[type]: items
+		});
+	}
+
 	componentDidMount(){
 		let itemPromise = getSellableInventory('items');
 		let bookPromise = getSellableInventory('books');
@@ -46,7 +55,9 @@ export default class App extends Component {
 					<Redirect from='/list/book' to='/list/books'/>
 					<Route path='/list/:type'
 					       render={({match}) => {
-							   return <ListView type={match.params.type} data={this.state[match.params.type]}/>
+							   return <ListView type={match.params.type}
+							   					items={this.state[match.params.type]}
+												removeItem={this.removeItem}/>
 						   }} />
 
 					<Redirect from='/form/items/:id' to='/form/item/:id'/>
