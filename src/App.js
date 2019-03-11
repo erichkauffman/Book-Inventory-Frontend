@@ -66,14 +66,20 @@ export default class App extends Component {
 						   render={({match}) => {
 							   return <FormView type={match.params.type}
 							   					mode={match.params.mode}
-												id={match.params.id}/>
+												id={match.params.id}
+												phrases={this.state.phrases}
+												locations={this.state.locations}
+												/>
 						   }}/>
 
 					<Redirect from='/form/items' to='/form/item'/>
 					<Redirect from='/form/books' to='/form/book'/>
 					<Route path='/form/:type/'
 						   render={({match}) => {
-							   return <FormView type={match.params.type}/>
+							   return <FormView type={match.params.type}
+								   				phrases={this.state.phrases}
+												locations={this.state.locations}
+							   />
 						   }}/>
 					<Route path='/data/'
 						   component={SavedDataView}/>
