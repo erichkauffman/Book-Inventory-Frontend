@@ -60,11 +60,13 @@ export default class App extends Component {
 												removeItem={this.removeItem}/>
 						   }} />
 
-					<Redirect from='/form/items/:id' to='/form/item/:id'/>
-					<Redirect from='/form/books/:id' to='/form/book/:id'/>
-					<Route path='/form/:type/:id'
+					<Redirect from='/form/items/:mode/:id' to='/form/item/:mode/:id'/>
+					<Redirect from='/form/books/:mode/:id' to='/form/book/:mode/:id'/>
+					<Route path='/form/:type/:mode/:id'
 						   render={({match}) => {
-							   return <FormView type={match.params.type} id={match.params.id}/>
+							   return <FormView type={match.params.type}
+							   					mode={match.params.mode}
+												id={match.params.id}/>
 						   }}/>
 
 					<Redirect from='/form/items' to='/form/item'/>
