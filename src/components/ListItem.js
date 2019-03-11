@@ -19,11 +19,11 @@ const ListItem = (props) => {
 		<div className={props.selectedItem===props.itemId?'listItemSelected':'listItem'} onClick={() => {handleClick(props)}}>
 			<p className='itemId'>{props.itemId}</p>
 			<p className='titleText'>{props.title}</p>
-			<Link to={`/form/${props.type}/${props.itemId}`}>
-				<img className='itemButton edit' src={editImg} alt='edit'/>
+			<Link to={`/form/${props.type}/edit/${props.itemId}`}>
+				<img onClick={(e)=>{e.stopPropagation()}} className='itemButton' src={editImg} alt='edit'/>
 			</Link>
-			<img className='itemButton sell' src={sellImg} alt='sell' onClick={(e) => {buttonClick(e, props)}}/>
-			<img className='itemButton delete' src={deleteImg} alt='delete' onClick={(e) => {buttonClick(e, props)}}/>
+			<img className='itemButton' src={sellImg} alt='sell' onClick={(e) => {buttonClick(e, props)}}/>
+			<img className='itemButton' src={deleteImg} alt='delete' onClick={(e) => {buttonClick(e, props)}}/>
 		</div>
 	);
 }

@@ -5,10 +5,63 @@ import ListView from './views/ListView';
 import FormView from './views/FormView';
 import SavedDataView from './views/SavedDataView';
 import Header from './components/Header';
+import { getSellableInventory, getLocations, getPhrases } from './lib/ItemRoutes';
 
 import './App.css';
 
 export default class App extends Component {
+	constructor(){
+		super();
+		this.state = {
+			items: [],
+			books: [],
+			locations: [],
+			phrases: []
+		}
+	}
+
+	setStatePromise = (key, promise) => {
+		promise.then((data) => {
+			this.setState({[key]:data});
+		});
+	}
+
+	removeItem = (itemId, type) => {
+		let items = this.state[type].filter((item) => {
+			return item.itemId !== itemId;
+		});
+		this.setState({
+			[type]: items
+		});
+		if(type === 'books'){
+			this.removeItem(itemId, 'items');
+		}
+	}
+
+	saveData = (dataString, type) => {
+		let data = this.state[type];
+		data.push(dataString);
+		this.setState({[type]:data});
+	}
+
+	deleteData = (dataString, type) => {
+		let data = this.state[type].filter((data) => {
+			return dataString !== data;
+		});
+		this.setState({[type]:data});
+	}
+
+	componentDidMount(){
+		let itemPromise = getSellableInventory('items');
+		let bookPromise = getSellableInventory('books');
+		let locationPromise = getLocations();
+		let phrasePromise  = getPhrases();
+		this.setStatePromise('locations', locationPromise);
+		this.setStatePromise('phrases', phrasePromise);
+		this.setStatePromise('books', bookPromise);
+		this.setStatePromise('items', itemPromise);
+	}
+
 	render() {
 		return (
 			<div className="App">
@@ -18,24 +71,42 @@ export default class App extends Component {
 					<Redirect from='/list/book' to='/list/books'/>
 					<Route path='/list/:type'
 					       render={({match}) => {
-							   return <ListView type={match.params.type}/>
+							   return <ListView type={match.params.type}
+							   					items={this.state[match.params.type]}
+												removeItem={this.removeItem}/>
 						   }} />
 
-					<Redirect from='/form/items/:id' to='/form/item/:id'/>
-					<Redirect from='/form/books/:id' to='/form/book/:id'/>
-					<Route path='/form/:type/:id'
+					<Redirect from='/form/items/:mode/:id' to='/form/item/:mode/:id'/>
+					<Redirect from='/form/books/:mode/:id' to='/form/book/:mode/:id'/>
+					<Route path='/form/:type/:mode/:id'
 						   render={({match}) => {
-							   return <FormView type={match.params.type} id={match.params.id}/>
+							   return <FormView type={match.params.type}
+												mode={match.params.mode}
+												id={match.params.id}
+												phrases={this.state.phrases}
+												locations={this.state.locations}
+												saveData={this.saveData}
+												/>
 						   }}/>
 
 					<Redirect from='/form/items' to='/form/item'/>
 					<Redirect from='/form/books' to='/form/book'/>
 					<Route path='/form/:type/'
 						   render={({match}) => {
-							   return <FormView type={match.params.type}/>
+							   return <FormView type={match.params.type}
+								   				phrases={this.state.phrases}
+												locations={this.state.locations}
+												saveData={this.saveData}
+							   />
 						   }}/>
 					<Route path='/data/'
-						   component={SavedDataView}/>
+						   render={()=>{
+							   return <SavedDataView phrases={this.state.phrases}
+							   						 locations={this.state.locations}
+							   						 deleteData={this.deleteData}
+							   						 saveData={this.saveData}
+									  />
+						   }}/>
 				</Switch>
 	   		</div>
     );
