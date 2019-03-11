@@ -33,6 +33,15 @@ export default class App extends Component {
 		this.setState({
 			[type]: items
 		});
+		if(type === 'books'){
+			this.removeItem(itemId, 'items');
+		}
+	}
+
+	saveData = (dataString, type) => {
+		let data = this.state[type];
+		data.push(dataString);
+		this.setState({[type]:data});
 	}
 
 	componentDidMount(){
@@ -65,10 +74,11 @@ export default class App extends Component {
 					<Route path='/form/:type/:mode/:id'
 						   render={({match}) => {
 							   return <FormView type={match.params.type}
-							   					mode={match.params.mode}
+												mode={match.params.mode}
 												id={match.params.id}
 												phrases={this.state.phrases}
 												locations={this.state.locations}
+												saveData={this.saveData}
 												/>
 						   }}/>
 
@@ -79,6 +89,7 @@ export default class App extends Component {
 							   return <FormView type={match.params.type}
 								   				phrases={this.state.phrases}
 												locations={this.state.locations}
+												saveData={this.saveData}
 							   />
 						   }}/>
 					<Route path='/data/'
