@@ -6,8 +6,7 @@ import moment from 'moment';
 import 'react-dates/lib/css/_datepicker.css';
 
 import { commitNewInventory, getItemById, updateInventory,
-		 searchBookByIsbn, getLocations, commitLocation,
-		 getPhrases, commitPhrase } from '../lib/ItemRoutes';
+		 searchBookByIsbn, commitLocation, commitPhrase } from '../lib/ItemRoutes';
 import './FormView.css';
 
 const itemFields = ['title', 'upc', 'year', 'description', 'condition', 'datePurchased',
@@ -34,8 +33,6 @@ export default class FormView extends Component{
 		item.siteListed = [false, false];
 		this.state = {
 			today: today,
-			locations: [],
-			phrases: [],
 			item: item
 		}
 	}
@@ -119,7 +116,7 @@ export default class FormView extends Component{
 			}
 		});
 		item.siteListed = sites;
-		if(!this.props.id){
+		if(this.props.mode !== 'edit'){
 			item.itemId = null;
 		}
 		item.removalAction = null;
@@ -127,29 +124,22 @@ export default class FormView extends Component{
 		item.amountPaid = item.amountPaid * 100;
 		item.sellPrice = item.sellPrice * 100;
 		item.datePurchased = item.datePurchased.format('YYYY-MM-DD');
-		let promise;
-		if(this.props.id){
-			promise = updateInventory(`${this.props.type}s`, item);
+		if(this.props.mode === 'edit'){
+			updateInventory(`${this.props.type}s`, item);
 		}else{
-			promise = commitNewInventory(`${this.props.type}s`, item);
+			commitNewInventory(`${this.props.type}s`, item);
 		}
-		return promise;
 	}
 
 	submitAndContinue = () => {
-		let submitPromise = this.handleSubmit();
-		submitPromise.then(() => {
-			this.resetFields();
-		});
-
+		this.handleSubmit();
+		this.resetFields();
 	}
 
 	submitAndFinish = () => {
-		let submitPromise = this.handleSubmit();
-		submitPromise.then(() => {
-			this.setState({
-				finish: true
-			});
+		this.handleSubmit();
+		this.setState({
+			finish: true
 		});
 
 	}
@@ -206,9 +196,7 @@ export default class FormView extends Component{
 		let location = prompt('Add location');
 		if(location){
 			commitLocation(location);
-			let locations = this.state.locations;
-			locations.push(location);
-			this.setState({locations:locations});
+			this.props.saveData(location, 'locations');
 		}
 	}
 
@@ -216,9 +204,7 @@ export default class FormView extends Component{
 		let phrase = prompt('Add phrase');
 		if(phrase){
 			commitPhrase(phrase);
-			let phrases = this.state.phrases;
-			phrases.push(phrase);
-			this.setState({phrases:phrases});
+			this.props.saveData(phrase, 'phrases');
 		}
 	}
 
@@ -296,17 +282,9 @@ export default class FormView extends Component{
 	}
 
 	componentDidMount(){
-		let locationPromise = getLocations();
-		let phrasePromise = getPhrases();
 		if(this.props.id){
 			this.getInventoryItem();
 		}
-		locationPromise.then((res) => {
-			this.setState({locations:res});
-		});
-		phrasePromise.then((res) => {
-			this.setState({phrases:res});
-		});
 	}
 
 	render(){
@@ -330,7 +308,7 @@ export default class FormView extends Component{
 					<label>Description:</label>
 					<textarea name='description' value={this.state.item.description} onChange={this.onChange}/>
 					<br/>
-					<select value='' onChange={this.selectPhrase}>{this.createOptions(this.state.phrases, true)}</select>
+					<select value='' onChange={this.selectPhrase}>{this.createOptions(this.props.phrases, true)}</select>
 					<button type='button' onClick={this.newPhrase}>Add Phrase</button>
 					<p>Condition:</p>
 					{this.createRadioButtons(['New', 'Like New', 'Very Good', 'Good', 'Acceptable'], 'condition')}
@@ -348,7 +326,7 @@ export default class FormView extends Component{
 					<br/>
 					<label>Location Purchased:</label>
 					<input type='text' list='locations' name='locationPurchased' value={this.state.item.locationPurchased} onChange={this.onChange}/>
-					<datalist id='locations'>{this.createOptions(this.state.locations)}</datalist>
+					<datalist id='locations'>{this.createOptions(this.props.locations)}</datalist>
 					<button type='button' onClick={this.newLocation}>Add location</button>
 					<br/>
 					<p>Consignment:</p>
