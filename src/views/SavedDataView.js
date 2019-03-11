@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { commitPhrase, getPhrases, deletePhrase, commitLocation, getLocations, deleteLocation } from '../lib/ItemRoutes';
+import { commitPhrase, deletePhrase, commitLocation, deleteLocation } from '../lib/ItemRoutes';
 import deleteImg from '../images/DeleteButton.png';
 
 import './SavedDataView.css';
@@ -32,15 +32,12 @@ export default class SavedDataView extends Component{
 		}else if(this.state.current === 'locations'){
 			deleteLocation(data);
 		}
-		let dataList = this.state[this.state.current].filter((stateData) => {
-			return !(data === stateData);
-		});
-		this.setState({[this.state.current]: dataList});
+		this.props.deleteData(data, this.state.current);
 	}
 
 	displayInfo = () => {
-		if(this.state[this.state.current]){
-			return this.state[this.state.current].map((info) => {
+		if(this.props[this.state.current]){
+			return this.props[this.state.current].map((info) => {
 				return(
 					<div key={info} className='savedDataDiv'>
 						<p>{info}</p>
@@ -59,27 +56,8 @@ export default class SavedDataView extends Component{
 			}else if(this.state.current === 'locations'){
 				commitLocation(data);
 			}
-			let dataList = this.state[this.state.current];
-			dataList.push(data);
-			this.setState({
-				[this.state.current]: dataList
-			});
+			this.props.saveData(data, this.state.current);
 		}
-	}
-
-	componentWillMount(){
-		let locationPromise = getLocations();
-		let phrasePromise = getPhrases();
-		locationPromise.then((locations) => {
-			this.setState({
-				locations: locations
-			});
-		});
-		phrasePromise.then((phrases) => {
-			this.setState({
-				phrases: phrases
-			});
-		});
 	}
 
 	render(){
