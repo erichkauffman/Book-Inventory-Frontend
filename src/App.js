@@ -44,6 +44,13 @@ export default class App extends Component {
 		this.setState({[type]:data});
 	}
 
+	deleteData = (dataString, type) => {
+		let data = this.state[type].filter((data) => {
+			return dataString !== data;
+		});
+		this.setState({[type]:data});
+	}
+
 	componentDidMount(){
 		let itemPromise = getSellableInventory('items');
 		let bookPromise = getSellableInventory('books');
@@ -93,7 +100,13 @@ export default class App extends Component {
 							   />
 						   }}/>
 					<Route path='/data/'
-						   component={SavedDataView}/>
+						   render={()=>{
+							   return <SavedDataView phrases={this.state.phrases}
+							   						 locations={this.state.locations}
+							   						 deleteData={this.deleteData}
+							   						 saveData={this.saveData}
+									  />
+						   }}/>
 				</Switch>
 	   		</div>
     );
