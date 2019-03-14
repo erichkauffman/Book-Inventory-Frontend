@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
+import io from 'socket.io-client';
 
 import ListView from './views/ListView';
 import FormView from './views/FormView';
 import SavedDataView from './views/SavedDataView';
 import Header from './components/Header';
 import { getSellableInventory, getLocations, getPhrases } from './lib/ItemRoutes';
+import { apiPath } from './config';
 
 import './App.css';
 
@@ -16,7 +18,8 @@ export default class App extends Component {
 			items: [],
 			books: [],
 			locations: [],
-			phrases: []
+			phrases: [],
+			socket: io.connect(apiPath)
 		}
 	}
 
@@ -26,7 +29,7 @@ export default class App extends Component {
 		});
 	}
 
-	removeItem = (itemId, type) => {
+	removeItem = (itemId, type='books') => {
 		let items = this.state[type].filter((item) => {
 			return item.itemId !== itemId;
 		});
@@ -38,10 +41,19 @@ export default class App extends Component {
 		}
 	}
 
-	saveData = (dataString, type) => {
+	updateItem = (dataObject, type) => {
+		this.removeItem(dataObject.itemId);
+		this.saveData(dataObject, type);
+	}
+
+	saveData = (dataObject, type) => {
 		let data = this.state[type];
-		data.push(dataString);
+		data.push(dataObject);
 		this.setState({[type]:data});
+		if(type === 'books'){
+			delete dataObject.author;
+			this.saveData(dataObject, 'items');
+		}
 	}
 
 	deleteData = (dataString, type) => {
@@ -49,6 +61,20 @@ export default class App extends Component {
 			return dataString !== data;
 		});
 		this.setState({[type]:data});
+	}
+
+	setSocketConnections = () => {
+		let socket = this.state.socket;
+		socket.on('new_item', (item)=>{(this.saveData(JSON.parse(item), 'items'))});
+		socket.on('new_book', (book)=>{(this.saveData(JSON.parse(book), 'books'))});
+		socket.on('delete_item', (itemId)=>{this.removeItem(parseInt(itemId))});
+		socket.on('update_item', (item)=>{this.updateItem(JSON.parse(item), 'items')})
+		socket.on('update_book', (book)=>{this.updateItem(JSON.parse(book), 'books')})
+		socket.on('new_location', (location)=>{(this.saveData(location, 'locations'))});
+		socket.on('new_phrase', (phrase)=>{(this.saveData(phrase, 'phrases'))});
+		socket.on('delete_location', (location)=>{this.deleteData(location, 'locations')});
+		socket.on('delete_phrase', (phrase)=>{(this.deleteData(phrase, 'phrases'))});
+		this.setState({socket:socket});
 	}
 
 	componentDidMount(){
@@ -60,6 +86,7 @@ export default class App extends Component {
 		this.setStatePromise('phrases', phrasePromise);
 		this.setStatePromise('books', bookPromise);
 		this.setStatePromise('items', itemPromise);
+		this.setSocketConnections();
 	}
 
 	render() {
@@ -71,21 +98,21 @@ export default class App extends Component {
 					<Redirect from='/list/book' to='/list/books'/>
 					<Route path='/list/:type'
 					       render={({match}) => {
-							   return <ListView type={match.params.type}
-							   					items={this.state[match.params.type]}
-												removeItem={this.removeItem}/>
+							   return <ListView key={match.params.type}
+							   					type={match.params.type}
+							   					items={this.state[match.params.type]}/>
 						   }} />
 
 					<Redirect from='/form/items/:mode/:id' to='/form/item/:mode/:id'/>
 					<Redirect from='/form/books/:mode/:id' to='/form/book/:mode/:id'/>
 					<Route path='/form/:type/:mode/:id'
 						   render={({match}) => {
-							   return <FormView type={match.params.type}
+							   return <FormView key={match.params.type}
+							   					type={match.params.type}
 												mode={match.params.mode}
 												id={match.params.id}
 												phrases={this.state.phrases}
 												locations={this.state.locations}
-												saveData={this.saveData}
 												/>
 						   }}/>
 
@@ -93,18 +120,16 @@ export default class App extends Component {
 					<Redirect from='/form/books' to='/form/book'/>
 					<Route path='/form/:type/'
 						   render={({match}) => {
-							   return <FormView type={match.params.type}
+							   return <FormView key={match.params.type}
+							   					type={match.params.type}
 								   				phrases={this.state.phrases}
 												locations={this.state.locations}
-												saveData={this.saveData}
 							   />
 						   }}/>
 					<Route path='/data/'
 						   render={()=>{
 							   return <SavedDataView phrases={this.state.phrases}
 							   						 locations={this.state.locations}
-							   						 deleteData={this.deleteData}
-							   						 saveData={this.saveData}
 									  />
 						   }}/>
 				</Switch>
