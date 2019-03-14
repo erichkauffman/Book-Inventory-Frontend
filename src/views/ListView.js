@@ -38,10 +38,8 @@ export default class ListView extends Component{
 		if(window.confirm(`${e.target.alt}\nThis action is permanent and cannot be undone`)){
 			if(e.target.alt === 'sell'){
 				commitRemoveAction(itemId, 1);
-				this.props.removeItem(itemId, this.props.type);
 			}else if(e.target.alt === 'delete'){
 				commitRemoveAction(itemId, 0);
-				this.props.removeItem(itemId, this.props.type);
 			}else{
 				console.log("ListItem buttonClick called without proper handling");
 			}
@@ -85,15 +83,6 @@ export default class ListView extends Component{
 		if(this.state.itemDetailRender){
 			return(<ItemDetail item={this.state.itemDetailRender} type={this.props.type}/>);
 		}
-	}
-
-	componentWillReceiveProps(){
-		this.setState({
-			filter: 'itemId',
-			itemDetailRender: null,
-			id: null,
-			search: ''
-		});
 	}
 
 	render(){

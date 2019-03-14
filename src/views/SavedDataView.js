@@ -32,7 +32,6 @@ export default class SavedDataView extends Component{
 		}else if(this.state.current === 'locations'){
 			deleteLocation(data);
 		}
-		this.props.deleteData(data, this.state.current);
 	}
 
 	displayInfo = () => {
@@ -56,7 +55,6 @@ export default class SavedDataView extends Component{
 			}else if(this.state.current === 'locations'){
 				commitLocation(data);
 			}
-			this.props.saveData(data, this.state.current);
 		}
 	}
 
