@@ -196,7 +196,6 @@ export default class FormView extends Component{
 		let location = prompt('Add location');
 		if(location){
 			commitLocation(location);
-			this.props.saveData(location, 'locations');
 		}
 	}
 
@@ -204,7 +203,6 @@ export default class FormView extends Component{
 		let phrase = prompt('Add phrase');
 		if(phrase){
 			commitPhrase(phrase);
-			this.props.saveData(phrase, 'phrases');
 		}
 	}
 
