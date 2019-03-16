@@ -108,7 +108,7 @@ export default class FormView extends Component{
 	}
 
 	handleSubmit = () => {
-		let item = this.state.item;
+		let item = {...this.state.item};
 		let sites = [];
 		item.siteListed.forEach((element, index) => {
 			if(element){
@@ -270,7 +270,7 @@ export default class FormView extends Component{
 	}
 
 	renderSaveAndNew = () => {
-		if(!this.props.id){
+		if(this.props.mode !== 'edit'){
 			return(
 				<div className={this.checkFields()?'submit':'submitDisabled'} onClick={this.submitAndContinue}>
 					<p>Save and new {this.props.type}</p>
