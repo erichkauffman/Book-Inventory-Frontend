@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './ListItem.css';
 import editImg from '../images/EditButton.png';
+import copyImg from '../images/CopyButton.png';
 import sellImg from '../images/MoneyButton.png';
 import deleteImg from '../images/DeleteButton.png';
 
@@ -22,8 +23,11 @@ const ListItem = (props) => {
 			<Link to={`/form/${props.type}/edit/${props.itemId}`}>
 				<img onClick={(e)=>{e.stopPropagation()}} className='itemButton' src={editImg} alt='edit'/>
 			</Link>
-			<img className='itemButton' src={sellImg} alt='sell' onClick={(e) => {buttonClick(e, props)}}/>
+			<Link to={`/form/${props.type}/copy/${props.itemId}`}>
+				<img onClick={(e)=>{e.stopPropagation()}} className='itemButton' src={copyImg} alt='copy'/>
+			</Link>
 			<img className='itemButton' src={deleteImg} alt='delete' onClick={(e) => {buttonClick(e, props)}}/>
+			<img className='itemButton' src={sellImg} alt='sell' onClick={(e) => {buttonClick(e, props)}}/>
 		</div>
 	);
 }
