@@ -20,7 +20,11 @@
 	overflow-y: auto;
 }
 
-.list{
+.listContainer{
 	height: calc(100vh - 150px);
 	overflow-y: auto;
+}
+
+.list{
+	box-sizing: border-box;
 }
