@@ -6,6 +6,7 @@ import ListView from './views/ListView';
 import FormView from './views/FormView';
 import SavedDataView from './views/SavedDataView';
 import Header from './components/Header';
+import NotFound from './components/NotFound';
 import { getSellableInventory, getLocations, getPhrases } from './lib/ItemRoutes';
 import { apiPath } from './config';
 
@@ -94,6 +95,7 @@ export default class App extends Component {
 			<div className="App">
 				<Header/>
 				<Switch>
+					<Redirect exact from='/' to='/list/items'/>
 					<Redirect from='/list/item' to='/list/items'/>
 					<Redirect from='/list/book' to='/list/books'/>
 					<Route path='/list/:type'
@@ -132,6 +134,7 @@ export default class App extends Component {
 							   						 locations={this.state.locations}
 									  />
 						   }}/>
+					<Route component={NotFound}/>
 				</Switch>
 	   		</div>
     );
