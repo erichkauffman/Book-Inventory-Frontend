@@ -33,7 +33,7 @@
 
 .titleText{
 	margin-left: 5%;
-	width: calc(100% - 200px);
+	width: calc(100% - 250px);
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
