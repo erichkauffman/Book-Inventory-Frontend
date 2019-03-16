@@ -65,22 +65,17 @@ export default class ListView extends Component{
 	}
 
 	createList = () => {
-		console.log(`scroll: ${this.state.scroll}`);
-		console.log(`window height: ${this.state.height}`);
 		let items = this.props.items;
 		if(this.state.search){
 			items = items.filter((item) => {
 				return item[this.state.filter].toString().toLowerCase().includes(this.state.search.toLowerCase());
 			});
 		}
-		console.log(`items: ${items.length}`);
 		let numItems = items.length;
 		let scrollTop = this.state.scroll;
 		let scrollBottom = scrollTop + this.state.height;
 		let start = Math.max(Math.floor(scrollTop / itemHeight) - 20, 0);
 		let end  = Math.min(Math.ceil((scrollBottom / itemHeight) + 20), items.length);
-		console.log(`start: ${start}`);
-		console.log(`end: ${end}`);
 		items = items.map((item, index) => {
 			if(index >= start && index < end){
 				return(<ListItem key={item.itemId}
