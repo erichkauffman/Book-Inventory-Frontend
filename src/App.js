@@ -67,7 +67,7 @@ export default class App extends Component {
 
 	connectionError = () => {
 		if(this.state.connectionError){
-			return(<h3 className='serverError'>Oh no! No connection to server!</h3>)
+			return(<h3 className='serverError'>Oh no! No connection to server! Changes cannot be saved!</h3>)
 		}
 	}
 
