@@ -52,8 +52,9 @@ export default class App extends Component {
 		data.push(dataObject);
 		this.setState({[type]:data});
 		if(type === 'books'){
-			delete dataObject.author;
-			this.saveData(dataObject, 'items');
+			let itemObject = {...dataObject};
+			delete itemObject.author;
+			this.saveData(itemObject, 'items');
 		}
 	}
 
