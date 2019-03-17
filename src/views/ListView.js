@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ListItem from '../components/ListItem';
 import ItemDetail from '../components/ItemDetail';
 import Selector from '../components/Selector';
+import NotFound from '../components/NotFound';
 import { commitRemoveAction, getItemById } from '../lib/ItemRoutes';
 import './ListView.css';
 
@@ -65,6 +66,9 @@ export default class ListView extends Component{
 	}
 
 	createList = () => {
+		if(!this.props.items){
+			return(<NotFound/>);
+		}
 		let items = this.props.items;
 		if(this.state.search){
 			items = items.filter((item) => {
