@@ -65,6 +65,12 @@ export default class App extends Component {
 		this.setState({[type]:data});
 	}
 
+	connectionError = () => {
+		if(this.state.connectionError){
+			return(<h3 className='serverError'>Oh no! No connection to server! Changes cannot be saved!</h3>)
+		}
+	}
+
 	setSocketConnections = () => {
 		let socket = this.state.socket;
 		socket.on('new_item', (item)=>{(this.saveData(JSON.parse(item), 'items'))});
@@ -76,6 +82,8 @@ export default class App extends Component {
 		socket.on('new_phrase', (phrase)=>{(this.saveData(phrase, 'phrases'))});
 		socket.on('delete_location', (location)=>{this.deleteData(location, 'locations')});
 		socket.on('delete_phrase', (phrase)=>{(this.deleteData(phrase, 'phrases'))});
+		socket.on('connect', ()=>{this.setState({connectionError: false})});
+		socket.on('connect_error', ()=>{this.setState({connectionError: true})});
 		this.setState({socket:socket});
 	}
 
@@ -95,6 +103,7 @@ export default class App extends Component {
 		return (
 			<div className="App">
 				<Header/>
+				{this.connectionError()}
 				<Switch>
 					<Redirect exact from='/' to='/list/items'/>
 					<Redirect from='/list/item' to='/list/items'/>
