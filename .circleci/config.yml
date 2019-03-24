@@ -6,12 +6,12 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-        key: v1-{{ checksum "yarn.lock" }}
+          key: v1-{{ checksum "yarn.lock" }}
       - run:
         command: |
           yarn
           yarn test
       - save_cache:
-        key: v1-{{ checksum "yarn.lock" }}
-        paths:
-          - "node_modules"
+          key: v1-{{ checksum "yarn.lock" }}
+          paths:
+            - "node_modules"
