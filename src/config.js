@@ -1,2 +1,1 @@
-//TODO: revisit when using in production, use Docker Compose?
-export const apiPath = 'http://localhost:5000'
+export const apiPath = process.env.REACT_APP_API_PATH;
