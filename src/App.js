@@ -71,6 +71,13 @@ export default class App extends Component {
 		}
 	}
 
+	envWarning = () => {
+		console.log(process.env);
+		if(process.env.REACT_APP_ENV === 'Staging'){
+			return(<div className='envWarning'>Warning: Use For Testing Only!</div>)
+		}
+	}
+
 	setSocketConnections = () => {
 		let socket = this.state.socket;
 		socket.on('new_item', (item)=>{(this.saveData(JSON.parse(item), 'items'))});
@@ -104,6 +111,7 @@ export default class App extends Component {
 			<div className="App">
 				<Header/>
 				{this.connectionError()}
+				{this.envWarning()}
 				<Switch>
 					<Redirect exact from='/' to='/list/items'/>
 					<Redirect from='/list/item' to='/list/items'/>
