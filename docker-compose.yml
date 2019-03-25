@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  frontend:
+    build: .
+    ports:
+      - 1234:1234
+    environment:
+      - REACT_APP_API_PATH=http://book-inventory-python_server:9000
+      - REACT_APP_ENV=Production
+    external_links:
+      - book-inventory-python_server
+    networks:
+      - book-inventory-python_default
+
+networks:
+  book-inventory-python_default:
+    external: true
