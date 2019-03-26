@@ -1,3 +1,5 @@
-.env
+.env.development.local
 .vscode
 .circleci
+node_modules
+README.md
