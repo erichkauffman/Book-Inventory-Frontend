@@ -72,7 +72,6 @@ export default class App extends Component {
 	}
 
 	envWarning = () => {
-		console.log(process.env);
 		if(process.env.REACT_APP_ENV === 'Staging'){
 			return(<div className='envWarning'>Warning: Use For Testing Only!</div>)
 		}
