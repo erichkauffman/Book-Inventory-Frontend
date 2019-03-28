@@ -33,7 +33,8 @@ export default class FormView extends Component{
 		item.siteListed = [false, false];
 		this.state = {
 			today: today,
-			item: item
+			item: item,
+			search: ''
 		}
 	}
 
@@ -232,7 +233,7 @@ export default class FormView extends Component{
 			}
 			item.datePurchased = this.state.today;
 			item.siteListed = [false, false];
-			this.setState({item: item});
+			this.setState({item: item, search:''});
 		}
 	}
 
@@ -262,6 +263,7 @@ export default class FormView extends Component{
 				<div className='search'>
 					<input type='text'
 						   placeholder='Enter ISBN'
+						   value={this.state.search}
 						   onChange={(e)=>{this.setState({search:e.target.value})}}
 						   onKeyPress={this.enterPress}/>
 					<button type='button' onClick={this.bookSearch}>Search</button>
