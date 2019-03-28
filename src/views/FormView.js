@@ -30,6 +30,7 @@ export default class FormView extends Component{
 			})
 		}
 		item.datePurchased = today;
+		item.consignment = 0;
 		item.siteListed = [true, false];
 		this.state = {
 			today: today,
@@ -228,6 +229,7 @@ export default class FormView extends Component{
 				})
 			}
 			item.datePurchased = this.state.today;
+			item.consignment = 0;
 			item.siteListed = [true, false];
 			this.setState({item: item, search:''});
 		}
