@@ -99,13 +99,9 @@ export default class FormView extends Component{
 		if(this.props.type === 'book'){
 			fields = fields.concat(bookFields);
 		}
-		let fieldsStatus = fields.reduce((status, field) => {
+		return fields.reduce((status, field) => {
 			return status && (this.state.item[field] || this.state.item[field] === 0);
 		}, true);
-		let sitesStatus = this.state.item.siteListed.reduce((status, site) => {
-			return status || site;
-		}, false);
-		return fieldsStatus && sitesStatus;
 	}
 
 	handleSubmit = () => {

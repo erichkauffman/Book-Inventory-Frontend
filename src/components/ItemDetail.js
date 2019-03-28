@@ -6,9 +6,12 @@ const sites = ['Amazon', 'EBay'];
 const consign = ['no', 'yes'];
 
 const displaySites = (siteNums) => {
-	return siteNums.map((siteNum) => {
+	let siteString = siteNums.map((siteNum) => {
 		return sites[siteNum];
 	}).join(', ');
+	if(siteString === ''){
+		return 'None';
+	}
 }
 
 const getBookAndUPCDetail = (item, type) => {
