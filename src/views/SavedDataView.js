@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { commitPhrase, deletePhrase, commitLocation, deleteLocation } from '../lib/ItemRoutes';
+import { commitSavedData, deleteSavedData } from '../lib/ItemRoutes';
 import deleteImg from '../images/DeleteButton.png';
 
 import './SavedDataView.css';
@@ -7,7 +7,7 @@ import './SavedDataView.css';
 export default class SavedDataView extends Component{
 	constructor(props){
 		super(props);
-		const categories = ['phrases', 'locations'];
+		const categories = props.categories;
 		this.state = {
 			categories: categories,
 			current: categories[0]
@@ -27,16 +27,12 @@ export default class SavedDataView extends Component{
 	}
 
 	deleteData = (data) => {
-		if(this.state.current === 'phrases'){
-			deletePhrase(data);
-		}else if(this.state.current === 'locations'){
-			deleteLocation(data);
-		}
+		deleteSavedData(this.state.current, data);
 	}
 
 	displayInfo = () => {
-		if(this.props[this.state.current]){
-			return this.props[this.state.current].map((info) => {
+		if(this.props.data[this.state.current]){
+			return this.props.data[this.state.current].map((info) => {
 				return(
 					<div key={info} className='savedDataDiv'>
 						<p>{info}</p>
@@ -50,11 +46,7 @@ export default class SavedDataView extends Component{
 	addData = () => {
 		let data = prompt(`Add ${this.state.current}`);
 		if(data){
-			if(this.state.current === 'phrases'){
-				commitPhrase(data);
-			}else if(this.state.current === 'locations'){
-				commitLocation(data);
-			}
+			commitSavedData(this.state.current, data);
 		}
 	}
 
