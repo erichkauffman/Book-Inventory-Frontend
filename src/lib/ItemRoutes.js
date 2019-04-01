@@ -57,28 +57,16 @@ export const commitRemoveAction = (id, status) => {
 	});
 }
 
-export const getLocations = () => {
-	return getJson(`${apiPath}/locations/`);
+export const getSavedData = (type) => {
+	return getJson(`${apiPath}/savedData/${type}/`);
 }
 
-export const commitLocation = (location) => {
-	sendJson(`${apiPath}/locations/`, 'POST', {data:location});
+export const commitSavedData = (type, data) => {
+	sendJson(`${apiPath}/savedData/${type}/`, 'POST', {data: data});
 }
 
-export const deleteLocation = (location) => {
-	sendJson(`${apiPath}/locations/`, 'DELETE', {data:location});
-}
-
-export const getPhrases = () => {
-	return getJson(`${apiPath}/phrases/`);
-}
-
-export const commitPhrase = (phrase) => {
-	sendJson(`${apiPath}/phrases/`, 'POST', {data:phrase});
-}
-
-export const deletePhrase = (phrase) => {
-	sendJson(`${apiPath}/phrases/`, 'DELETE', {data:phrase});
+export const deleteSavedData = (type, data) => {
+	sendJson(`${apiPath}/savedData/${type}/`, 'DELETE', {data: data});
 }
 
 export const searchBookByIsbn = (isbn) => {
