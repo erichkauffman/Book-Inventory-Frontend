@@ -12,7 +12,7 @@ import { apiPath } from './config';
 
 import './App.css';
 
-const savedDataCategories = ['phrases', 'locations'];
+const savedDataCategories = ['phrases', 'locations', 'shelves'];
 
 export default class App extends Component {
 	constructor(){
@@ -144,6 +144,7 @@ export default class App extends Component {
 												id={match.params.id}
 												phrases={this.state.phrases}
 												locations={this.state.locations}
+												shelves={this.state.shelves}
 												/>
 						   }}/>
 
@@ -155,6 +156,7 @@ export default class App extends Component {
 												type={match.params.type}
 												phrases={this.state.phrases}
 												locations={this.state.locations}
+												shelves={this.state.shelves}
 							   />
 						   }}/>
 					<Route path='/data/'
