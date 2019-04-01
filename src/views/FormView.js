@@ -86,13 +86,15 @@ export default class FormView extends Component{
 	}
 
 	createOptions = (options, placeholder=false) => {
-		let ops = options.map((option) => {
-			return <option key={option} value={option}>{option}</option>
-		});
-		if(placeholder){
-			ops.push(<option key='empty' value='' disabled>Select</option>);
+		if(options){
+			let ops = options.map((option) => {
+				return <option key={option} value={option}>{option}</option>
+			});
+			if(placeholder){
+				ops.push(<option key='empty' value='' disabled>Select</option>);
+			}
+			return ops;
 		}
-		return ops;
 	}
 
 	checkFields = () => {
@@ -190,17 +192,10 @@ export default class FormView extends Component{
 		}
 	}
 
-	newLocation = () => {
-		let location = prompt('Add location');
-		if(location){
-			commitSavedData('locations', location);
-		}
-	}
-
-	newPhrase = () => {
-		let phrase = prompt('Add phrase');
-		if(phrase){
-			commitSavedData('phrases', phrase);
+	newSavedData = (dataType) => {
+		let data = prompt(`Add ${dataType}`);
+		if(data){
+			commitSavedData(dataType, data);
 		}
 	}
 
@@ -307,7 +302,7 @@ export default class FormView extends Component{
 					<textarea name='description' value={this.state.item.description} onChange={this.onChange}/>
 					<br/>
 					<select value='' onChange={this.selectPhrase}>{this.createOptions(this.props.phrases, true)}</select>
-					<button type='button' onClick={this.newPhrase}>Add Phrase</button>
+					<button type='button' onClick={(e)=>{this.newSavedData('phrases')}}>Add Phrase</button>
 					<p>Condition:</p>
 					{this.createRadioButtons(['New', 'Like New', 'Very Good', 'Good', 'Acceptable'], 'condition')}
 					<br/>
@@ -325,7 +320,7 @@ export default class FormView extends Component{
 					<label>Location Purchased:</label>
 					<input type='text' list='locations' name='locationPurchased' value={this.state.item.locationPurchased} onChange={this.onChange}/>
 					<datalist id='locations'>{this.createOptions(this.props.locations)}</datalist>
-					<button type='button' onClick={this.newLocation}>Add location</button>
+					<button type='button' onClick={(e)=>{this.newSavedData('locations')}}>Add location</button>
 					<br/>
 					<p>Consignment:</p>
 					{this.createRadioButtons(['no', 'yes'], 'consignment')}
@@ -340,7 +335,9 @@ export default class FormView extends Component{
 					{this.createSitesButtons()}
 					<br/>
 					<label>Shelf Location:</label>
-					<input type='text' name='shelfLocation' value={this.state.item.shelfLocation} onChange={this.onChange}/>
+					<input type='text' list='shelves' name='shelfLocation' value={this.state.item.shelfLocation} onChange={this.onChange}/>
+					<datalist id='shelves'>{this.createOptions(this.props.shelves)}</datalist>
+					<button type='button' onClick={(e)=>{this.newSavedData('shelves')}}>Add Shelf</button>
 				</form>
 				<div className='buttonHolder'>
 					<Link className='cancelLink' to={`/list/${this.props.type}`}>
