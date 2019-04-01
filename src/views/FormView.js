@@ -6,7 +6,7 @@ import moment from 'moment';
 import 'react-dates/lib/css/_datepicker.css';
 
 import { commitNewInventory, getItemById, updateInventory,
-		 searchBookByIsbn, commitLocation, commitPhrase } from '../lib/ItemRoutes';
+		 searchBookByIsbn, commitSavedData } from '../lib/ItemRoutes';
 import './FormView.css';
 
 const itemFields = ['title', 'upc', 'year', 'description', 'condition', 'datePurchased',
@@ -193,14 +193,14 @@ export default class FormView extends Component{
 	newLocation = () => {
 		let location = prompt('Add location');
 		if(location){
-			commitLocation(location);
+			commitSavedData('locations', location);
 		}
 	}
 
 	newPhrase = () => {
 		let phrase = prompt('Add phrase');
 		if(phrase){
-			commitPhrase(phrase);
+			commitSavedData('phrases', phrase);
 		}
 	}
 

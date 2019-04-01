@@ -7,10 +7,12 @@ import FormView from './views/FormView';
 import SavedDataView from './views/SavedDataView';
 import Header from './components/Header';
 import NotFound from './components/NotFound';
-import { getSellableInventory, getLocations, getPhrases } from './lib/ItemRoutes';
+import { getSellableInventory, getSavedData } from './lib/ItemRoutes';
 import { apiPath } from './config';
 
 import './App.css';
+
+const savedDataCategories = ['phrases', 'locations'];
 
 export default class App extends Component {
 	constructor(){
@@ -18,8 +20,6 @@ export default class App extends Component {
 		this.state = {
 			items: [],
 			books: [],
-			locations: [],
-			phrases: [],
 			socket: io.connect(apiPath)
 		}
 	}
@@ -65,6 +65,14 @@ export default class App extends Component {
 		this.setState({[type]:data});
 	}
 
+	gatherData = () => {
+		let data = {};
+		savedDataCategories.forEach((dataType) => {
+			data[dataType] = this.state[dataType];
+		});
+		return data;
+	}
+
 	connectionError = () => {
 		if(this.state.connectionError){
 			return(<h3 className='serverError'>Oh no! No connection to server! Changes cannot be saved!</h3>)
@@ -84,10 +92,14 @@ export default class App extends Component {
 		socket.on('delete_item', (itemId)=>{this.removeItem(parseInt(itemId))});
 		socket.on('update_item', (item)=>{this.updateItem(JSON.parse(item), 'items')})
 		socket.on('update_book', (book)=>{this.updateItem(JSON.parse(book), 'books')})
-		socket.on('new_location', (location)=>{(this.saveData(location, 'locations'))});
-		socket.on('new_phrase', (phrase)=>{(this.saveData(phrase, 'phrases'))});
-		socket.on('delete_location', (location)=>{this.deleteData(location, 'locations')});
-		socket.on('delete_phrase', (phrase)=>{(this.deleteData(phrase, 'phrases'))});
+		socket.on('new_data', (jsonData) => {
+			let data = JSON.parse(jsonData);
+			this.saveData(data.data, data.type);
+		});
+		socket.on('delete_data', (jsonData) => {
+			let data = JSON.parse(jsonData);
+			this.deleteData(data.data, data.type);
+		});
 		socket.on('connect', ()=>{this.setState({connectionError: false})});
 		socket.on('connect_error', ()=>{this.setState({connectionError: true})});
 		this.setState({socket:socket});
@@ -96,10 +108,10 @@ export default class App extends Component {
 	componentDidMount(){
 		let itemPromise = getSellableInventory('items');
 		let bookPromise = getSellableInventory('books');
-		let locationPromise = getLocations();
-		let phrasePromise  = getPhrases();
-		this.setStatePromise('locations', locationPromise);
-		this.setStatePromise('phrases', phrasePromise);
+		savedDataCategories.forEach((dataType) => {
+			let dataPromise = getSavedData(dataType);
+			this.setStatePromise(dataType, dataPromise);
+		});
 		this.setStatePromise('books', bookPromise);
 		this.setStatePromise('items', itemPromise);
 		this.setSocketConnections();
@@ -140,15 +152,15 @@ export default class App extends Component {
 					<Route path='/form/:type/'
 						   render={({match}) => {
 							   return <FormView key={match.params.type}
-							   					type={match.params.type}
-								   				phrases={this.state.phrases}
+												type={match.params.type}
+												phrases={this.state.phrases}
 												locations={this.state.locations}
 							   />
 						   }}/>
 					<Route path='/data/'
 						   render={()=>{
-							   return <SavedDataView phrases={this.state.phrases}
-							   						 locations={this.state.locations}
+							   return <SavedDataView categories={savedDataCategories}
+													 data={this.gatherData()}
 									  />
 						   }}/>
 					<Route component={NotFound}/>
