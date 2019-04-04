@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { commitSavedData, deleteSavedData } from '../lib/ItemRoutes';
-import deleteImg from '../images/DeleteButton.png';
+import { commitSavedData, deleteSavedData } from '../../lib/ItemRoutes';
+import deleteImg from '../../images/DeleteButton.png';
 
 import './SavedDataView.css';
 

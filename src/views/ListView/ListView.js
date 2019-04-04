@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import ListItem from '../components/ListItem';
-import ItemDetail from '../components/ItemDetail';
-import Selector from '../components/Selector';
-import NotFound from '../components/NotFound';
-import { commitRemoveAction, getItemById } from '../lib/ItemRoutes';
+import ListItem from '../../components/ListItem';
+import ItemDetail from '../../components/ItemDetail';
+import Selector from '../../components/Selector';
+import NotFound from '../../components/NotFound';
+import { commitRemoveAction, getItemById } from '../../lib/ItemRoutes';
 import './ListView.css';
 
 const itemHeight = 56;
