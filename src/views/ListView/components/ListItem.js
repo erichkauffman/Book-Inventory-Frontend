@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './ListItem.css';
-import editImg from '../images/EditButton.png';
-import copyImg from '../images/CopyButton.png';
-import sellImg from '../images/MoneyButton.png';
-import deleteImg from '../images/DeleteButton.png';
+import editImg from '../../../images/EditButton.png';
+import copyImg from '../../../images/CopyButton.png';
+import sellImg from '../../../images/MoneyButton.png';
+import deleteImg from '../../../images/DeleteButton.png';
 
 const handleClick = (props) => {
 	props.onClick(props.itemId);

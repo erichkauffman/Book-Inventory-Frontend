@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import io from 'socket.io-client';
 
-import ListView from './views/ListView';
-import FormView from './views/FormView';
-import SavedDataView from './views/SavedDataView';
+import ListView from './views/ListView/ListView';
+import FormView from './views/FormView/FormView';
+import SavedDataView from './views/SavedDataView/SavedDataView';
 import Header from './components/Header';
 import NotFound from './components/NotFound';
 import { getSellableInventory, getSavedData } from './lib/ItemRoutes';
