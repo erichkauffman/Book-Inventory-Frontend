@@ -43,10 +43,10 @@ export default class SavedDataView extends Component{
 		}
 	}
 
-	addData = () => {
-		let data = prompt(`Add ${this.state.current}`);
+	addData = (current) => {
+		let data = prompt(`Add ${current}`);
 		if(data){
-			commitSavedData(this.state.current, data);
+			commitSavedData(current, data);
 		}
 	}
 
@@ -54,7 +54,7 @@ export default class SavedDataView extends Component{
 		return(
 			<div>
 				<select className='savedDataSelect' value={this.state.current} onChange={this.setCategory}>{this.createOptions()}</select>
-				<button className='savedDataButton' onClick={this.addData}>Add {this.state.current}</button>
+				<button className='savedDataButton' onClick={() => {this.addData(this.state.current)}}>Add {this.state.current}</button>
 				{this.displayInfo()}
 			</div>
 		);
