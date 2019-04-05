@@ -9,33 +9,31 @@ import { commitNewInventory, getItemById, updateInventory,
 		 searchBookByIsbn, commitSavedData } from '../../lib/ItemRoutes';
 import './FormView.css';
 
-const itemFields = ['title', 'upc', 'year', 'description', 'condition', 'datePurchased',
-				'locationPurchased', 'consignment', 'amountPaid', 'sellPrice',
-				'shelfLocation'];
-const bookFields = ['author', 'edition', 'printing', 'cover'];
 const sites = ['Amazon', 'EBay'];
 
 export default class FormView extends Component{
 
 	constructor(props){
 		super(props);
-		let today = moment();
 		let item = {};
+		let itemFields = ['title', 'upc', 'year', 'description', 'condition', 'datePurchased',
+				'locationPurchased', 'consignment', 'amountPaid', 'sellPrice',
+				'shelfLocation'];
+		if(props.type === 'book'){
+			itemFields = itemFields.concat(['author', 'edition', 'printing', 'cover']);
+		}
 		itemFields.forEach((field) => {
 			item[field] = '';
 		});
-		if(props.type === 'book'){
-			bookFields.forEach((field) => {
-				item[field] = '';
-			})
-		}
+		let today = moment();
 		item.datePurchased = today;
 		item.consignment = 0;
 		item.siteListed = [true, false];
 		this.state = {
 			today: today,
 			item: item,
-			search: ''
+			search: '',
+			fields: itemFields
 		}
 	}
 
@@ -97,18 +95,13 @@ export default class FormView extends Component{
 		}
 	}
 
-	checkFields = () => {
-		let fields = itemFields;
-		if(this.props.type === 'book'){
-			fields = fields.concat(bookFields);
-		}
+	checkFields = (item, fields) => {
 		return fields.reduce((status, field) => {
-			return status && (this.state.item[field] || this.state.item[field] === 0);
+			return status && (item[field] || item[field] === 0);
 		}, true);
 	}
 
-	handleSubmit = () => {
-		let item = {...this.state.item};
+	handleSubmit = (item, type, mode) => {
 		let sites = [];
 		item.siteListed.forEach((element, index) => {
 			if(element){
@@ -116,7 +109,7 @@ export default class FormView extends Component{
 			}
 		});
 		item.siteListed = sites;
-		if(this.props.mode !== 'edit'){
+		if(mode !== 'edit'){
 			item.itemId = null;
 		}
 		item.removalAction = null;
@@ -124,24 +117,23 @@ export default class FormView extends Component{
 		item.amountPaid = item.amountPaid * 100;
 		item.sellPrice = item.sellPrice * 100;
 		item.datePurchased = item.datePurchased.format('YYYY-MM-DD');
-		if(this.props.mode === 'edit'){
-			updateInventory(`${this.props.type}s`, item);
+		if(mode === 'edit'){
+			updateInventory(`${type}s`, item);
 		}else{
-			commitNewInventory(`${this.props.type}s`, item);
+			commitNewInventory(`${type}s`, item);
 		}
 	}
 
 	submitAndContinue = () => {
-		this.handleSubmit();
+		this.handleSubmit({...this.state.item}, this.props.type, this.props.mode);
 		this.resetFields();
 	}
 
 	submitAndFinish = () => {
-		this.handleSubmit();
+		this.handleSubmit({...this.state.item}, this.props.type, this.props.mode);
 		this.setState({
 			finish: true
 		});
-
 	}
 
 	getInventoryItem = () => {
@@ -185,10 +177,10 @@ export default class FormView extends Component{
 		});
 	}
 
-	enterPress = (e) => {
+	enterPress = (e, func) => {
 		let keyCode = e.keyCode || e.which;
 		if(keyCode === 13){
-			this.bookSearch(e);
+			func(e);
 		}
 	}
 
@@ -215,14 +207,9 @@ export default class FormView extends Component{
 			this.getInventoryItem();
 		}else{
 			let item = {};
-			itemFields.forEach((field) => {
+			this.state.fields.forEach((field) => {
 				item[field] = '';
 			});
-			if(this.props.type === 'book'){
-				bookFields.forEach((field) => {
-					item[field] = '';
-				})
-			}
 			item.datePurchased = this.state.today;
 			item.consignment = 0;
 			item.siteListed = [true, false];
@@ -258,7 +245,7 @@ export default class FormView extends Component{
 						   placeholder='Enter ISBN'
 						   value={this.state.search}
 						   onChange={(e)=>{this.setState({search:e.target.value})}}
-						   onKeyPress={this.enterPress}/>
+						   onKeyPress={(e) => {this.enterPress(e, this.bookSearch)}}/>
 					<button type='button' onClick={this.bookSearch}>Search</button>
 				</div>);
 		}
@@ -267,7 +254,7 @@ export default class FormView extends Component{
 	renderSaveAndNew = () => {
 		if(this.props.mode !== 'edit'){
 			return(
-				<div className={this.checkFields()?'submit':'submitDisabled'} onClick={this.submitAndContinue}>
+				<div className={this.checkFields(this.state.item, this.state.fields)?'submit':'submitDisabled'} onClick={this.submitAndContinue}>
 					<p>Save and new {this.props.type}</p>
 				</div>
 			);
@@ -348,7 +335,7 @@ export default class FormView extends Component{
 					<div className='divButton' onClick={this.resetFields}>
 						<p>{this.props.id?'Reset':'Clear'}</p>
 					</div>
-					<div className={this.checkFields()?'submit':'submitDisabled'} onClick={this.submitAndFinish}>
+					<div className={this.checkFields(this.state.item, this.state.fields)?'submit':'submitDisabled'} onClick={this.submitAndFinish}>
 						<p>Save</p>
 					</div>
 					{this.renderSaveAndNew()}

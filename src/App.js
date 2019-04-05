@@ -30,10 +30,20 @@ export default class App extends Component {
 		});
 	}
 
-	removeItem = (itemId, type='books') => {
-		let items = this.state[type].filter((item) => {
+	filterOutId = (itemId, itemList) => {
+		return itemList.filter((item) => {
 			return item.itemId !== itemId;
 		});
+	}
+
+	filterOutExactData = (dataString, dataList) => {
+		return dataList.filter((data) => {
+			return data !== dataString;
+		});
+	}
+
+	removeItem = (itemId, type='books') => {
+		let items = this.filterOutId(itemId, this.state[type]);
 		this.setState({
 			[type]: items
 		});
@@ -59,29 +69,27 @@ export default class App extends Component {
 	}
 
 	deleteData = (dataString, type) => {
-		let data = this.state[type].filter((data) => {
-			return dataString !== data;
-		});
+		let data = this.filterOutExactData(dataString, this.state[type]);
 		this.setState({[type]:data});
 	}
 
-	gatherData = () => {
+	gatherData = (dataTypeList) => {
 		let data = {};
-		savedDataCategories.forEach((dataType) => {
+		dataTypeList.forEach((dataType) => {
 			data[dataType] = this.state[dataType];
 		});
 		return data;
 	}
 
-	connectionError = () => {
-		if(this.state.connectionError){
+	connectionError = (err) => {
+		if(err){
 			return(<h3 className='serverError'>Oh no! No connection to server! Changes cannot be saved!</h3>)
 		}
 	}
 
-	envWarning = () => {
-		if(process.env.REACT_APP_ENV === 'Staging'){
-			return(<div className='envWarning'>Warning: Use For Testing Only!</div>)
+	envWarning = (envType) => {
+		if(envType === 'Staging' || 'Development'){
+			return(<div className='envWarning'>{envType}: Use For Testing Only!</div>)
 		}
 	}
 
@@ -121,8 +129,8 @@ export default class App extends Component {
 		return (
 			<div className="App">
 				<Header/>
-				{this.connectionError()}
-				{this.envWarning()}
+				{this.connectionError(this.state.connectionError)}
+				{this.envWarning(process.env.REACT_APP_ENV)}
 				<Switch>
 					<Redirect exact from='/' to='/list/items'/>
 					<Redirect from='/list/item' to='/list/items'/>
@@ -162,7 +170,7 @@ export default class App extends Component {
 					<Route path='/data/'
 						   render={()=>{
 							   return <SavedDataView categories={savedDataCategories}
-													 data={this.gatherData()}
+													 data={this.gatherData(savedDataCategories)}
 									  />
 						   }}/>
 					<Route component={NotFound}/>
