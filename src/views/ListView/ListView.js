@@ -65,11 +65,11 @@ export default class ListView extends Component{
 		});
 	}
 
-	createList = () => {
-		if(!this.props.items){
+	createList = (unfilteredItems) => {
+		if(!unfilteredItems){
 			return(<NotFound/>);
 		}
-		let items = this.props.items;
+		let items = unfilteredItems;
 		if(this.state.search){
 			items = items.filter((item) => {
 				return item[this.state.filter].toString().toLowerCase().includes(this.state.search.toLowerCase());
@@ -91,6 +91,7 @@ export default class ListView extends Component{
 							 buttonClick={this.handleRemove}/>
 				);
 			}
+			return null;
 		});
 		return(
 			<div className='list' style={{height:(numItems*itemHeight), paddingTop:(start*itemHeight)}}>
@@ -98,9 +99,9 @@ export default class ListView extends Component{
 			</div>);
 	}
 
-	renderDetail = () => {
-		if(this.state.itemDetailRender){
-			return(<ItemDetail item={this.state.itemDetailRender} type={this.props.type}/>);
+	renderDetail = (item, type) => {
+		if(item){
+			return(<ItemDetail item={item} type={type}/>);
 		}
 	}
 
@@ -126,11 +127,11 @@ export default class ListView extends Component{
 						{this.createSelectors()}
 					</div>
 					<div className='listContainer' onScroll={(e)=>{this.setState({scroll:e.target.scrollTop})}}>
-						{this.createList()}
+						{this.createList(this.props.items)}
 					</div>
 				</div>
 				<div className='detail'>
-					{this.renderDetail()}
+					{this.renderDetail(this.state.itemDetailRender, this.props.type)}
 				</div>
 			</div>
 		);
