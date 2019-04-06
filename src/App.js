@@ -8,6 +8,7 @@ import SavedDataView from './views/SavedDataView/SavedDataView';
 import Header from './components/Header';
 import NotFound from './components/NotFound';
 import { getSellableInventory, getSavedData } from './lib/ItemRoutes';
+import { filterOutId, filterOutExactData } from './lib/filters';
 import { apiPath } from './config';
 
 import './App.css';
@@ -30,20 +31,8 @@ export default class App extends Component {
 		});
 	}
 
-	filterOutId = (itemId, itemList) => {
-		return itemList.filter((item) => {
-			return item.itemId !== itemId;
-		});
-	}
-
-	filterOutExactData = (dataString, dataList) => {
-		return dataList.filter((data) => {
-			return data !== dataString;
-		});
-	}
-
 	removeItem = (itemId, type='books') => {
-		let items = this.filterOutId(itemId, this.state[type]);
+		let items = filterOutId(itemId, this.state[type]);
 		this.setState({
 			[type]: items
 		});
@@ -69,7 +58,7 @@ export default class App extends Component {
 	}
 
 	deleteData = (dataString, type) => {
-		let data = this.filterOutExactData(dataString, this.state[type]);
+		let data = filterOutExactData(dataString, this.state[type]);
 		this.setState({[type]:data});
 	}
 
