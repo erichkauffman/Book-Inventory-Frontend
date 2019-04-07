@@ -9,6 +9,9 @@ import RadioButtons from './components/RadioButtons';
 import CheckBoxes from './components/CheckBoxes';
 import { commitNewInventory, getItemById, updateInventory,
 		 searchBookByIsbn, commitSavedData } from '../../lib/ItemRoutes';
+import { checkFields } from './lib/checkFields';
+import { keyPress } from './lib/keyPress';
+import { trueIndecies } from './lib/trueIndecies';
 import './FormView.css';
 
 const sites = ['Amazon', 'EBay'];
@@ -77,20 +80,8 @@ export default class FormView extends Component{
 		}
 	}
 
-	checkFields = (item, fields) => {
-		return fields.reduce((status, field) => {
-			return status && (item[field] || item[field] === 0);
-		}, true);
-	}
-
 	handleSubmit = (item, type, mode) => {
-		let sites = [];
-		item.siteListed.forEach((element, index) => {
-			if(element){
-				sites.push(index);
-			}
-		});
-		item.siteListed = sites;
+		item.siteListed = trueIndecies(item.siteListed);
 		if(mode !== 'edit'){
 			item.itemId = null;
 		}
@@ -159,13 +150,6 @@ export default class FormView extends Component{
 		});
 	}
 
-	enterPress = (e, func) => {
-		let keyCode = e.keyCode || e.which;
-		if(keyCode === 13){
-			func(e);
-		}
-	}
-
 	newSavedData = (dataType) => {
 		let data = prompt(`Add ${dataType}`);
 		if(data){
@@ -231,7 +215,7 @@ export default class FormView extends Component{
 						   placeholder='Enter ISBN'
 						   value={this.state.search}
 						   onChange={(e)=>{this.setState({search:e.target.value})}}
-						   onKeyPress={(e) => {this.enterPress(e, this.bookSearch)}}/>
+						   onKeyPress={(e) => {keyPress(e, 13, this.bookSearch)}}/>
 					<button type='button' onClick={this.bookSearch}>Search</button>
 				</div>);
 		}
@@ -240,7 +224,7 @@ export default class FormView extends Component{
 	renderSaveAndNew = () => {
 		if(this.props.mode !== 'edit'){
 			return(
-				<div className={this.checkFields(this.state.item, this.state.fields)?'submit':'submitDisabled'} onClick={this.submitAndContinue}>
+				<div className={checkFields(this.state.item, this.state.fields)?'submit':'submitDisabled'} onClick={this.submitAndContinue}>
 					<p>Save and new {this.props.type}</p>
 				</div>
 			);
@@ -331,7 +315,7 @@ export default class FormView extends Component{
 					<div className='divButton' onClick={this.resetFields}>
 						<p>{this.props.id?'Reset':'Clear'}</p>
 					</div>
-					<div className={this.checkFields(this.state.item, this.state.fields)?'submit':'submitDisabled'} onClick={this.submitAndFinish}>
+					<div className={checkFields(this.state.item, this.state.fields)?'submit':'submitDisabled'} onClick={this.submitAndFinish}>
 						<p>Save</p>
 					</div>
 					{this.renderSaveAndNew()}

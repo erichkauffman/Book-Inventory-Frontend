@@ -12,6 +12,7 @@ const displaySites = (siteNums) => {
 	if(siteString === ''){
 		return 'None';
 	}
+	return siteString;
 }
 
 const getBookAndUPCDetail = (item, type) => {
