@@ -69,18 +69,6 @@ export default class FormView extends Component{
 		});
 	}
 
-	createOptions = (options, placeholder=false) => {
-		if(options){
-			let ops = options.map((option) => {
-				return <option key={option} value={option}>{option}</option>
-			});
-			if(placeholder){
-				ops.push(<option key='empty' value='' disabled>Select</option>);
-			}
-			return ops;
-		}
-	}
-
 	handleSubmit = (item, type, mode) => {
 		item.siteListed = trueIndecies(item.siteListed);
 		if(mode !== 'edit'){
