@@ -5,6 +5,8 @@ import { SingleDatePicker } from 'react-dates';
 import moment from 'moment';
 import 'react-dates/lib/css/_datepicker.css';
 
+import RadioButtons from './components/RadioButtons';
+import CheckBoxes from './components/CheckBoxes';
 import { commitNewInventory, getItemById, updateInventory,
 		 searchBookByIsbn, commitSavedData } from '../../lib/ItemRoutes';
 import './FormView.css';
@@ -60,26 +62,6 @@ export default class FormView extends Component{
 		item.datePurchased = value;
 		this.setState({
 			item: item
-		});
-	}
-
-	createRadioButtons = (labels, name) => {
-		return labels.map((label, index) => {
-			return(
-				<label key={index}>{label}
-					<input type='radio' name={name} value={index} onChange={this.onChange} checked={parseInt(this.state.item[name])===index}/>
-				</label>
-			);
-		});
-	}
-
-	createSitesButtons = () => {
-		return sites.map((site, index) => {
-			return(
-				<label key={index}>{site}
-					<input type='checkbox' name='siteListed' value={index} onChange={this.onChangeCheckbox} checked={this.state.item.siteListed[index]}/>
-				</label>
-			);
 		});
 	}
 
@@ -231,7 +213,11 @@ export default class FormView extends Component{
 					<input type='number' name='printing' value={this.state.item.printing} onChange={this.onChange}/>
 					<br/>
 					<p>Cover:</p>
-					{this.createRadioButtons(['Hard', 'Soft'], 'cover')}
+					<RadioButtons name='cover'
+								  labels={['Hard', 'Soft']}
+								  onChange={this.onChange}
+								  checkedValue={this.state.item.cover}/>
+					<br/>
 				</div>
 			);
 		}
@@ -291,7 +277,10 @@ export default class FormView extends Component{
 					<select value='' onChange={this.selectPhrase}>{this.createOptions(this.props.phrases, true)}</select>
 					<button type='button' onClick={(e)=>{this.newSavedData('phrases')}}>Add Phrase</button>
 					<p>Condition:</p>
-					{this.createRadioButtons(['New', 'Like New', 'Very Good', 'Good', 'Acceptable'], 'condition')}
+					<RadioButtons name='condition'
+								  labels={['New', 'Like New', 'Very Good', 'Good', 'Acceptable']}
+								  onChange={this.onChange}
+								  checkedValue={this.state.item.condition}/>
 					<br/>
 					<label>Date Purchased:</label>
 					<SingleDatePicker date={this.state.item.datePurchased}
@@ -310,7 +299,10 @@ export default class FormView extends Component{
 					<button type='button' onClick={(e)=>{this.newSavedData('locations')}}>Add location</button>
 					<br/>
 					<p>Consignment:</p>
-					{this.createRadioButtons(['no', 'yes'], 'consignment')}
+					<RadioButtons name='consignment'
+								  labels={['no', 'yes']}
+								  onChange={this.onChange}
+								  checkedValue={this.state.item.consignment}/>
 					<br/>
 					<label>Amount Paid:</label>
 					<input type='number' step='0.01' name='amountPaid' value={this.state.item.amountPaid} onChange={this.onChange}/>
@@ -319,7 +311,11 @@ export default class FormView extends Component{
 					<input type='number' step='0.01' name='sellPrice' value={this.state.item.sellPrice} onChange={this.onChange}/>
 					<br/>
 					<p>Site Listed:</p>
-					{this.createSitesButtons()}
+					<CheckBoxes name='siteListed'
+								labels={sites}
+								onChange={this.onChangeCheckbox}
+								checkedValues={this.state.item.siteListed}
+					/>
 					<br/>
 					<label>Shelf Location:</label>
 					<input type='text' list='shelves' name='shelfLocation' value={this.state.item.shelfLocation} onChange={this.onChange}/>
