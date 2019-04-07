@@ -7,6 +7,7 @@ import 'react-dates/lib/css/_datepicker.css';
 
 import RadioButtons from './components/RadioButtons';
 import CheckBoxes from './components/CheckBoxes';
+import Options from './components/Options';
 import { commitNewInventory, getItemById, updateInventory,
 		 searchBookByIsbn, commitSavedData } from '../../lib/ItemRoutes';
 import { checkFields } from './lib/checkFields';
@@ -258,7 +259,9 @@ export default class FormView extends Component{
 					<label>Description:</label>
 					<textarea name='description' value={this.state.item.description} onChange={this.onChange}/>
 					<br/>
-					<select value='' onChange={this.selectPhrase}>{this.createOptions(this.props.phrases, true)}</select>
+					<select value='' onChange={this.selectPhrase}>
+						<Options options={this.props.phrases} placeholder={true}/>
+					</select>
 					<button type='button' onClick={(e)=>{this.newSavedData('phrases')}}>Add Phrase</button>
 					<p>Condition:</p>
 					<RadioButtons name='condition'
@@ -279,7 +282,9 @@ export default class FormView extends Component{
 					<br/>
 					<label>Location Purchased:</label>
 					<input type='text' list='locations' name='locationPurchased' value={this.state.item.locationPurchased} onChange={this.onChange}/>
-					<datalist id='locations'>{this.createOptions(this.props.locations)}</datalist>
+					<datalist id='locations'>
+						<Options options={this.props.locations}/>
+					</datalist>
 					<button type='button' onClick={(e)=>{this.newSavedData('locations')}}>Add location</button>
 					<br/>
 					<p>Consignment:</p>
@@ -303,7 +308,9 @@ export default class FormView extends Component{
 					<br/>
 					<label>Shelf Location:</label>
 					<input type='text' list='shelves' name='shelfLocation' value={this.state.item.shelfLocation} onChange={this.onChange}/>
-					<datalist id='shelves'>{this.createOptions(this.props.shelves)}</datalist>
+					<datalist id='shelves'>
+						<Options options={this.props.shelves}/>
+					</datalist>
 					<button type='button' onClick={(e)=>{this.newSavedData('shelves')}}>Add Shelf</button>
 				</form>
 				<div className='buttonHolder'>
