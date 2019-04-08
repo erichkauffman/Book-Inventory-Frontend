@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import ListItem from './components/ListItem';
 import ItemDetail from './components/ItemDetail';
-import SelectorContainer from './components/SelectorContainer';
+import SelectorGenerator from './components/SelectorGenerator';
 import NotFound from '../../components/NotFound';
 import { commitRemoveAction, getItemById } from '../../lib/ItemRoutes';
 import './ListView.css';
@@ -116,7 +116,7 @@ export default class ListView extends Component{
 				<div className='contain'>
 					<div>
 						<input className='searchBar' type='text' value={this.state.search} onChange={(e)=>{this.setState({search:e.target.value})}}/>
-						<SelectorContainer fields={this.state.fields}
+						<SelectorGenerator fields={this.state.fields}
 										   activated={this.state.filter}
 										   onClick={(value)=>{this.setState({filter:value})}}
 						/>
