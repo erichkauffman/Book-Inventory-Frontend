@@ -5,6 +5,7 @@ import { SingleDatePicker } from 'react-dates';
 import moment from 'moment';
 import 'react-dates/lib/css/_datepicker.css';
 
+import BookSearch from './components/BookSearch';
 import RadioButtons from './components/RadioButtons';
 import CheckBoxes from './components/CheckBoxes';
 import Options from './components/Options';
@@ -196,20 +197,6 @@ export default class FormView extends Component{
 		}
 	}
 
-	renderSearchOption = () => {
-		if(this.props.type === 'book' && !this.props.id){
-			return(
-				<div className='search'>
-					<input type='text'
-						   placeholder='Enter ISBN'
-						   value={this.state.search}
-						   onChange={(e)=>{this.setState({search:e.target.value})}}
-						   onKeyPress={(e) => {keyPress(e, 13, this.bookSearch)}}/>
-					<button type='button' onClick={this.bookSearch}>Search</button>
-				</div>);
-		}
-	}
-
 	renderSaveAndNew = () => {
 		if(this.props.mode !== 'edit'){
 			return(
@@ -232,7 +219,12 @@ export default class FormView extends Component{
 		}
 		return(
 			<div>
-				{this.renderSearchOption()}
+				<BookSearch renderCondition={this.props.type==='book'&&!this.props.id}
+							value={this.state.search}
+							onChange={(e)=>{this.setState({search:e.target.value})}}
+							onKeyPress={(e)=>{keyPress(e, 13, this.bookSearch)}}
+							onClick={this.bookSearch}
+				/>
 				<form>
 					<label>Title:</label>
 					<input type='text' name='title' value={this.state.item.title} onChange={this.onChange}/>
