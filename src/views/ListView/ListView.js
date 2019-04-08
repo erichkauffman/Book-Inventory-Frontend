@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+
 import ListItem from './components/ListItem';
 import ItemDetail from './components/ItemDetail';
-import Selector from './components/Selector';
+import SelectorContainer from './components/SelectorContainer';
 import NotFound from '../../components/NotFound';
 import { commitRemoveAction, getItemById } from '../../lib/ItemRoutes';
 import './ListView.css';
@@ -12,10 +13,15 @@ export default class ListView extends Component{
 
 	constructor(props){
 		super(props);
+		let fields = ['itemId', 'upc', 'title'];
+		if(props.type === 'books'){
+			fields.push('author');
+		}
 		this.state = {
 			itemDetailRender: null,
 			id: null,
 			filter: 'itemId',
+			fields: fields,
 			search: '',
 			scroll: 0,
 			height: 0
@@ -49,20 +55,6 @@ export default class ListView extends Component{
 				console.log("ListItem buttonClick called without proper handling");
 			}
 		}
-	}
-
-	createSelectors = () => {
-		let fields = ['itemId', 'upc', 'title'];
-		if(this.props.type === 'books'){
-			fields = fields.concat(['author']);
-		}
-		return fields.map((field) => {
-			return(<Selector active={this.state.filter===field} 
-							 key={field}
-							 onClick={(value)=>{this.setState({filter:value})}}>
-						{field}
-				   </Selector>);
-		});
 	}
 
 	createList = (unfilteredItems) => {
@@ -124,7 +116,10 @@ export default class ListView extends Component{
 				<div className='contain'>
 					<div>
 						<input className='searchBar' type='text' value={this.state.search} onChange={(e)=>{this.setState({search:e.target.value})}}/>
-						{this.createSelectors()}
+						<SelectorContainer fields={this.state.fields}
+										   activated={this.state.filter}
+										   onClick={(value)=>{this.setState({filter:value})}}
+						/>
 					</div>
 					<div className='listContainer' onScroll={(e)=>{this.setState({scroll:e.target.scrollTop})}}>
 						{this.createList(this.props.items)}
