@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
+import DisplaySavedData from './components/DisplaySavedData';
 import Options from '../../components/Options';
 import { commitSavedData, deleteSavedData } from '../../lib/ItemRoutes';
-import deleteImg from '../../images/DeleteButton.png';
 import './SavedDataView.css';
 
 export default class SavedDataView extends Component{
@@ -21,23 +21,6 @@ export default class SavedDataView extends Component{
 		});
 	}
 
-	deleteData = (data) => {
-		deleteSavedData(this.state.current, data);
-	}
-
-	displayInfo = () => {
-		if(this.props.data[this.state.current]){
-			return this.props.data[this.state.current].map((info) => {
-				return(
-					<div key={info} className='savedDataDiv'>
-						<p>{info}</p>
-						<img src={deleteImg} alt='delete' onClick={() => {this.deleteData(info)}}/>
-					</div>
-				);
-			});
-		}
-	}
-
 	addData = (current) => {
 		let data = prompt(`Add ${current}`);
 		if(data){
@@ -54,7 +37,11 @@ export default class SavedDataView extends Component{
 				<button className='savedDataButton' onClick={() => {this.addData(this.state.current)}}>
 					Add {this.state.current}
 				</button>
-				{this.displayInfo()}
+				<DisplaySavedData
+					data={this.props.data}
+					type={this.state.current}
+					deleteData={deleteSavedData}
+				/>
 			</div>
 		);
 	}
