@@ -7,6 +7,8 @@ import FormView from './views/FormView/FormView';
 import SavedDataView from './views/SavedDataView/SavedDataView';
 import Header from './components/Header';
 import NotFound from './components/NotFound';
+import EnvironmentWarning from './components/EnvironmentWarning';
+import Error from './components/Error';
 import { getSellableInventory, getSavedData } from './lib/ItemRoutes';
 import { filterOutId, filterOutExactData } from './lib/filters';
 import { apiPath } from './config';
@@ -70,18 +72,6 @@ export default class App extends Component {
 		return data;
 	}
 
-	connectionError = (err) => {
-		if(err){
-			return(<h3 className='serverError'>Oh no! No connection to server! Changes cannot be saved!</h3>)
-		}
-	}
-
-	envWarning = (envType) => {
-		if(envType === 'Staging' || 'Development'){
-			return(<div className='envWarning'>{envType}: Use For Testing Only!</div>)
-		}
-	}
-
 	setSocketConnections = () => {
 		let socket = this.state.socket;
 		socket.on('new_item', (item)=>{(this.saveData(JSON.parse(item), 'items'))});
@@ -118,8 +108,8 @@ export default class App extends Component {
 		return (
 			<div className="App">
 				<Header/>
-				{this.connectionError(this.state.connectionError)}
-				{this.envWarning(process.env.REACT_APP_ENV)}
+				<Error err={this.state.connectionError}>No connection to server! Changes cannot be saved!</Error>
+				<EnvironmentWarning envType={process.env.REACT_APP_ENV}/>
 				<Switch>
 					<Redirect exact from='/' to='/list/items'/>
 					<Redirect from='/list/item' to='/list/items'/>

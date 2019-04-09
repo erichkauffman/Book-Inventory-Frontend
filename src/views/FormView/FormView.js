@@ -5,6 +5,10 @@ import { SingleDatePicker } from 'react-dates';
 import moment from 'moment';
 import 'react-dates/lib/css/_datepicker.css';
 
+import BookSearch from './components/BookSearch';
+import RadioButtons from './components/RadioButtons';
+import CheckBoxes from './components/CheckBoxes';
+import Options from '../../components/Options';
 import { commitNewInventory, getItemById, updateInventory,
 		 searchBookByIsbn, commitSavedData } from '../../lib/ItemRoutes';
 import { checkFields } from './lib/checkFields';
@@ -64,38 +68,6 @@ export default class FormView extends Component{
 		this.setState({
 			item: item
 		});
-	}
-
-	createRadioButtons = (labels, name) => {
-		return labels.map((label, index) => {
-			return(
-				<label key={index}>{label}
-					<input type='radio' name={name} value={index} onChange={this.onChange} checked={parseInt(this.state.item[name])===index}/>
-				</label>
-			);
-		});
-	}
-
-	createSitesButtons = () => {
-		return sites.map((site, index) => {
-			return(
-				<label key={index}>{site}
-					<input type='checkbox' name='siteListed' value={index} onChange={this.onChangeCheckbox} checked={this.state.item.siteListed[index]}/>
-				</label>
-			);
-		});
-	}
-
-	createOptions = (options, placeholder=false) => {
-		if(options){
-			let ops = options.map((option) => {
-				return <option key={option} value={option}>{option}</option>
-			});
-			if(placeholder){
-				ops.push(<option key='empty' value='' disabled>Select</option>);
-			}
-			return ops;
-		}
 	}
 
 	handleSubmit = (item, type, mode) => {
@@ -215,23 +187,13 @@ export default class FormView extends Component{
 					<input type='number' name='printing' value={this.state.item.printing} onChange={this.onChange}/>
 					<br/>
 					<p>Cover:</p>
-					{this.createRadioButtons(['Hard', 'Soft'], 'cover')}
+					<RadioButtons name='cover'
+								  labels={['Hard', 'Soft']}
+								  onChange={this.onChange}
+								  checkedValue={this.state.item.cover}/>
+					<br/>
 				</div>
 			);
-		}
-	}
-
-	renderSearchOption = () => {
-		if(this.props.type === 'book' && !this.props.id){
-			return(
-				<div className='search'>
-					<input type='text'
-						   placeholder='Enter ISBN'
-						   value={this.state.search}
-						   onChange={(e)=>{this.setState({search:e.target.value})}}
-						   onKeyPress={(e) => {keyPress(e, 13, this.bookSearch)}}/>
-					<button type='button' onClick={this.bookSearch}>Search</button>
-				</div>);
 		}
 	}
 
@@ -257,7 +219,12 @@ export default class FormView extends Component{
 		}
 		return(
 			<div>
-				{this.renderSearchOption()}
+				<BookSearch renderCondition={this.props.type==='book'&&!this.props.id}
+							value={this.state.search}
+							onChange={(e)=>{this.setState({search:e.target.value})}}
+							onKeyPress={(e)=>{keyPress(e, 13, this.bookSearch)}}
+							onClick={this.bookSearch}
+				/>
 				<form>
 					<label>Title:</label>
 					<input type='text' name='title' value={this.state.item.title} onChange={this.onChange}/>
@@ -272,10 +239,15 @@ export default class FormView extends Component{
 					<label>Description:</label>
 					<textarea name='description' value={this.state.item.description} onChange={this.onChange}/>
 					<br/>
-					<select value='' onChange={this.selectPhrase}>{this.createOptions(this.props.phrases, true)}</select>
+					<select value='' onChange={this.selectPhrase}>
+						<Options options={this.props.phrases} placeholder={true}/>
+					</select>
 					<button type='button' onClick={(e)=>{this.newSavedData('phrases')}}>Add Phrase</button>
 					<p>Condition:</p>
-					{this.createRadioButtons(['New', 'Like New', 'Very Good', 'Good', 'Acceptable'], 'condition')}
+					<RadioButtons name='condition'
+								  labels={['New', 'Like New', 'Very Good', 'Good', 'Acceptable']}
+								  onChange={this.onChange}
+								  checkedValue={this.state.item.condition}/>
 					<br/>
 					<label>Date Purchased:</label>
 					<SingleDatePicker date={this.state.item.datePurchased}
@@ -290,11 +262,16 @@ export default class FormView extends Component{
 					<br/>
 					<label>Location Purchased:</label>
 					<input type='text' list='locations' name='locationPurchased' value={this.state.item.locationPurchased} onChange={this.onChange}/>
-					<datalist id='locations'>{this.createOptions(this.props.locations)}</datalist>
+					<datalist id='locations'>
+						<Options options={this.props.locations}/>
+					</datalist>
 					<button type='button' onClick={(e)=>{this.newSavedData('locations')}}>Add location</button>
 					<br/>
 					<p>Consignment:</p>
-					{this.createRadioButtons(['no', 'yes'], 'consignment')}
+					<RadioButtons name='consignment'
+								  labels={['no', 'yes']}
+								  onChange={this.onChange}
+								  checkedValue={this.state.item.consignment}/>
 					<br/>
 					<label>Amount Paid:</label>
 					<input type='number' step='0.01' name='amountPaid' value={this.state.item.amountPaid} onChange={this.onChange}/>
@@ -303,11 +280,17 @@ export default class FormView extends Component{
 					<input type='number' step='0.01' name='sellPrice' value={this.state.item.sellPrice} onChange={this.onChange}/>
 					<br/>
 					<p>Site Listed:</p>
-					{this.createSitesButtons()}
+					<CheckBoxes name='siteListed'
+								labels={sites}
+								onChange={this.onChangeCheckbox}
+								checkedValues={this.state.item.siteListed}
+					/>
 					<br/>
 					<label>Shelf Location:</label>
 					<input type='text' list='shelves' name='shelfLocation' value={this.state.item.shelfLocation} onChange={this.onChange}/>
-					<datalist id='shelves'>{this.createOptions(this.props.shelves)}</datalist>
+					<datalist id='shelves'>
+						<Options options={this.props.shelves}/>
+					</datalist>
 					<button type='button' onClick={(e)=>{this.newSavedData('shelves')}}>Add Shelf</button>
 				</form>
 				<div className='buttonHolder'>

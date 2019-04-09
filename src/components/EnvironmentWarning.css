@@ -1,0 +1,7 @@
+.envWarning{
+	background-color: rgb(255, 141, 141);
+	border: solid red;
+	position: fixed;
+	bottom: 0;
+	right: 0;
+}

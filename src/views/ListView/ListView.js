@@ -1,24 +1,26 @@
 import React, { Component } from 'react';
-import ListItem from './components/ListItem';
-import ItemDetail from './components/ItemDetail';
-import Selector from './components/Selector';
-import NotFound from '../../components/NotFound';
-import { commitRemoveAction, getItemById } from '../../lib/ItemRoutes';
-import './ListView.css';
 
-const itemHeight = 56;
+import ListContainer from './components/ListContainer';
+import ItemDetail from './components/ItemDetail';
+import SelectorGenerator from './components/SelectorGenerator';
+import { commitRemoveAction, getItemById } from '../../lib/ItemRoutes';
+import { filterItems } from './lib/filterItems';
+import './ListView.css';
 
 export default class ListView extends Component{
 
 	constructor(props){
 		super(props);
+		let fields = ['itemId', 'upc', 'title'];
+		if(props.type === 'books'){
+			fields.push('author');
+		}
 		this.state = {
 			itemDetailRender: null,
 			id: null,
 			filter: 'itemId',
-			search: '',
-			scroll: 0,
-			height: 0
+			fields: fields,
+			search: ''
 		};
 	}
 
@@ -51,87 +53,28 @@ export default class ListView extends Component{
 		}
 	}
 
-	createSelectors = () => {
-		let fields = ['itemId', 'upc', 'title'];
-		if(this.props.type === 'books'){
-			fields = fields.concat(['author']);
-		}
-		return fields.map((field) => {
-			return(<Selector active={this.state.filter===field} 
-							 key={field}
-							 onClick={(value)=>{this.setState({filter:value})}}>
-						{field}
-				   </Selector>);
-		});
-	}
-
-	createList = (unfilteredItems) => {
-		if(!unfilteredItems){
-			return(<NotFound/>);
-		}
-		let items = unfilteredItems;
-		if(this.state.search){
-			items = items.filter((item) => {
-				return item[this.state.filter].toString().toLowerCase().includes(this.state.search.toLowerCase());
-			});
-		}
-		let numItems = items.length;
-		let scrollTop = this.state.scroll;
-		let scrollBottom = scrollTop + this.state.height;
-		let start = Math.max(Math.floor(scrollTop / itemHeight) - 20, 0);
-		let end  = Math.min(Math.ceil((scrollBottom / itemHeight) + 20), items.length);
-		items = items.map((item, index) => {
-			if(index >= start && index < end){
-				return(<ListItem key={item.itemId}
-							 itemId={item.itemId}
-							 type={this.props.type}
-							 selectedItem={this.state.id}
-							 title={item.title}
-							 onClick={this.setItem}
-							 buttonClick={this.handleRemove}/>
-				);
-			}
-			return null;
-		});
-		return(
-			<div className='list' style={{height:(numItems*itemHeight), paddingTop:(start*itemHeight)}}>
-				{items}
-			</div>);
-	}
-
-	renderDetail = (item, type) => {
-		if(item){
-			return(<ItemDetail item={item} type={type}/>);
-		}
-	}
-
-	updateWindowHeight = () => {
-		this.setState({height:window.innerHeight-150});
-	}
-
-	componentDidMount(){
-		this.updateWindowHeight();
-		window.addEventListener('resize', this.updateWindowHeight);
-	}
-
-	componentWillUnmount(){
-		window.removeEventListener('resize', this.updateWindowHeight)
-	}
-
 	render(){
 		return(
 			<div>
 				<div className='contain'>
 					<div>
 						<input className='searchBar' type='text' value={this.state.search} onChange={(e)=>{this.setState({search:e.target.value})}}/>
-						{this.createSelectors()}
+						<SelectorGenerator fields={this.state.fields}
+										   activated={this.state.filter}
+										   onClick={(value)=>{this.setState({filter:value})}}
+						/>
 					</div>
-					<div className='listContainer' onScroll={(e)=>{this.setState({scroll:e.target.scrollTop})}}>
-						{this.createList(this.props.items)}
-					</div>
+					<ListContainer
+						items={filterItems(this.props.items, this.state.filter, this.state.search)}
+						type={this.props.type}
+						itemHeight={56}
+						selectedItem={this.state.id}
+						onClick={this.setItem}
+						buttonClick={this.handleRemove}
+					/>
 				</div>
 				<div className='detail'>
-					{this.renderDetail(this.state.itemDetailRender, this.props.type)}
+					<ItemDetail item={this.state.itemDetailRender} type={this.props.type}/>
 				</div>
 			</div>
 		);

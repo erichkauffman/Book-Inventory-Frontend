@@ -31,22 +31,25 @@ const getBookAndUPCDetail = (item, type) => {
 
 const ItemDetail = (props) => {
 	let item = props.item;
-	return(
-		<div>
-			<p>Id: {item.itemId}</p>
-			<p>Title: {item.title}</p>
-			{getBookAndUPCDetail(props.item, props.type)}
-			<p>Condition: {conditions[item.condition]}</p>
-			<p>Sell Price: {(item.sellPrice/100).toFixed(2)}</p>
-			<p>Site Listed: {displaySites(item.siteListed)}</p>
-			<p>Shelf Location: {item.shelfLocation}</p>
-			<p>Description: {item.description}</p>
-			<p>Amount Paid: {(item.amountPaid/100).toFixed(2)}</p>
-			<p>Date Purchased: {item.datePurchased}</p>
-			<p>Location Purchased: {item.locationPurchased}</p>
-			<p>Consignment: {consign[item.consignment]}</p>
-		</div>
-	);
+	if(item){
+		return(
+			<div>
+				<p>Id: {item.itemId}</p>
+				<p>Title: {item.title}</p>
+				{getBookAndUPCDetail(props.item, props.type)}
+				<p>Condition: {conditions[item.condition]}</p>
+				<p>Sell Price: {(item.sellPrice/100).toFixed(2)}</p>
+				<p>Site Listed: {displaySites(item.siteListed)}</p>
+				<p>Shelf Location: {item.shelfLocation}</p>
+				<p>Description: {item.description}</p>
+				<p>Amount Paid: {(item.amountPaid/100).toFixed(2)}</p>
+				<p>Date Purchased: {item.datePurchased}</p>
+				<p>Location Purchased: {item.locationPurchased}</p>
+				<p>Consignment: {consign[item.consignment]}</p>
+			</div>
+		);
+	}
+	return null;
 }
 
 export default ItemDetail;
