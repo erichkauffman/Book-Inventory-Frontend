@@ -8,7 +8,7 @@ import 'react-dates/lib/css/_datepicker.css';
 import BookSearch from './components/BookSearch';
 import RadioButtons from './components/RadioButtons';
 import CheckBoxes from './components/CheckBoxes';
-import Options from './components/Options';
+import Options from '../../components/Options';
 import { commitNewInventory, getItemById, updateInventory,
 		 searchBookByIsbn, commitSavedData } from '../../lib/ItemRoutes';
 import { checkFields } from './lib/checkFields';
