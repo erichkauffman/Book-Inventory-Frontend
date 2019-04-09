@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Dialog = (props) => {
-	if(!props.show){
+	if(!props.renderCondition){
 		return null;
 	}
 	return(
