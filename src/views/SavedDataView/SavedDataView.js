@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+
+import Options from '../../components/Options';
 import { commitSavedData, deleteSavedData } from '../../lib/ItemRoutes';
 import deleteImg from '../../images/DeleteButton.png';
-
 import './SavedDataView.css';
 
 export default class SavedDataView extends Component{
@@ -12,12 +13,6 @@ export default class SavedDataView extends Component{
 			categories: categories,
 			current: categories[0]
 		};
-	}
-
-	createOptions = () => {
-		return this.state.categories.map((category) => {
-			return(<option key={category} value={category}>{category}</option>);
-		});
 	}
 
 	setCategory = (e) => {
@@ -53,8 +48,12 @@ export default class SavedDataView extends Component{
 	render(){
 		return(
 			<div>
-				<select className='savedDataSelect' value={this.state.current} onChange={this.setCategory}>{this.createOptions()}</select>
-				<button className='savedDataButton' onClick={() => {this.addData(this.state.current)}}>Add {this.state.current}</button>
+				<select className='savedDataSelect' value={this.state.current} onChange={this.setCategory}>
+					<Options options={this.state.categories}/>
+				</select>
+				<button className='savedDataButton' onClick={() => {this.addData(this.state.current)}}>
+					Add {this.state.current}
+				</button>
 				{this.displayInfo()}
 			</div>
 		);
