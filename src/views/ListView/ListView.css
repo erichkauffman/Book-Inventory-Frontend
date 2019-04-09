@@ -19,12 +19,3 @@
 	text-align: left;
 	overflow-y: auto;
 }
-
-.listContainer{
-	height: calc(100vh - 150px);
-	overflow-y: auto;
-}
-
-.list{
-	box-sizing: border-box;
-}

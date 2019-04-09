@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 
-import ListItem from './components/ListItem';
+import ListContainer from './components/ListContainer';
 import ItemDetail from './components/ItemDetail';
 import SelectorGenerator from './components/SelectorGenerator';
-import NotFound from '../../components/NotFound';
 import { commitRemoveAction, getItemById } from '../../lib/ItemRoutes';
 import './ListView.css';
-
-const itemHeight = 56;
 
 export default class ListView extends Component{
 
@@ -22,9 +19,7 @@ export default class ListView extends Component{
 			id: null,
 			filter: 'itemId',
 			fields: fields,
-			search: '',
-			scroll: 0,
-			height: 0
+			search: ''
 		};
 	}
 
@@ -57,57 +52,19 @@ export default class ListView extends Component{
 		}
 	}
 
-	createList = (unfilteredItems) => {
-		if(!unfilteredItems){
-			return(<NotFound/>);
+	filterItems = (items, filter, search) => {
+		if(search){
+			return items.filter((item) => {
+				return item[filter].toString().toLowerCase().includes(search.toLowerCase());
+			});	
 		}
-		let items = unfilteredItems;
-		if(this.state.search){
-			items = items.filter((item) => {
-				return item[this.state.filter].toString().toLowerCase().includes(this.state.search.toLowerCase());
-			});
-		}
-		let numItems = items.length;
-		let scrollTop = this.state.scroll;
-		let scrollBottom = scrollTop + this.state.height;
-		let start = Math.max(Math.floor(scrollTop / itemHeight) - 20, 0);
-		let end  = Math.min(Math.ceil((scrollBottom / itemHeight) + 20), items.length);
-		items = items.map((item, index) => {
-			if(index >= start && index < end){
-				return(<ListItem key={item.itemId}
-							 itemId={item.itemId}
-							 type={this.props.type}
-							 selectedItem={this.state.id}
-							 title={item.title}
-							 onClick={this.setItem}
-							 buttonClick={this.handleRemove}/>
-				);
-			}
-			return null;
-		});
-		return(
-			<div className='list' style={{height:(numItems*itemHeight), paddingTop:(start*itemHeight)}}>
-				{items}
-			</div>);
+		return items;
 	}
 
 	renderDetail = (item, type) => {
 		if(item){
 			return(<ItemDetail item={item} type={type}/>);
 		}
-	}
-
-	updateWindowHeight = () => {
-		this.setState({height:window.innerHeight-150});
-	}
-
-	componentDidMount(){
-		this.updateWindowHeight();
-		window.addEventListener('resize', this.updateWindowHeight);
-	}
-
-	componentWillUnmount(){
-		window.removeEventListener('resize', this.updateWindowHeight)
 	}
 
 	render(){
@@ -121,9 +78,14 @@ export default class ListView extends Component{
 										   onClick={(value)=>{this.setState({filter:value})}}
 						/>
 					</div>
-					<div className='listContainer' onScroll={(e)=>{this.setState({scroll:e.target.scrollTop})}}>
-						{this.createList(this.props.items)}
-					</div>
+					<ListContainer
+						items={this.filterItems(this.props.items, this.state.filter, this.state.search)}
+						type={this.props.type}
+						itemHeight={56}
+						selectedItem={this.state.id}
+						onClick={this.setItem}
+						buttonClick={this.handleRemove}
+					/>
 				</div>
 				<div className='detail'>
 					{this.renderDetail(this.state.itemDetailRender, this.props.type)}
