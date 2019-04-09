@@ -53,12 +53,6 @@ export default class ListView extends Component{
 		}
 	}
 
-	renderDetail = (item, type) => {
-		if(item){
-			return(<ItemDetail item={item} type={type}/>);
-		}
-	}
-
 	render(){
 		return(
 			<div>
@@ -80,7 +74,7 @@ export default class ListView extends Component{
 					/>
 				</div>
 				<div className='detail'>
-					{this.renderDetail(this.state.itemDetailRender, this.props.type)}
+					<ItemDetail item={this.state.itemDetailRender} type={this.props.type}/>
 				</div>
 			</div>
 		);
