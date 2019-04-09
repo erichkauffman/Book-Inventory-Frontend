@@ -4,6 +4,7 @@ import ListContainer from './components/ListContainer';
 import ItemDetail from './components/ItemDetail';
 import SelectorGenerator from './components/SelectorGenerator';
 import { commitRemoveAction, getItemById } from '../../lib/ItemRoutes';
+import { filterItems } from './lib/filterItems';
 import './ListView.css';
 
 export default class ListView extends Component{
@@ -52,15 +53,6 @@ export default class ListView extends Component{
 		}
 	}
 
-	filterItems = (items, filter, search) => {
-		if(search){
-			return items.filter((item) => {
-				return item[filter].toString().toLowerCase().includes(search.toLowerCase());
-			});	
-		}
-		return items;
-	}
-
 	renderDetail = (item, type) => {
 		if(item){
 			return(<ItemDetail item={item} type={type}/>);
@@ -79,7 +71,7 @@ export default class ListView extends Component{
 						/>
 					</div>
 					<ListContainer
-						items={this.filterItems(this.props.items, this.state.filter, this.state.search)}
+						items={filterItems(this.props.items, this.state.filter, this.state.search)}
 						type={this.props.type}
 						itemHeight={56}
 						selectedItem={this.state.id}
