@@ -1,3 +1,22 @@
 .header{
 	background-color: black;
 }
+
+.externalLinkContainer{
+	min-width: 100px;
+	border-style: solid;
+	border-radius: 10px;
+	display: inline-block;
+	text-align: center;
+	margin: .5%;
+	background-color: white;
+	color: black;
+}
+
+.externalLinkContainer:hover{
+	background-color: #DDDDDD;
+}
+
+.externalLinkContainer:active{
+	background-color: #BBBBBB;
+}
