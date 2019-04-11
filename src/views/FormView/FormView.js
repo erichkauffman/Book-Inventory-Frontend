@@ -9,6 +9,7 @@ import BookSearch from './components/BookSearch';
 import RadioButtons from './components/RadioButtons';
 import CheckBoxes from './components/CheckBoxes';
 import Options from '../../components/Options';
+import Conditional from '../../components/Conditional';
 import { commitNewInventory, getItemById, updateInventory,
 		 searchBookByIsbn, commitSavedData } from '../../lib/ItemRoutes';
 import { checkFields } from './lib/checkFields';
@@ -220,12 +221,13 @@ export default class FormView extends Component{
 		}
 		return(
 			<div>
-				<BookSearch renderCondition={this.props.type==='book'&&!this.props.id}
-							value={this.state.search}
-							onChange={(e)=>{this.setState({search:e.target.value})}}
-							onKeyPress={(e)=>{keyPress(e, 13, this.bookSearch)}}
-							onClick={this.bookSearch}
-				/>
+				<Conditional render={this.props.type==='book'&&!this.props.id}>
+					<BookSearch value={this.state.search}
+								onChange={(e)=>{this.setState({search:e.target.value})}}
+								onKeyPress={(e)=>{keyPress(e, 13, this.bookSearch)}}
+								onClick={this.bookSearch}
+					/>
+				</Conditional>
 				<form>
 					<label>Title:</label>
 					<input type='text' name='title' value={this.state.item.title} onChange={this.onChange}/>
