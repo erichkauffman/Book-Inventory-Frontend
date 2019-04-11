@@ -243,7 +243,9 @@ export default class FormView extends Component{
 					<textarea name='description' value={this.state.item.description} onChange={this.onChange}/>
 					<br/>
 					<select value='' onChange={this.selectPhrase}>
-						<Options options={this.props.phrases} placeholder={true}/>
+						<Conditional render={this.props.phrases}>
+							<Options options={this.props.phrases} placeholder={true}/>
+						</Conditional>
 					</select>
 					<button type='button' onClick={(e)=>{this.newSavedData('phrases')}}>Add Phrase</button>
 					<p>Condition:</p>
@@ -266,7 +268,9 @@ export default class FormView extends Component{
 					<label>Location Purchased:</label>
 					<input type='text' list='locations' name='locationPurchased' value={this.state.item.locationPurchased} onChange={this.onChange}/>
 					<datalist id='locations'>
-						<Options options={this.props.locations}/>
+						<Conditional render={this.props.locations}>
+							<Options options={this.props.locations}/>
+						</Conditional>
 					</datalist>
 					<button type='button' onClick={(e)=>{this.newSavedData('locations')}}>Add location</button>
 					<br/>
@@ -292,7 +296,9 @@ export default class FormView extends Component{
 					<label>Shelf Location:</label>
 					<input type='text' list='shelves' name='shelfLocation' value={this.state.item.shelfLocation} onChange={this.onChange}/>
 					<datalist id='shelves'>
-						<Options options={this.props.shelves}/>
+						<Conditional render={this.props.shelves}>
+							<Options options={this.props.shelves}/>
+						</Conditional>
 					</datalist>
 					<button type='button' onClick={(e)=>{this.newSavedData('shelves')}}>Add Shelf</button>
 				</form>
