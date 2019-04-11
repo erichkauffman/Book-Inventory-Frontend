@@ -1,5 +1,13 @@
 import { apiPath } from '../config'
 
+const httpRequest = (url, method) => {
+	fetch(url, {
+		method: method
+	}).then((res) => {
+		console.log(res);
+	});
+}
+
 const getJson = (url) => {
 	return fetch(url)
 	.then((response) => {
@@ -48,13 +56,11 @@ export const updateInventory = (type, data) => {
 }
 
 export const commitRemoveAction = (id, status) => {
-	let url = `${apiPath}/items/${id}/removeAction/${status}/`;
-	fetch(url, {
-		method: 'PUT'
-	})
-	.then((res) => {
-		console.log(res);
-	});
+	httpRequest(`${apiPath}/items/${id}/removeAction/${status}/`, 'PUT');
+}
+
+export const commitSell = (id, site) => {
+	sendJson(`${apiPath}/items/${id}/sell/`, 'PUT', {site:site});
 }
 
 export const getSavedData = (type) => {
@@ -67,6 +73,10 @@ export const commitSavedData = (type, data) => {
 
 export const deleteSavedData = (type, data) => {
 	sendJson(`${apiPath}/savedData/${type}/`, 'DELETE', {data: data});
+}
+
+export const getSites = (id) => {
+	return getJson(`${apiPath}/sites/${id}/`);
 }
 
 export const searchBookByIsbn = (isbn) => {

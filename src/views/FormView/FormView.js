@@ -76,6 +76,7 @@ export default class FormView extends Component{
 			item.itemId = null;
 		}
 		item.removalAction = null;
+		item.siteSold = null;
 		item.dateRemoved = null;
 		item.amountPaid = item.amountPaid * 100;
 		item.sellPrice = item.sellPrice * 100;
