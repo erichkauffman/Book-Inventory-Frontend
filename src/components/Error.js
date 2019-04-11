@@ -1,15 +1,16 @@
 import React from 'react';
+
+import Conditional from './Conditional';
 import './Error.css';
 
 const Error = (props) => {
-	if(props.err){
-		return(
+	return(
+		<Conditional render={props.err}>
 			<h3 className='error'>
 				{props.children}
 			</h3>
-		);
-	}
-	return null;
+		</Conditional>
+	);
 }
 
 export default Error;
