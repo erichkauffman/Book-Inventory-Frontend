@@ -115,7 +115,7 @@ export default class App extends Component {
 					   }}/>
 				<Route exact path='/:view'
 					   render={({match}) => {
-							return <Header view={match.params.view} type={match.params.type}/>
+							return <Header view={match.params.view}/>
 					   }}/>
 				<Switch>
 					<Redirect exact from='/' to='/list/items'/>
