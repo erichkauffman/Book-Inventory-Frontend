@@ -5,6 +5,7 @@ import ItemDetail from './components/ItemDetail';
 import Dialog from './components/Dialog';
 import Buttons from './components/Buttons';
 import SelectorGenerator from './components/SelectorGenerator';
+import Conditional from '../../components/Conditional';
 import { commitRemoveAction, commitSell, getItemById, getSites } from '../../lib/ItemRoutes';
 import { filterItems } from './lib/filterItems';
 import './ListView.css';
@@ -103,7 +104,9 @@ export default class ListView extends Component{
 					/>
 				</div>
 				<div className='detail'>
-					<ItemDetail item={this.state.itemDetailRender} type={this.props.type}/>
+					<Conditional render={this.state.itemDetailRender}>
+						<ItemDetail item={this.state.itemDetailRender} type={this.props.type}/>
+					</Conditional>
 				</div>
 			</div>
 		);

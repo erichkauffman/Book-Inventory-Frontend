@@ -9,6 +9,7 @@ import BookSearch from './components/BookSearch';
 import RadioButtons from './components/RadioButtons';
 import CheckBoxes from './components/CheckBoxes';
 import Options from '../../components/Options';
+import Conditional from '../../components/Conditional';
 import { commitNewInventory, getItemById, updateInventory,
 		 searchBookByIsbn, commitSavedData } from '../../lib/ItemRoutes';
 import { checkFields } from './lib/checkFields';
@@ -220,12 +221,13 @@ export default class FormView extends Component{
 		}
 		return(
 			<div>
-				<BookSearch renderCondition={this.props.type==='book'&&!this.props.id}
-							value={this.state.search}
-							onChange={(e)=>{this.setState({search:e.target.value})}}
-							onKeyPress={(e)=>{keyPress(e, 13, this.bookSearch)}}
-							onClick={this.bookSearch}
-				/>
+				<Conditional render={this.props.type==='book'&&!this.props.id}>
+					<BookSearch value={this.state.search}
+								onChange={(e)=>{this.setState({search:e.target.value})}}
+								onKeyPress={(e)=>{keyPress(e, 13, this.bookSearch)}}
+								onClick={this.bookSearch}
+					/>
+				</Conditional>
 				<form>
 					<label>Title:</label>
 					<input type='text' name='title' value={this.state.item.title} onChange={this.onChange}/>
@@ -241,7 +243,9 @@ export default class FormView extends Component{
 					<textarea name='description' value={this.state.item.description} onChange={this.onChange}/>
 					<br/>
 					<select value='' onChange={this.selectPhrase}>
-						<Options options={this.props.phrases} placeholder={true}/>
+						<Conditional render={this.props.phrases}>
+							<Options options={this.props.phrases} placeholder={true}/>
+						</Conditional>
 					</select>
 					<button type='button' onClick={(e)=>{this.newSavedData('phrases')}}>Add Phrase</button>
 					<p>Condition:</p>
@@ -264,7 +268,9 @@ export default class FormView extends Component{
 					<label>Location Purchased:</label>
 					<input type='text' list='locations' name='locationPurchased' value={this.state.item.locationPurchased} onChange={this.onChange}/>
 					<datalist id='locations'>
-						<Options options={this.props.locations}/>
+						<Conditional render={this.props.locations}>
+							<Options options={this.props.locations}/>
+						</Conditional>
 					</datalist>
 					<button type='button' onClick={(e)=>{this.newSavedData('locations')}}>Add location</button>
 					<br/>
@@ -290,7 +296,9 @@ export default class FormView extends Component{
 					<label>Shelf Location:</label>
 					<input type='text' list='shelves' name='shelfLocation' value={this.state.item.shelfLocation} onChange={this.onChange}/>
 					<datalist id='shelves'>
-						<Options options={this.props.shelves}/>
+						<Conditional render={this.props.shelves}>
+							<Options options={this.props.shelves}/>
+						</Conditional>
 					</datalist>
 					<button type='button' onClick={(e)=>{this.newSavedData('shelves')}}>Add Shelf</button>
 				</form>

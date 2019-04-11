@@ -1,11 +1,12 @@
 import React from 'react';
 
 import ListItem from './ListItem';
+import Conditional from '../../../components/Conditional';
 
 const List = (props) => {
 	return props.items.map((item, index) => {
-		if(index >= props.start && index < props.end){
-			return(
+		return(
+			<Conditional render={index >= props.start && index < props.end}>
 				<ListItem
 					key={item.itemId}
 					itemId={item.itemId}
@@ -15,9 +16,8 @@ const List = (props) => {
 					onClick={props.onClick}
 					buttonClick={props.buttonClick}
 				/>
-			);
-		}
-		return null;
+			</Conditional>
+		);
 	});
 }
 

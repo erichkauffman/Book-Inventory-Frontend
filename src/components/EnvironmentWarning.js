@@ -1,11 +1,14 @@
 import React from 'react';
+
+import Conditional from './Conditional';
 import './EnvironmentWarning.css';
 
 const EnvironmentWarning = (props) => {
-	if(props.envType === 'Development' || props.envType === 'Staging'){
-		return(<div className='envWarning'>{props.envType}: Use For Testing Only!</div>)
-	}
-	return null;
+	return(
+		<Conditional render={props.envType === 'Development' || props.envType === 'Staging'}>
+			<div className='envWarning'>{props.envType}: Use For Testing Only!</div>
+		</Conditional>
+	);
 }
 
 export default EnvironmentWarning;

@@ -107,7 +107,6 @@ export default class App extends Component {
 	render() {
 		return (
 			<div className="App">
-				<Error err={this.state.connectionError}>No connection to server! Changes cannot be saved!</Error>
 				<EnvironmentWarning envType={process.env.REACT_APP_ENV}/>
 				<Route path='/:view/:type'
 					   render={({match}) => {
@@ -117,6 +116,7 @@ export default class App extends Component {
 					   render={({match}) => {
 							return <Header view={match.params.view}/>
 					   }}/>
+				<Error err={this.state.connectionError}>No connection to server! Changes cannot be saved!</Error>
 				<Switch>
 					<Redirect exact from='/' to='/list/items'/>
 					<Redirect from='/list/item' to='/list/items'/>
