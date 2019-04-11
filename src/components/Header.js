@@ -8,11 +8,11 @@ import './Header.css';
 const Header = (props) => {
 	return(
 		<div className='header'>
-			<MenuLink link='/form/item'>New Item</MenuLink>
-			<MenuLink link='/form/book'>New Book</MenuLink>
-			<MenuLink link='/list/items'>All Items</MenuLink>
-			<MenuLink link='/list/books'>Books</MenuLink>
-			<MenuLink link='/data'>Saved Data</MenuLink>
+			<MenuLink link='/form/item' highlight={props.view==='form'&&props.type==='item'}>New Item</MenuLink>
+			<MenuLink link='/form/book' highlight={props.view==='form'&&props.type==='book'}>New Book</MenuLink>
+			<MenuLink link='/list/items' highlight={props.view==='list'&&props.type==='items'}>All Items</MenuLink>
+			<MenuLink link='/list/books' highlight={props.view==='list'&&props.type==='books'}>Books</MenuLink>
+			<MenuLink link='/data' highlight={props.view==='data'}>Saved Data</MenuLink>
 			<Conditional render={props.type && props.view !== 'form'}>
 				<a href={`${apiPath}/${props.type}/csv/`}>
 					<div className='externalLinkContainer'>
