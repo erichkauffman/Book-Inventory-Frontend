@@ -59,6 +59,10 @@ export const commitRemoveAction = (id, status) => {
 	httpRequest(`${apiPath}/items/${id}/removeAction/${status}/`, 'PUT');
 }
 
+export const commitSell = (id, site) => {
+	sendJson(`${apiPath}/items/${id}/sell/`, 'PUT', {site:site});
+}
+
 export const getSavedData = (type) => {
 	return getJson(`${apiPath}/savedData/${type}/`);
 }
@@ -69,6 +73,10 @@ export const commitSavedData = (type, data) => {
 
 export const deleteSavedData = (type, data) => {
 	sendJson(`${apiPath}/savedData/${type}/`, 'DELETE', {data: data});
+}
+
+export const getSites = (id) => {
+	return getJson(`${apiPath}/sites/${id}/`);
 }
 
 export const searchBookByIsbn = (isbn) => {
