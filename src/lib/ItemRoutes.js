@@ -1,5 +1,13 @@
 import { apiPath } from '../config'
 
+const httpRequest = (url, method) => {
+	fetch(url, {
+		method: method
+	}).then((res) => {
+		console.log(res);
+	});
+}
+
 const getJson = (url) => {
 	return fetch(url)
 	.then((response) => {
@@ -48,13 +56,7 @@ export const updateInventory = (type, data) => {
 }
 
 export const commitRemoveAction = (id, status) => {
-	let url = `${apiPath}/items/${id}/removeAction/${status}/`;
-	fetch(url, {
-		method: 'PUT'
-	})
-	.then((res) => {
-		console.log(res);
-	});
+	httpRequest(`${apiPath}/items/${id}/removeAction/${status}/`, 'PUT');
 }
 
 export const getSavedData = (type) => {
