@@ -1,10 +1,18 @@
-.menuButtonContainer{
+.menuButtonContainer, .menuButtonHighlight{
 	min-width: 100px;
 	border-style: solid;
 	border-radius: 10px;
 	display: inline-block;
 	text-align: center;
 	margin: .5%;
+}
+
+.menuButtonHighlight{
+	background-color: #0E3B84;
+	color: white;
+}
+
+.menuButtonContainer{
 	background-color: white;
 	color: black;
 }

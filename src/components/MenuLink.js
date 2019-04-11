@@ -6,7 +6,7 @@ import './MenuLink.css';
 const MenuLink = (props) => {
 	return(
 		<Link to={props.link}>
-			<div className='menuButtonContainer'>
+			<div className={props.highlight?'menuButtonHighlight':'menuButtonContainer'}>
 				<p>{props.children}</p>
 			</div>
 		</Link>
