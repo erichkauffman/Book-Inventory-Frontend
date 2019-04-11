@@ -1,5 +1,5 @@
 .menuButtonContainer{
-	width: 100px;
+	min-width: 100px;
 	border-style: solid;
 	border-radius: 10px;
 	display: inline-block;
