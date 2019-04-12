@@ -6,7 +6,7 @@ const TextInputs = (props) => {
 		return(
 			<Conditional render={labelValue}>
 				<label>{props.labels[index]} id:</label>
-				<input type='text'/>
+				<input type='text' value={props.values[index]} onChange={(e)=>{props.onChange(e, index)}}/>
 				<br/>
 			</Conditional>
 		);

@@ -42,7 +42,8 @@ export default class FormView extends Component{
 			today: today,
 			item: item,
 			search: '',
-			fields: itemFields
+			fields: itemFields,
+			siteIdValues: ['', '']
 		}
 	}
 
@@ -70,6 +71,12 @@ export default class FormView extends Component{
 		this.setState({
 			item: item
 		});
+	}
+
+	siteIdChange = (e, index) => {
+		let siteIds = this.state.siteIdValues;
+		siteIds[index] = e.target.value;
+		this.setState({siteIdValues:siteIds});
 	}
 
 	handleSubmit = (item, type, mode) => {
@@ -296,6 +303,8 @@ export default class FormView extends Component{
 					<br/>
 					<TextInputs labels={sites}
 								labelValues={this.state.item.siteListed}
+								values={this.state.siteIdValues}
+								onChange={this.siteIdChange}
 					/>
 					<label>Shelf Location:</label>
 					<input type='text' list='shelves' name='shelfLocation' value={this.state.item.shelfLocation} onChange={this.onChange}/>
