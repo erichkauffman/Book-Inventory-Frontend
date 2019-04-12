@@ -18,7 +18,7 @@ import { keyPress } from './lib/keyPress';
 import { trueIndecies } from './lib/trueIndecies';
 import './FormView.css';
 
-const sites = ['Amazon', 'EBay'];
+const siteLabels = ['Amazon', 'EBay'];
 
 export default class FormView extends Component{
 
@@ -37,13 +37,13 @@ export default class FormView extends Component{
 		let today = moment();
 		item.datePurchased = today;
 		item.consignment = 0;
-		item.siteListed = [true, false];
+		let sites = {sites: [true, false], ids:['', '']}
 		this.state = {
 			today: today,
 			item: item,
 			search: '',
 			fields: itemFields,
-			siteIdValues: ['', '']
+			sites: sites
 		}
 	}
 
@@ -56,12 +56,10 @@ export default class FormView extends Component{
 	}
 
 	onChangeCheckbox = (e) => {
-		let sites = this.state.item.siteListed;
-		sites[e.target.value] = e.target.checked;
-		let item = this.state.item;
-		item.siteListed = sites;
+		let sites = this.state.sites;
+		sites.sites[e.target.value] = e.target.checked;
 		this.setState({
-			item: item
+			sites: sites
 		});
 	}
 
@@ -74,9 +72,9 @@ export default class FormView extends Component{
 	}
 
 	siteIdChange = (e, index) => {
-		let siteIds = this.state.siteIdValues;
-		siteIds[index] = e.target.value;
-		this.setState({siteIdValues:siteIds});
+		let sites = this.state.sites;
+		sites.ids[index] = e.target.value;
+		this.setState({sites: sites});
 	}
 
 	handleSubmit = (item, type, mode) => {
@@ -123,7 +121,7 @@ export default class FormView extends Component{
 			let item = recItem;
 			item.sellPrice = item.sellPrice / 100;
 			item.amountPaid = item.amountPaid / 100;
-			let sitesListed = Array(sites.length).fill(false);
+			let sitesListed = Array(siteLabels.length).fill(false);
 			item.siteListed.forEach((siteVal) => {
 				sitesListed[siteVal] = true;
 			});
@@ -178,8 +176,8 @@ export default class FormView extends Component{
 			});
 			item.datePurchased = this.state.today;
 			item.consignment = 0;
-			item.siteListed = [true, false];
-			this.setState({item: item, search:'', siteIdValues:['','']});
+			let sites = {sites: [true, false], ids:['', '']}
+			this.setState({item: item, search:'', sites:sites});
 		}
 	}
 
@@ -296,14 +294,14 @@ export default class FormView extends Component{
 					<br/>
 					<p>Site Listed:</p>
 					<CheckBoxes name='siteListed'
-								labels={sites}
+								labels={siteLabels}
 								onChange={this.onChangeCheckbox}
-								checkedValues={this.state.item.siteListed}
+								checkedValues={this.state.sites.sites}
 					/>
 					<br/>
-					<TextInputs labels={sites}
-								labelValues={this.state.item.siteListed}
-								values={this.state.siteIdValues}
+					<TextInputs labels={siteLabels}
+								labelValues={this.state.sites.sites}
+								values={this.state.sites.ids}
 								onChange={this.siteIdChange}
 					/>
 					<label>Shelf Location:</label>
