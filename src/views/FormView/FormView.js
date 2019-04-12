@@ -179,7 +179,7 @@ export default class FormView extends Component{
 			item.datePurchased = this.state.today;
 			item.consignment = 0;
 			item.siteListed = [true, false];
-			this.setState({item: item, search:''});
+			this.setState({item: item, search:'', siteIdValues:['','']});
 		}
 	}
 
