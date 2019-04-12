@@ -2,12 +2,12 @@ import React from 'react';
 
 const covers = ['Hard', 'Soft'];
 const conditions = ['New', 'Like New', 'Very Good', 'Good', 'Acceptable'];
-const sites = ['Amazon', 'EBay'];
+const siteStrings = ['Amazon', 'EBay'];
 const consign = ['no', 'yes'];
 
-const displaySites = (siteNums) => {
-	let siteString = siteNums.map((siteNum) => {
-		return sites[siteNum];
+const displaySites = (sites) => {
+	let siteString = sites.map((site) => {
+		return `${siteStrings[site.site]}: ${site.siteId}`;
 	}).join(', ');
 	if(siteString === ''){
 		return 'None';

@@ -6,6 +6,7 @@ import moment from 'moment';
 import 'react-dates/lib/css/_datepicker.css';
 
 import BookSearch from './components/BookSearch';
+import TextInputs from './components/TextInputs';
 import RadioButtons from './components/RadioButtons';
 import CheckBoxes from './components/CheckBoxes';
 import Options from '../../components/Options';
@@ -14,10 +15,10 @@ import { commitNewInventory, getItemById, updateInventory,
 		 searchBookByIsbn, commitSavedData } from '../../lib/ItemRoutes';
 import { checkFields } from './lib/checkFields';
 import { keyPress } from './lib/keyPress';
-import { trueIndecies } from './lib/trueIndecies';
+import { siteConvert } from './lib/siteConvert';
 import './FormView.css';
 
-const sites = ['Amazon', 'EBay'];
+const siteLabels = ['Amazon', 'EBay'];
 
 export default class FormView extends Component{
 
@@ -36,12 +37,13 @@ export default class FormView extends Component{
 		let today = moment();
 		item.datePurchased = today;
 		item.consignment = 0;
-		item.siteListed = [true, false];
+		let sites = {sites: [true, false], ids:['', '']}
 		this.state = {
 			today: today,
 			item: item,
 			search: '',
-			fields: itemFields
+			fields: itemFields,
+			sites: sites
 		}
 	}
 
@@ -54,12 +56,10 @@ export default class FormView extends Component{
 	}
 
 	onChangeCheckbox = (e) => {
-		let sites = this.state.item.siteListed;
-		sites[e.target.value] = e.target.checked;
-		let item = this.state.item;
-		item.siteListed = sites;
+		let sites = this.state.sites;
+		sites.sites[e.target.value] = e.target.checked;
 		this.setState({
-			item: item
+			sites: sites
 		});
 	}
 
@@ -71,8 +71,14 @@ export default class FormView extends Component{
 		});
 	}
 
-	handleSubmit = (item, type, mode) => {
-		item.siteListed = trueIndecies(item.siteListed);
+	siteIdChange = (e, index) => {
+		let sites = this.state.sites;
+		sites.ids[index] = e.target.value;
+		this.setState({sites: sites});
+	}
+
+	handleSubmit = (item, type, sites, mode) => {
+		item.siteListed = siteConvert(sites);
 		if(mode !== 'edit'){
 			item.itemId = null;
 		}
@@ -90,12 +96,12 @@ export default class FormView extends Component{
 	}
 
 	submitAndContinue = () => {
-		this.handleSubmit({...this.state.item}, this.props.type, this.props.mode);
+		this.handleSubmit({...this.state.item}, this.props.type, this.state.sites, this.props.mode);
 		this.resetFields();
 	}
 
 	submitAndFinish = () => {
-		this.handleSubmit({...this.state.item}, this.props.type, this.props.mode);
+		this.handleSubmit({...this.state.item}, this.props.type, this.state.sites, this.props.mode);
 		this.setState({
 			finish: true
 		});
@@ -115,13 +121,15 @@ export default class FormView extends Component{
 			let item = recItem;
 			item.sellPrice = item.sellPrice / 100;
 			item.amountPaid = item.amountPaid / 100;
-			let sitesListed = Array(sites.length).fill(false);
-			item.siteListed.forEach((siteVal) => {
-				sitesListed[siteVal] = true;
+			let sites = Array(siteLabels.length).fill(false);
+			let sitesIds = Array(siteLabels.length).fill('');
+			item.siteListed.forEach((site) => {
+				sites[site.site] = true;
+				sitesIds[site.site] = site.siteId;
 			});
-			item.siteListed = sitesListed;
+			delete item.siteListed;
 			item.datePurchased = moment(item.datePurchased, 'YYYY-MM-DD');
-			this.setState({item: item});
+			this.setState({item: item, sites:{sites:sites, ids:sitesIds}});
 		});
 	}
 
@@ -170,8 +178,8 @@ export default class FormView extends Component{
 			});
 			item.datePurchased = this.state.today;
 			item.consignment = 0;
-			item.siteListed = [true, false];
-			this.setState({item: item, search:''});
+			let sites = {sites: [true, false], ids:['', '']}
+			this.setState({item: item, search:'', sites:sites});
 		}
 	}
 
@@ -202,7 +210,7 @@ export default class FormView extends Component{
 	renderSaveAndNew = () => {
 		if(this.props.mode !== 'edit'){
 			return(
-				<div className={checkFields(this.state.item, this.state.fields)?'submit':'submitDisabled'} onClick={this.submitAndContinue}>
+				<div className={checkFields(this.state.item, this.state.fields, this.state.sites)?'submit':'submitDisabled'} onClick={this.submitAndContinue}>
 					<p>Save and new {this.props.type}</p>
 				</div>
 			);
@@ -288,11 +296,16 @@ export default class FormView extends Component{
 					<br/>
 					<p>Site Listed:</p>
 					<CheckBoxes name='siteListed'
-								labels={sites}
+								labels={siteLabels}
 								onChange={this.onChangeCheckbox}
-								checkedValues={this.state.item.siteListed}
+								checkedValues={this.state.sites.sites}
 					/>
 					<br/>
+					<TextInputs labels={siteLabels}
+								labelValues={this.state.sites.sites}
+								values={this.state.sites.ids}
+								onChange={this.siteIdChange}
+					/>
 					<label>Shelf Location:</label>
 					<input type='text' list='shelves' name='shelfLocation' value={this.state.item.shelfLocation} onChange={this.onChange}/>
 					<datalist id='shelves'>
@@ -311,7 +324,7 @@ export default class FormView extends Component{
 					<div className='divButton' onClick={this.resetFields}>
 						<p>{this.props.id?'Reset':'Clear'}</p>
 					</div>
-					<div className={checkFields(this.state.item, this.state.fields)?'submit':'submitDisabled'} onClick={this.submitAndFinish}>
+					<div className={checkFields(this.state.item, this.state.fields, this.state.sites)?'submit':'submitDisabled'} onClick={this.submitAndFinish}>
 						<p>Save</p>
 					</div>
 					{this.renderSaveAndNew()}
