@@ -6,6 +6,7 @@ import moment from 'moment';
 import 'react-dates/lib/css/_datepicker.css';
 
 import BookSearch from './components/BookSearch';
+import TextInputs from './components/TextInputs';
 import RadioButtons from './components/RadioButtons';
 import CheckBoxes from './components/CheckBoxes';
 import Options from '../../components/Options';
@@ -293,6 +294,9 @@ export default class FormView extends Component{
 								checkedValues={this.state.item.siteListed}
 					/>
 					<br/>
+					<TextInputs labels={sites}
+								labelValues={this.state.item.siteListed}
+					/>
 					<label>Shelf Location:</label>
 					<input type='text' list='shelves' name='shelfLocation' value={this.state.item.shelfLocation} onChange={this.onChange}/>
 					<datalist id='shelves'>
