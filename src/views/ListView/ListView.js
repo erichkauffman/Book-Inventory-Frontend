@@ -14,7 +14,7 @@ export default class ListView extends Component{
 
 	constructor(props){
 		super(props);
-		let fields = ['itemId', 'upc', 'title'];
+		let fields = ['itemId', 'siteId', 'upc', 'title'];
 		if(props.type === 'books'){
 			fields.push('author');
 		}
