@@ -5,6 +5,7 @@ import io from 'socket.io-client';
 import ListView from './views/ListView/ListView';
 import FormView from './views/FormView/FormView';
 import SavedDataView from './views/SavedDataView/SavedDataView';
+import IssueView from './views/IssueView/IssueView';
 import Header from './components/Header';
 import NotFound from './components/NotFound';
 import EnvironmentWarning from './components/EnvironmentWarning';
@@ -168,6 +169,8 @@ export default class App extends Component {
 													 data={this.gatherData(savedDataCategories)}
 									  />
 						   }}/>
+					<Route path='/support/'
+						   component={IssueView}/>
 					<Route component={NotFound}/>
 				</Switch>
 	   		</div>
