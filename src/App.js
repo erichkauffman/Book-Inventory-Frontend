@@ -51,7 +51,12 @@ export default class App extends Component {
 	saveData = (dataObject, type) => {
 		let data = this.state[type];
 		if(type === 'items' || type === 'books'){
-			data.splice(data.findIndex((element)=>{return element.itemId > dataObject.itemId}), 0, dataObject);
+			let dataIndex = data.findIndex((element)=>{return element.itemId > dataObject.itemId});
+			if(dataIndex >= 0){
+				data.splice(dataIndex, 0, dataObject);
+			}else{
+				data.push(dataObject);
+			}
 		}else{
 			data.push(dataObject);
 		}
