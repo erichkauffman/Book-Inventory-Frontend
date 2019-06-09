@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
 import Options from '../../components/Options';
+import { checkFields } from '../../lib/checkFields';
+import { sendIssue } from '../../lib/ItemRoutes';
 import './IssueView.css';
 
 export default class IssueView extends Component{
@@ -28,6 +30,9 @@ export default class IssueView extends Component{
 					<label>Description:</label>
 					<textarea className='issueDescription' onChange={(e)=>{this.setState({message:e.target.value})}}/>
 				</form>
+				<div className={checkFields(this.state, ['title', 'message'])?'submitIssue':'issueDisabled'} onClick={(e) => {sendIssue(this.state)}}>
+					<p>Submit</p>
+				</div>
 			</div>
 		);
 	}
