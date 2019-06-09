@@ -1,8 +1,7 @@
-export const checkFields = (item, fields, sites) => {
-	let itemCheck = fields.reduce((status, field) => {
-		return status && (item[field] || item[field] === 0);
-	}, true);
+import { checkFields } from '../../../lib/checkFields';
 
+export const checkFieldsAndSites = (item, fields, sites) => {
+	let itemCheck = checkFields(item, fields);
 	let siteCheck = sites.sites.reduce((status, site, index) => {
 		return status && (!site || (sites.ids[index]));
 	}, true);

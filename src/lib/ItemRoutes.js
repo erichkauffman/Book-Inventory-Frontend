@@ -79,6 +79,10 @@ export const getSites = (id) => {
 	return getJson(`${apiPath}/sites/${id}/`);
 }
 
+export const sendIssue = (issue) => {
+	return sendJson(`${apiPath}/issues/`, 'POST', issue);
+}
+
 export const searchBookByIsbn = (isbn) => {
 	let url = `https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`;
 	return getJson(url);

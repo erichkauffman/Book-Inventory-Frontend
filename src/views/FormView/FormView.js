@@ -13,7 +13,7 @@ import Options from '../../components/Options';
 import Conditional from '../../components/Conditional';
 import { commitNewInventory, getItemById, updateInventory,
 		 searchBookByIsbn, commitSavedData } from '../../lib/ItemRoutes';
-import { checkFields } from './lib/checkFields';
+import { checkFieldsAndSites } from './lib/checkFields';
 import { keyPress } from './lib/keyPress';
 import { siteConvert } from './lib/siteConvert';
 import './FormView.css';
@@ -210,7 +210,7 @@ export default class FormView extends Component{
 	renderSaveAndNew = () => {
 		if(this.props.mode !== 'edit'){
 			return(
-				<div className={checkFields(this.state.item, this.state.fields, this.state.sites)?'submit':'submitDisabled'} onClick={this.submitAndContinue}>
+				<div className={checkFieldsAndSites(this.state.item, this.state.fields, this.state.sites)?'submit':'submitDisabled'} onClick={this.submitAndContinue}>
 					<p>Save and new {this.props.type}</p>
 				</div>
 			);
@@ -324,7 +324,7 @@ export default class FormView extends Component{
 					<div className='divButton' onClick={this.resetFields}>
 						<p>{this.props.id?'Reset':'Clear'}</p>
 					</div>
-					<div className={checkFields(this.state.item, this.state.fields, this.state.sites)?'submit':'submitDisabled'} onClick={this.submitAndFinish}>
+					<div className={checkFieldsAndSites(this.state.item, this.state.fields, this.state.sites)?'submit':'submitDisabled'} onClick={this.submitAndFinish}>
 						<p>Save</p>
 					</div>
 					{this.renderSaveAndNew()}
