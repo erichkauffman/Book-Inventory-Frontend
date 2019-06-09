@@ -8,3 +8,31 @@
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
+
+.submitIssue, .issueDisabled {
+	border-style: solid;
+	border-radius: 15px;
+	text-align: center;
+	width: 150px;
+	margin-top: 20px;
+	margin-left: 20%;
+	display: inline-block;
+}
+
+.issueDisabled {
+	pointer-events: none;
+	background-color: #E02323;
+}
+
+.submitIssue {
+	background-color: #40E023;
+	cursor: pointer;
+}
+
+.submitIssue:hover {
+	background-color: #43b92e;
+}
+
+.submitIssue:active {
+	background-color: #369426;
+}
