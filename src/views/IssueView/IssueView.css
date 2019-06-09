@@ -9,7 +9,7 @@
 	margin-bottom: 10px;
 }
 
-.submitIssue, .issueDisabled {
+.submitIssue, .issueDisabled, .newIssue {
 	border-style: solid;
 	border-radius: 15px;
 	text-align: center;
@@ -35,4 +35,16 @@
 
 .submitIssue:active {
 	background-color: #369426;
+}
+
+.newIssue {
+	cursor: pointer;
+}
+
+.newIssue:hover {
+	background-color: #DDDDDD;
+}
+
+.newIssue:active {
+	background-color: #BBBBBB;
 }
