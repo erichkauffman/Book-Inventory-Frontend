@@ -1,22 +1,53 @@
 .header{
-	background-color: black;
+	background: #2f2f2f;
+	padding: 15px;
+	padding-bottom: 0px;
+	overflow: auto;
+	box-shadow: inset 
+		0px -20px 10px -10px 
+		rgba(0,0,0,0.55);
 }
 
-.externalLinkContainer{
-	min-width: 100px;
-	border-style: solid;
-	border-radius: 10px;
+#nav{
+	list-style: none;
+	/* These tabs look better floated right
+	   but we need to move the download CSV
+	   before that because right now it jumps*/
+	/* float: right; */
+	margin-block-start: 0em;
+	margin-block-end: 0em;
+	padding-inline-start: 0px;
+}
+
+#nav li{
 	display: inline-block;
+}
+
+#nav li a{
 	text-align: center;
-	margin: .5%;
+	min-width: 100px;
+	background-color: #6f6f6f;
+	color: aliceblue;
+	text-decoration: none;
+	padding: 15px;
+	margin-left: 15px;
+	display: inline-block;
+	border-top-right-radius: 8px;
+	border-top-left-radius: 8px;
+	box-shadow: inset 
+		0px -50px 40px -40px 
+		rgba(0,0,0,0.125);
+}
+
+
+#nav a:hover{
+	background-color: #8f8f8f
+}
+
+#nav a[aria-current='page']{
 	background-color: white;
 	color: black;
-}
-
-.externalLinkContainer:hover{
-	background-color: #DDDDDD;
-}
-
-.externalLinkContainer:active{
-	background-color: #BBBBBB;
+	box-shadow: inset 
+		0px 0px 0px 0px 
+		rgba(0,0,0,0);
 }
