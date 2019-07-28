@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, ChangeEvent } from 'react';
 
 import DisplaySavedData from './components/DisplaySavedData';
 import Options from '../../components/Options';
@@ -6,8 +6,18 @@ import Conditonal from '../../components/Conditional';
 import { commitSavedData, deleteSavedData } from '../../lib/ItemRoutes';
 import './SavedDataView.css';
 
-export default class SavedDataView extends Component{
-	constructor(props){
+type Props = {
+	categories: string[],
+	data: {[savedData: string]: string[]}
+}
+
+type State = {
+	categories: string[],
+	current: string
+}
+
+export default class SavedDataView extends Component<Props,State>{
+	constructor(props: Props){
 		super(props);
 		const categories = props.categories;
 		this.state = {
@@ -16,13 +26,13 @@ export default class SavedDataView extends Component{
 		};
 	}
 
-	setCategory = (e) => {
+	setCategory = (e: ChangeEvent<HTMLSelectElement>) => {
 		this.setState({
 			current: e.target.value
 		});
 	}
 
-	addData = (current) => {
+	addData = (current: string) => {
 		let data = prompt(`Add ${current}`);
 		if(data){
 			commitSavedData(current, data);
@@ -45,7 +55,6 @@ export default class SavedDataView extends Component{
 						deleteData={deleteSavedData}
 					/>
 				</Conditonal>
-
 			</div>
 		);
 	}
