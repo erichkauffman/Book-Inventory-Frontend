@@ -5,18 +5,22 @@ import { checkFields } from '../../lib/checkFields';
 import { sendIssue } from '../../lib/ItemRoutes';
 import './IssueView.css';
 
-export default class IssueView extends Component{
-	
-	constructor(props){
-		super(props);
-		this.state = {
+type State = {
+	type: number,
+	title: string,
+	message: string,
+	endScreen: boolean
+}
+
+export default class IssueView extends Component<{}, State>{
+	state: State = {
 			type: 0,
 			title: '',
-			message: ''
-		};
-	}
+			message: '',
+			endScreen: false
+	};
 
-	handleSubmit = () => {
+	handleSubmit = (): void => {
 		sendIssue({type: this.state.type, title: this.state.title, message: this.state.message});
 		this.setState({endScreen: true});
 	}
