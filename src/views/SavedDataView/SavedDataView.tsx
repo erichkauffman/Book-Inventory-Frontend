@@ -2,7 +2,6 @@ import React, { Component, ChangeEvent } from 'react';
 
 import DisplaySavedData from './components/DisplaySavedData';
 import Options from '../../components/Options';
-import Conditonal from '../../components/Conditional';
 import { commitSavedData, deleteSavedData } from '../../lib/ItemRoutes';
 import './SavedDataView.css';
 
@@ -26,17 +25,21 @@ export default class SavedDataView extends Component<Props,State>{
 		};
 	}
 
-	setCategory = (e: ChangeEvent<HTMLSelectElement>) => {
+	setCategory = (e: ChangeEvent<HTMLSelectElement>): void => {
 		this.setState({
 			current: e.target.value
 		});
 	}
 
-	addData = (current: string) => {
+	addData = (current: string): void => {
 		let data = prompt(`Add ${current}`);
 		if(data){
 			commitSavedData(current, data);
 		}
+	}
+
+	deleteData = (info: string): void => {
+		deleteSavedData(this.state.current, info);
 	}
 
 	render(){
@@ -48,13 +51,10 @@ export default class SavedDataView extends Component<Props,State>{
 				<button className='savedDataButton' onClick={() => {this.addData(this.state.current)}}>
 					Add {this.state.current}
 				</button>
-				<Conditonal render={this.props.data[this.state.current]}>
-					<DisplaySavedData
-						data={this.props.data}
-						type={this.state.current}
-						deleteData={deleteSavedData}
-					/>
-				</Conditonal>
+				<DisplaySavedData
+					data={this.props.data[this.state.current]}
+					deleteData={this.deleteData}
+				/>
 			</div>
 		);
 	}
