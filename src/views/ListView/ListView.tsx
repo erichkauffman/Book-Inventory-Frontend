@@ -39,19 +39,12 @@ export default class ListView extends Component<Props, State>{
 		sites: null
 	};
 
-	setItem = (itemId: number) => {
+	setItem = async (itemId: number) => {
 		if(this.state.id !== itemId){
-			let itemPromise = getItemById(itemId, this.props.type);
-			itemPromise.then((raw) => {
-				let item = {...raw, ...raw.item};
-				delete item.item;
-				return item;
-			})
-			.then((item) => {
-				this.setState({
-					itemDetailRender: item,
-					id: itemId
-				});
+			let item = await getItemById(itemId, this.props.type);
+			this.setState({
+				itemDetailRender: item,
+				id: itemId
 			});
 		}
 	}
@@ -131,7 +124,7 @@ export default class ListView extends Component<Props, State>{
 				</div>
 				<div className='detail'>
 					<Conditional render={!!this.state.itemDetailRender}>
-						<ItemDetail item={this.state.itemDetailRender} type={this.props.type}/>
+						<ItemDetail item={this.state.itemDetailRender as IItem|IBook}/>
 					</Conditional>
 				</div>
 			</div>
