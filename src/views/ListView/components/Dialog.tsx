@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import Conditional from '../../../components/Conditional';
 
-const Dialog = (props) => {
+type Props = {
+	renderCondition: boolean,
+	children: ReactElement|ReactElement[]
+}
+
+const Dialog = (props: Props) => {
 	return(
 		<Conditional render={props.renderCondition}>
 			<div className='backDrop'>

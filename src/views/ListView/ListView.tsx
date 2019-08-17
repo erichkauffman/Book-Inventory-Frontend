@@ -86,7 +86,7 @@ export default class ListView extends Component<Props, State>{
 	render(){
 		return(
 			<div>
-				<Dialog renderCondition={this.state.remove}>
+				<Dialog renderCondition={!!this.state.remove}>
 					<h3>Delete</h3>
 					<p>This action is permanent and cannot be undone</p>
 					<button onClick={()=>{this.setState({remove:null})}}>Cancel</button>
@@ -95,7 +95,7 @@ export default class ListView extends Component<Props, State>{
 						onClick={(data: any)=>{this.handleDelete(this.state.remove as number, parseInt(data)+1)}}
 					/>
 				</Dialog>
-				<Dialog renderCondition={this.state.sell}>
+				<Dialog renderCondition={!!this.state.sell}>
 					<h3>Sell</h3>
 					<p>This action is permanent and cannot be undone</p>
 					<button onClick={()=>{this.setState({sell:null, sites:[]})}}>Cancel</button>
