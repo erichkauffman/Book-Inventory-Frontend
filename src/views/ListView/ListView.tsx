@@ -7,27 +7,39 @@ import Buttons from './components/Buttons';
 import SelectorGenerator from './components/SelectorGenerator';
 import Conditional from '../../components/Conditional';
 import { commitRemoveAction, commitSell, getItemById, getSites } from '../../lib/ItemRoutes';
+import { IBasicItem, IBasicBook, IItem, IBook } from '../../data/types';
 import { filterItems } from './lib/filterItems';
 import './ListView.css';
 
-export default class ListView extends Component{
+type Props = {
+	type: string,
+	items: IBasicItem[] | IBasicBook[]
+}
 
-	constructor(props){
-		super(props);
-		let fields = ['itemId', 'siteId', 'upc', 'title'];
-		if(props.type === 'books'){
-			fields.push('author');
-		}
-		this.state = {
-			itemDetailRender: null,
-			id: null,
-			filter: 'itemId',
-			fields: fields,
-			search: ''
-		};
-	}
+type State = {
+	itemDetailRender: IItem | IBook | null,
+	id: number|null,
+	filter: string,
+	search: string,
+	sell: number | null,
+	remove: number | null,
+	sites: number[]|null
+}
 
-	setItem = (itemId) => {
+const fields = ['itemId', 'siteId', 'upc', 'title'];
+
+export default class ListView extends Component<Props, State>{
+	state: State = {
+		itemDetailRender: null,
+		id: null,
+		filter: 'itemId',
+		search: '',
+		sell: null,
+		remove: null,
+		sites: null
+	};
+
+	setItem = (itemId: number) => {
 		if(this.state.id !== itemId){
 			let itemPromise = getItemById(itemId, this.props.type);
 			itemPromise.then((raw) => {
@@ -44,7 +56,7 @@ export default class ListView extends Component{
 		}
 	}
 
-	handleRemove = (e, itemId) => {
+	handleRemove = (e: any, itemId: number) => {
 		if(e.target.alt === 'sell'){
 			let sitesPromise = getSites(itemId);
 			sitesPromise.then((sites) => {
@@ -57,17 +69,18 @@ export default class ListView extends Component{
 		}
 	}
 
-	handleDelete = (itemId, deleteValue) => {
+	handleDelete = (itemId: number, deleteValue: number) => {
 		commitRemoveAction(itemId, deleteValue);
-		this.setState({remove:false});
+		this.setState({remove:null});
 	}
 
-	handleSell = (itemId, site) => {
+	handleSell = (itemId: number, site: number) => {
 		if(site === -1){
-			site = null;
+			commitSell(itemId, null);
+		}else{
+			commitSell(itemId, site);
 		}
-		commitSell(itemId, site);
-		this.setState({sell:false, sites:[]});
+		this.setState({sell:null, sites:[]});
 	}
 
 	render(){
@@ -76,22 +89,35 @@ export default class ListView extends Component{
 				<Dialog renderCondition={this.state.remove}>
 					<h3>Delete</h3>
 					<p>This action is permanent and cannot be undone</p>
-					<button onClick={()=>{this.setState({remove:false})}}>Cancel</button>
-					<Buttons labels={['Destroy', 'Personal Use']} onClick={(data)=>{this.handleDelete(this.state.remove, parseInt(data)+1)}}/>
+					<button onClick={()=>{this.setState({remove:null})}}>Cancel</button>
+					<Buttons
+						labels={['Destroy', 'Personal Use']}
+						onClick={(data: any)=>{this.handleDelete(this.state.remove as number, parseInt(data)+1)}}
+					/>
 				</Dialog>
 				<Dialog renderCondition={this.state.sell}>
 					<h3>Sell</h3>
 					<p>This action is permanent and cannot be undone</p>
-					<button onClick={()=>{this.setState({sell:false, sites:[]})}}>Cancel</button>
-					<button onClick={()=>{this.handleSell(this.state.sell, -1)}}>Physical</button>
-					<Buttons labels={['Amazon', 'EBay']} values={this.state.sites} onClick={(data)=>{this.handleSell(this.state.sell, parseInt(data))}}/>
+					<button onClick={()=>{this.setState({sell:null, sites:[]})}}>Cancel</button>
+					<button onClick={()=>{this.handleSell(this.state.sell as number, -1)}}>Physical</button>
+					<Buttons
+						labels={['Amazon', 'EBay']}
+						values={this.state.sites}
+						onClick={(data: any)=>{this.handleSell(this.state.sell as number, parseInt(data))}}
+					/>
 				</Dialog>
 				<div className='contain'>
 					<div>
-						<input className='searchBar' type='text' value={this.state.search} onChange={(e)=>{this.setState({search:e.target.value})}}/>
-						<SelectorGenerator fields={this.state.fields}
-										   activated={this.state.filter}
-										   onClick={(value)=>{this.setState({filter:value})}}
+						<input
+							className='searchBar'
+							type='text'
+							value={this.state.search}
+							onChange={(e)=>{this.setState({search:e.target.value})}}
+						/>
+						<SelectorGenerator
+							fields={fields}
+							activated={this.state.filter}
+							onClick={(value: any)=>{this.setState({filter:value})}}
 						/>
 					</div>
 					<ListContainer
@@ -104,7 +130,7 @@ export default class ListView extends Component{
 					/>
 				</div>
 				<div className='detail'>
-					<Conditional render={this.state.itemDetailRender}>
+					<Conditional render={!!this.state.itemDetailRender}>
 						<ItemDetail item={this.state.itemDetailRender} type={this.props.type}/>
 					</Conditional>
 				</div>
