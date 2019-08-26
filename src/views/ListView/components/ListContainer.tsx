@@ -3,9 +3,24 @@ import React, { Component } from 'react';
 import List from './List';
 import NotFound from '../../../components/NotFound';
 import './ListContainer.css';
+import { IBasicItem } from '../../../data/types';
 
-export default class ListContainer extends Component{
-	constructor(props){
+type Props = {
+	items: IBasicItem[],
+	type: string,
+	buttonClick: (...args: any) => void,
+	onClick: (...args: any) => void,
+	selectedItem: number | null,
+	itemHeight: number
+}
+
+type State = {
+	scroll: number,
+	height: number
+}
+
+export default class ListContainer extends Component<Props, State>{
+	constructor(props: Props){
 		super(props);
 		this.state = {
 			scroll: 0,
@@ -13,11 +28,11 @@ export default class ListContainer extends Component{
 		};
 	}
 
-	getScrollStartValue = (scrollTop, itemHeight) => {
+	getScrollStartValue = (scrollTop: number, itemHeight: number): number => {
 		return Math.max(Math.floor(scrollTop / itemHeight) - 20, 0);
 	}
 
-	getScrollEndValue = (numItems, scrollTop, itemHeight, windowHeight) => {
+	getScrollEndValue = (numItems: number, scrollTop: number, itemHeight: number, windowHeight: number): number => {
 		let scrollBottom = scrollTop + windowHeight;
 		return Math.min(Math.ceil((scrollBottom / itemHeight) + 20), numItems);
 	}
@@ -39,13 +54,14 @@ export default class ListContainer extends Component{
 		if(!this.props.items){
 			return(<NotFound/>);
 		}
-		let start = this.getScrollStartValue(this.state.scroll, this.props.itemHeight);
-		let end = this.getScrollEndValue(this.props.items.length, this.state.scroll, this.props.itemHeight, this.state.height);
+		const start = this.getScrollStartValue(this.state.scroll, this.props.itemHeight);
+		const end = this.getScrollEndValue(this.props.items.length, this.state.scroll, this.props.itemHeight, this.state.height);
+		const height = this.props.items.length * this.props.itemHeight;
 		return(
-			<div className='listContainer' onScroll={(e)=>{this.setState({scroll:e.target.scrollTop})}}>
+			<div className='listContainer' onScroll={(e)=>{this.setState({scroll:(e.target as HTMLElement).scrollTop})}}>
 				<div className='list'
 					 style={{
-						 height:(this.props.items.length*this.props.itemHeight),
+						 height:height,
 						 paddingTop:(start*this.props.itemHeight)
 					 }}
 				>
