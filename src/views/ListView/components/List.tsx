@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 import ListItem from './ListItem';
 import Conditional from '../../../components/Conditional';
+import { IBasicItem } from '../../../data/types';
 
-const List = (props) => {
-	return props.items.map((item, index) => {
+type Props = {
+	items: IBasicItem[],
+	type: string,
+	start: number,
+	end: number,
+	selectedItem: number | null,
+	onClick: (...args: any) => void,
+	buttonClick: (...args: any) => void
+}
+
+const List = (props: Props) => {
+	let itemArray = props.items.map((item: IBasicItem, index: number) => {
 		return(
 			<Conditional render={index >= props.start && index < props.end}>
 				<ListItem
@@ -19,6 +30,11 @@ const List = (props) => {
 			</Conditional>
 		);
 	});
+	return(
+		<Fragment>
+			{itemArray}
+		</Fragment>
+	);
 }
 
 export default List;
