@@ -6,16 +6,25 @@ import copyImg from '../../../images/CopyButton.png';
 import sellImg from '../../../images/MoneyButton.png';
 import deleteImg from '../../../images/DeleteButton.png';
 
-const handleClick = (props) => {
+type Props = {
+	itemId: number,
+	selectedItem: number | null,
+	type: string,
+	title: string,
+	onClick: (...args: any) => void,
+	buttonClick: (...args: any) => void
+}
+
+const handleClick = (props: Props) => {
 	props.onClick(props.itemId);
 }
 
-const buttonClick = (e, props) => {
+const buttonClick = (e: any, props: Props) => {
 	e.stopPropagation();
 	props.buttonClick(e, props.itemId);
 }
 
-const ListItem = (props) => {
+const ListItem = (props: Props) => {
 	return(
 		<div className={props.selectedItem===props.itemId?'listItemSelected':'listItem'} onClick={() => {handleClick(props)}}>
 			<p className='itemId'>{props.itemId}</p>
